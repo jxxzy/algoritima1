@@ -14,6 +14,7 @@
     <a class="skip-link" href="#konten">Lewati ke materi</a>
     <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
     <div class="site-shell">
+      <button class="sidebar-backdrop" id="sidebar-backdrop" type="button" aria-label="Tutup navigasi" tabindex="-1" hidden></button>
       <aside class="sidebar" id="sidebar" aria-label="Navigasi materi">
         <a class="brand" href="#beranda" aria-label="Belajar Algoritma, beranda">
           <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
@@ -36,30 +37,40 @@
 
         <nav class="chapter-nav">
           <a class="nav-link" href="#beranda"><span class="nav-icon">⌂</span> Beranda</a>
-          <div class="nav-group">
-            <a class="nav-chapter" href="#bab-1"><span class="chapter-number">01</span><span><strong>Algoritma &amp; program</strong><small>Dasar pemecahan masalah</small></span></a>
-            <a class="nav-topic" href="#b1-ipo">Input, proses, output</a>
-            <a class="nav-topic" href="#b1-kartu">Validasi data peserta</a>
-            <a class="nav-topic" href="#b1-biaya">Menghitung biaya</a>
-            <a class="nav-topic" href="#b1-praktikum">Tugas &amp; evaluasi</a>
-          </div>
-          <div class="nav-group">
-            <a class="nav-chapter" href="#bab-2"><span class="chapter-number violet">02</span><span><strong>Narasi, flowchart, pseudocode</strong><small>Merancang alur program</small></span></a>
-            <a class="nav-topic" href="#b2-representasi">Tiga representasi</a>
-            <a class="nav-topic" href="#b2-geometri">Luas &amp; keliling</a>
-            <a class="nav-topic" href="#b2-parkir">Tarif parkir</a>
-            <a class="nav-topic" href="#b2-tukar">Menukar nilai</a>
-            <a class="nav-topic" href="#b2-praktikum">Tugas &amp; evaluasi</a>
-          </div>
-          <div class="nav-group">
-            <a class="nav-chapter" href="#bab-3"><span class="chapter-number amber">03</span><span><strong>Variabel &amp; tipe data</strong><small>Input, konversi, satuan</small></span></a>
-            <a class="nav-topic" href="#b3-tipe">Memilih tipe data</a>
-            <a class="nav-topic" href="#b3-suhu">Konversi suhu</a>
-            <a class="nav-topic" href="#b3-durasi">Durasi &amp; jarak</a>
-            <a class="nav-topic" href="#b3-kecepatan">Kecepatan rata-rata</a>
-            <a class="nav-topic" href="#b3-praktikum">Tugas &amp; evaluasi</a>
-          </div>
+          <details class="nav-group" data-nav-group data-chapter-group="1" open>
+            <summary class="nav-chapter"><span class="chapter-number">01</span><span><strong>Algoritma &amp; program</strong><small>Dasar pemecahan masalah</small></span><span class="nav-chevron" aria-hidden="true">⌄</span></summary>
+            <div class="nav-subtopics">
+              <a class="nav-topic" href="#bab-1">Ikhtisar bab</a>
+              <a class="nav-topic" href="#b1-ipo">Input, proses, output</a>
+              <a class="nav-topic" href="#b1-kartu">Validasi data peserta</a>
+              <a class="nav-topic" href="#b1-biaya">Menghitung biaya</a>
+              <a class="nav-topic" href="#b1-praktikum">Tugas &amp; evaluasi</a>
+            </div>
+          </details>
+          <details class="nav-group" data-nav-group data-chapter-group="2">
+            <summary class="nav-chapter"><span class="chapter-number violet">02</span><span><strong>Narasi, flowchart, pseudocode</strong><small>Merancang alur program</small></span><span class="nav-chevron" aria-hidden="true">⌄</span></summary>
+            <div class="nav-subtopics">
+              <a class="nav-topic" href="#bab-2">Ikhtisar bab</a>
+              <a class="nav-topic" href="#b2-representasi">Tiga representasi</a>
+              <a class="nav-topic" href="#b2-geometri">Luas &amp; keliling</a>
+              <a class="nav-topic" href="#b2-parkir">Tarif parkir</a>
+              <a class="nav-topic" href="#b2-tukar">Menukar nilai</a>
+              <a class="nav-topic" href="#b2-praktikum">Tugas &amp; evaluasi</a>
+            </div>
+          </details>
+          <details class="nav-group" data-nav-group data-chapter-group="3">
+            <summary class="nav-chapter"><span class="chapter-number amber">03</span><span><strong>Variabel &amp; tipe data</strong><small>Input, konversi, satuan</small></span><span class="nav-chevron" aria-hidden="true">⌄</span></summary>
+            <div class="nav-subtopics">
+              <a class="nav-topic" href="#bab-3">Ikhtisar bab</a>
+              <a class="nav-topic" href="#b3-tipe">Memilih tipe data</a>
+              <a class="nav-topic" href="#b3-suhu">Konversi suhu</a>
+              <a class="nav-topic" href="#b3-durasi">Durasi &amp; jarak</a>
+              <a class="nav-topic" href="#b3-kecepatan">Kecepatan rata-rata</a>
+              <a class="nav-topic" href="#b3-praktikum">Tugas &amp; evaluasi</a>
+            </div>
+          </details>
           <a class="nav-link" href="#latihan"><span class="nav-icon">✳</span> Cek pemahaman</a>
+          <a class="nav-link" href="#lab"><span class="nav-icon">⌘</span> Lab interaktif</a>
           <a class="nav-link" href="#referensi"><span class="nav-icon">↗</span> Referensi ringkas</a>
         </nav>
 
@@ -113,6 +124,36 @@
             <a class="path-card" href="#bab-1"><span class="path-index index-blue">01</span><span class="path-card-copy"><strong>Kenali masalah</strong><small>Algoritma, IPO, dan program pertama</small></span><span class="path-arrow">↗</span></a>
             <a class="path-card" href="#bab-2"><span class="path-index index-violet">02</span><span class="path-card-copy"><strong>Rancang alurnya</strong><small>Narasi, pseudocode, flowchart</small></span><span class="path-arrow">↗</span></a>
             <a class="path-card" href="#bab-3"><span class="path-index index-amber">03</span><span class="path-card-copy"><strong>Olah datanya</strong><small>Variabel, tipe, konversi satuan</small></span><span class="path-arrow">↗</span></a>
+          </div>
+        </section>
+
+        <section class="practice-lab" id="lab" data-searchable aria-labelledby="lab-title">
+          <div class="lab-intro">
+            <span class="section-kicker">COBA LANGSUNG · TANPA INSTALASI</span>
+            <h2 id="lab-title">Laboratorium mini</h2>
+            <p>Ubah input, jalankan algoritmanya, lalu telusuri dari mana hasilnya berasal.</p>
+            <div class="lab-steps"><span><i>01</i> Masukkan data</span><span><i>02</i> Jalankan</span><span><i>03</i> Pahami hasil</span></div>
+          </div>
+          <div class="lab-console">
+            <div class="lab-console-top"><span><i></i><i></i><i></i></span><strong>algoritma.py</strong><small>SIMULATOR</small></div>
+            <form id="lab-form" class="lab-form">
+              <label for="lab-operation">Pilih eksperimen</label>
+              <select id="lab-operation" name="operation">
+                <option value="duration">Pecah durasi · menit → jam</option>
+                <option value="parking">Hitung tarif parkir · Rp</option>
+                <option value="geometry">Hitung luas &amp; keliling</option>
+              </select>
+              <div class="lab-inputs">
+                <label class="lab-field" for="lab-value-a"><span id="lab-label-a">Durasi (menit)</span><input id="lab-value-a" name="valueA" type="number" step="1" value="135" required></label>
+                <label class="lab-field" id="lab-field-b" for="lab-value-b"><span id="lab-label-b">-</span><input id="lab-value-b" name="valueB" type="number" step="any" value="3"></label>
+              </div>
+              <div class="lab-actions"><button class="button button-primary" type="submit">Jalankan algoritma <span aria-hidden="true">→</span></button><button class="lab-example" id="lab-example" type="button">Muat contoh</button></div>
+            </form>
+            <div class="lab-output" id="lab-output" aria-live="polite" aria-atomic="true">
+              <span class="output-prompt">HASIL PROGRAM</span>
+              <strong>Siap untuk dicoba</strong>
+              <p>Pilih eksperimen, lalu tekan “Jalankan algoritma”.</p>
+            </div>
           </div>
         </section>
 

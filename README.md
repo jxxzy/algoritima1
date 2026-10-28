@@ -8,6 +8,7 @@ Situs pembelajaran statis berbahasa Indonesia untuk materi Bab 1–3. Dibuat den
 - **Bab 2:** narasi, pseudocode, simbol flowchart, luas/keliling, tarif parkir, pertukaran nilai, tantangan dan studi kasus.
 - **Bab 3:** variabel, tipe data, input/konversi, suhu, durasi, jarak, kecepatan, pemeriksaan balik, praktikum dan studi kasus.
 - Pencarian materi, progres topik lokal, tombol salin kode, kuis dengan umpan balik, mode gelap, dan tata letak responsif.
+- Laboratorium mini untuk mencoba konversi durasi, tarif parkir, dan geometri dengan penelusuran langkah hasil.
 
 ## Struktur proyek
 
