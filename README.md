@@ -1,7 +1,6 @@
 # Belajar Algoritma — Algoritma dan Struktur Data I
 
-Situs pembelajaran statis berbahasa Indonesia untuk materi Bab 1–3. Dibuat dengan HTML, CSS, dan JavaScript murni tanpa build step atau dependensi runtime.
-
+Situs pembelajaran statis berbahasa Indonesia untuk materi Bab 1–3. Dibuat dengan HTML, CSS, dan JavaScript
 ## Isi situs
 
 - **Bab 1:** algoritma dan input–proses–output, kontrak masalah, validasi kartu peserta, tipe NIM, biaya kegiatan, praktikum dan studi kasus.
