@@ -1,8 +1,12 @@
 import unittest
+from contextlib import redirect_stdout
+from io import StringIO
+from unittest.mock import patch
 
 from biaya_kegiatan import hitung_biaya
 from kartu_peserta import buat_kartu
 from kartu_praktikum import buat_kartu_praktikum
+from pendaftaran_tiga_peserta import main as main_pendaftaran
 from profil import buat_profil
 
 
@@ -50,6 +54,7 @@ class UjiKartuPeserta(unittest.TestCase):
         self.assertIn("Kelas: A", kartu)
         self.assertIn("Siti Aminah", kartu)
         self.assertIn("Kota Baru", kartu)
+        self.assertIn("Saya Siti Aminah berasal dari Kota Baru.", kartu)
 
     def test_melaporkan_semua_kolom_kosong(self):
         kartu, kesalahan = buat_kartu(
@@ -73,6 +78,26 @@ class UjiKartuPeserta(unittest.TestCase):
         )
         self.assertIsNone(kartu)
         self.assertEqual(kesalahan, ["Waktu sapaan harus 'pagi' atau 'sore'."])
+
+
+class UjiPendaftaranTigaPeserta(unittest.TestCase):
+    def test_perulangan_menyelesaikan_tiga_peserta_meski_satu_ditolak(self):
+        masukan = [
+            "", "001", "A", "Bandung", "pagi",
+            "Rani Sari", "002", "B", "Kota Baru", "sore",
+            "Dimas", "003", "C", "Surabaya", "pagi",
+        ]
+        keluaran = StringIO()
+
+        with patch("builtins.input", side_effect=masukan):
+            with redirect_stdout(keluaran):
+                main_pendaftaran()
+
+        hasil = keluaran.getvalue()
+        self.assertEqual(hasil.count("Peserta "), 3)
+        self.assertIn("Nama belum diisi.", hasil)
+        self.assertIn("NIM  : 002", hasil)
+        self.assertIn("NIM  : 003", hasil)
 
 
 class UjiBiayaKegiatan(unittest.TestCase):

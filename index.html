@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fb">
+    <meta name="description" content="Web pembelajaran interaktif Algoritma dan Struktur Data I: algoritma, flowchart, variabel, tipe data, dan konversi Python.">
+    <title>Belajar Algoritma — Algoritma dan Struktur Data I</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%234b65e8'/%3E%3Cpath d='M22 18 10 32l12 14M42 18l12 14-12 14M37 14 27 50' fill='none' stroke='white' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#konten">Lewati ke materi</a>
+    <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
+    <div class="site-shell">
+      <aside class="sidebar" id="sidebar" aria-label="Navigasi materi">
+        <a class="brand" href="#beranda" aria-label="Belajar Algoritma, beranda">
+          <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
+          <span><strong>Belajar Algoritma</strong><small>Algoritma &amp; Struktur Data I</small></span>
+        </a>
+
+        <div class="sidebar-label">PERJALANAN BELAJAR</div>
+        <div class="progress-card">
+          <div class="progress-heading"><span>Progres materi</span><strong id="progress-label">0%</strong></div>
+          <div class="progress-track" role="progressbar" aria-label="Progres materi selesai" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-track"><span id="progress-fill"></span></div>
+          <small id="progress-detail">0 dari 11 topik selesai</small>
+        </div>
+
+        <label class="search-box" for="search-input">
+          <span aria-hidden="true">⌕</span>
+          <input id="search-input" type="search" placeholder="Cari di materi..." autocomplete="off">
+          <kbd>/</kbd>
+        </label>
+        <p class="search-status" id="search-status" aria-live="polite"></p>
+
+        <nav class="chapter-nav">
+          <a class="nav-link" href="#beranda"><span class="nav-icon">⌂</span> Beranda</a>
+          <div class="nav-group">
+            <a class="nav-chapter" href="#bab-1"><span class="chapter-number">01</span><span><strong>Algoritma &amp; program</strong><small>Dasar pemecahan masalah</small></span></a>
+            <a class="nav-topic" href="#b1-ipo">Input, proses, output</a>
+            <a class="nav-topic" href="#b1-kartu">Validasi data peserta</a>
+            <a class="nav-topic" href="#b1-biaya">Menghitung biaya</a>
+            <a class="nav-topic" href="#b1-praktikum">Tugas &amp; evaluasi</a>
+          </div>
+          <div class="nav-group">
+            <a class="nav-chapter" href="#bab-2"><span class="chapter-number violet">02</span><span><strong>Narasi, flowchart, pseudocode</strong><small>Merancang alur program</small></span></a>
+            <a class="nav-topic" href="#b2-representasi">Tiga representasi</a>
+            <a class="nav-topic" href="#b2-geometri">Luas &amp; keliling</a>
+            <a class="nav-topic" href="#b2-parkir">Tarif parkir</a>
+            <a class="nav-topic" href="#b2-tukar">Menukar nilai</a>
+            <a class="nav-topic" href="#b2-praktikum">Tugas &amp; evaluasi</a>
+          </div>
+          <div class="nav-group">
+            <a class="nav-chapter" href="#bab-3"><span class="chapter-number amber">03</span><span><strong>Variabel &amp; tipe data</strong><small>Input, konversi, satuan</small></span></a>
+            <a class="nav-topic" href="#b3-tipe">Memilih tipe data</a>
+            <a class="nav-topic" href="#b3-suhu">Konversi suhu</a>
+            <a class="nav-topic" href="#b3-durasi">Durasi &amp; jarak</a>
+            <a class="nav-topic" href="#b3-kecepatan">Kecepatan rata-rata</a>
+            <a class="nav-topic" href="#b3-praktikum">Tugas &amp; evaluasi</a>
+          </div>
+          <a class="nav-link" href="#latihan"><span class="nav-icon">✳</span> Cek pemahaman</a>
+          <a class="nav-link" href="#referensi"><span class="nav-icon">↗</span> Referensi ringkas</a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="footer-note"><span class="status-dot"></span><span>Belajar mandiri, selangkah demi selangkah.</span></div>
+          <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Aktifkan mode gelap"><span aria-hidden="true">☾</span><span>Ganti tampilan</span><kbd>⌘ J</kbd></button>
+        </div>
+      </aside>
+
+      <main class="main-content" id="konten">
+        <header class="topbar">
+          <button class="mobile-menu" id="mobile-menu" type="button" aria-expanded="false" aria-controls="sidebar" aria-label="Buka navigasi">☰</button>
+          <div class="breadcrumb"><span>Kursus</span><span aria-hidden="true">/</span><strong>Materi inti</strong></div>
+          <a class="topbar-link" href="#bab-1">Mulai belajar <span aria-hidden="true">↗</span></a>
+        </header>
+
+        <section class="hero" id="beranda" data-searchable>
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="eyebrow-dot"></span> KELAS DASAR · PYTHON 3</div>
+            <h1>Belajar berpikir.<br><span>Baru menulis kode.</span></h1>
+            <p class="hero-description">Pahami cara memecahkan masalah dengan algoritma, merancang alur, lalu menerjemahkannya menjadi program Python yang benar.</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#bab-1">Mulai dari Bab 1 <span aria-hidden="true">→</span></a>
+              <a class="button button-quiet" href="#referensi">Lihat peta belajar</a>
+            </div>
+            <div class="hero-meta"><span class="avatar-stack" aria-hidden="true"><i>A</i><i>+</i><i>Py</i></span><span>3 bab · contoh · latihan interaktif</span><span class="meta-separator">•</span><span>Belajar sesuai ritme sendiri</span></div>
+          </div>
+          <div class="hero-art" aria-label="Ilustrasi alur berpikir menjadi program">
+            <div class="art-glow"></div>
+            <div class="code-window">
+              <div class="window-bar"><span></span><span></span><span></span><small>solusi.py</small></div>
+              <div class="code-lines" aria-hidden="true">
+                <span><i>01</i><b class="code-purple">def</b> <b class="code-blue">selesaikan</b>(masalah):</span>
+                <span><i>02</i>    data = <b class="code-green">pahami</b>(masalah)</span>
+                <span><i>03</i>    langkah = <b class="code-green">rancang</b>(data)</span>
+                <span><i>04</i>    hasil = <b class="code-green">jalankan</b>(langkah)</span>
+                <span><i>05</i>    <b class="code-purple">return</b> hasil</span>
+              </div>
+              <div class="code-result"><span>✓</span> Solusi siap dijalankan</div>
+            </div>
+            <div class="floating-chip chip-one"><span>01</span> Pahami masalah</div>
+            <div class="floating-chip chip-two"><span>02</span> Susun langkah</div>
+            <div class="floating-chip chip-three"><span>03</span> Uji hasil</div>
+            <div class="art-caption">DARI IDE <span>→</span> ALGORITMA <span>→</span> PROGRAM</div>
+          </div>
+        </section>
+
+        <section class="learning-path" aria-label="Urutan materi">
+          <div class="path-heading"><div><span class="section-kicker">PETA BELAJAR</span><h2>Tiga langkah menuju program pertamamu</h2></div><span class="path-caption">Ikuti urutannya atau langsung ke topik yang kamu perlukan.</span></div>
+          <div class="path-cards">
+            <a class="path-card" href="#bab-1"><span class="path-index index-blue">01</span><span class="path-card-copy"><strong>Kenali masalah</strong><small>Algoritma, IPO, dan program pertama</small></span><span class="path-arrow">↗</span></a>
+            <a class="path-card" href="#bab-2"><span class="path-index index-violet">02</span><span class="path-card-copy"><strong>Rancang alurnya</strong><small>Narasi, pseudocode, flowchart</small></span><span class="path-arrow">↗</span></a>
+            <a class="path-card" href="#bab-3"><span class="path-index index-amber">03</span><span class="path-card-copy"><strong>Olah datanya</strong><small>Variabel, tipe, konversi satuan</small></span><span class="path-arrow">↗</span></a>
+          </div>
+        </section>
+
+        <section class="chapter-section" id="bab-1">
+          <div class="chapter-heading">
+            <div class="chapter-title-group"><span class="chapter-badge badge-blue">BAB 01</span><div><h2>Algoritma dan program pertama</h2><p>Ubah masalah menjadi langkah terurut yang dapat dijalankan.</p></div></div>
+            <button class="mark-chapter" data-chapter="1" type="button"><span>✓</span> Tandai bab selesai</button>
+          </div>
+          <div class="chapter-intro">
+            <div><span class="section-kicker">TUJUAN BELAJAR</span><p>Setelah bab ini, kamu dapat mengidentifikasi input, proses, output, menyusun kontrak sederhana, dan menjalankan program Python interaktif.</p></div>
+            <div class="goal-icon" aria-hidden="true">◎</div>
+          </div>
+
+          <article class="lesson-card" id="b1-ipo" data-topic="b1-ipo" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number">01</span><div><h3>Berpikir dengan input, proses, output</h3><p>Algoritma adalah urutan langkah yang jelas untuk menyelesaikan masalah.</p></div></div>
+            <div class="lesson-body">
+              <p>Bayangkan petugas pendaftaran seminar. Nama peserta adalah <strong>input</strong>, menyusun sapaan adalah <strong>proses</strong>, dan pesan konfirmasi adalah <strong>output</strong>. Langkahnya harus jelas agar masukan yang sama memberi hasil yang dapat diperkirakan.</p>
+              <div class="ipo-grid"><div><span class="ipo-icon">↓</span><small>INPUT</small><strong>Nama peserta</strong><code>"Rani"</code></div><span class="ipo-connector">→</span><div><span class="ipo-icon process">⚙</span><small>PROSES</small><strong>Susun sapaan</strong><code>f"Halo, {nama}"</code></div><span class="ipo-connector">→</span><div><span class="ipo-icon output">↑</span><small>OUTPUT</small><strong>Pesan konfirmasi</strong><code>Halo, Rani!</code></div></div>
+              <div class="callout callout-blue"><span>✦</span><p><strong>Algoritma ≠ program.</strong> Algoritma adalah rancangan langkahnya; program adalah algoritma yang ditulis dalam bahasa yang bisa dieksekusi komputer.</p></div>
+              <h4>Mulai dari kontrak</h4>
+              <p>Sebelum menulis kode, tetapkan data yang tersedia, hasil yang diminta, dan syarat keberhasilan. Contoh kontrak kartu peserta:</p>
+              <ul><li>Nama dan NIM wajib diisi setelah spasi tepi dibuang.</li><li>NIM disimpan sebagai teks agar nol depan tetap ada.</li><li>Kartu diterbitkan hanya jika seluruh data wajib lengkap.</li></ul>
+              <details class="trace-details"><summary>Telusuri contoh input</summary><div class="trace-table"><div><b>Tahap</b><b>Keadaan</b></div><div><span>Input</span><code>nama = "  Siti Aminah  ", NIM = "00125"</code></div><div><span>Normalisasi</span><code>nama = "Siti Aminah", NIM tetap "00125"</code></div><div><span>Validasi</span><code>Kedua teks tidak kosong → lolos</code></div><div><span>Output</span><code>Kartu peserta lengkap ditampilkan</code></div></div></details>
+              <p class="question-prompt"><strong>Coba pikirkan:</strong> apakah nama yang isinya tiga spasi sudah memenuhi kontrak? Apa yang harus dilakukan sebelum memutuskan?</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b1-ipo"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b1-kartu" data-topic="b1-kartu" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number">02</span><div><h3>Validasi sebelum menampilkan kartu</h3><p>Laporkan semua data yang kurang, jangan tampilkan keberhasilan palsu.</p></div></div>
+            <div class="lesson-body">
+              <p>Data yang hanya berisi spasi dianggap kosong setelah <code>.strip()</code>. Kumpulkan semua kesalahan terlebih dahulu; jangan berhenti pada kesalahan pertama. Nama dan kota dua kata tetap utuh, sedangkan NIM bukan angka hitung.</p>
+              <div class="code-card">
+                <div class="code-card-header"><span>Python · kartu peserta</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>nama = input("Nama lengkap: ").strip()
+nim = input("NIM: ").strip()
+kelas = input("Kelas: ").strip().upper()
+kota = input("Kota: ").strip()
+
+data = {"Nama": nama, "NIM": nim,
+        "Kelas": kelas, "Kota": kota}
+kosong = [label for label, nilai in data.items()
+          if not nilai]
+
+if kosong:
+    print("Belum lengkap:", ", ".join(kosong))
+else:
+    for label, nilai in data.items():
+        print(f"{label}: {nilai}")</code></pre>
+              </div>
+              <div class="callout callout-amber"><span>!</span><p><strong>Kenapa NIM bertipe teks?</strong> Mengubah `"00125"` menjadi integer menghasilkan `125`. Nol depan adalah bagian identitas, bukan nilai untuk dijumlahkan.</p></div>
+              <p><strong>Kasus batas:</strong> jika nama, NIM, dan kota kosong sedangkan kelas terisi, program menyebut ketiga kolom yang kurang sekaligus dan tidak mencetak kartu.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b1-kartu"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b1-biaya" data-topic="b1-biaya" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number">03</span><div><h3>Menghitung biaya kegiatan</h3><p>Pisahkan nilai tetap, tarif per orang, dan jumlah peserta.</p></div></div>
+            <div class="lesson-body">
+              <p>Biaya tetap Rp50.000 dan konsumsi Rp12.000 per peserta. Untuk lima peserta, hitung konsumsi dahulu, lalu tambahkan biaya tetap.</p>
+              <div class="formula-card"><span>konsumsi</span><code>5 × Rp12.000 = Rp60.000</code><span>total</span><code>Rp50.000 + Rp60.000 = Rp110.000</code></div>
+              <div class="code-card">
+                <div class="code-card-header"><span>Python · biaya kegiatan</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>BIAYA_TETAP = 50_000
+KONSUMSI_PER_ORANG = 12_000
+peserta = int(input("Banyak peserta: "))
+
+if peserta <= 0:
+    print("Peserta harus lebih dari nol.")
+else:
+    konsumsi = peserta * KONSUMSI_PER_ORANG
+    total = BIAYA_TETAP + konsumsi
+    print(f"Total rencana: Rp{total}")</code></pre>
+              </div>
+              <p>Input <code>1</code> menghasilkan Rp62.000. Input <code>0</code> atau bilangan negatif ditolak. Input teks seperti <code>abc</code> tidak dapat dikonversi dengan <code>int()</code>; versi yang lebih tangguh menangani kesalahan format tersebut dan menjelaskan penolakannya.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b1-biaya"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card assignment-card" id="b1-praktikum" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number">↗</span><div><h3>Praktikum, tantangan, dan tugas Bab 1</h3><p>Kerjakan tugas dengan spesifikasi, dry run, program, dan bukti pengujian.</p></div></div>
+            <div class="lesson-body">
+              <h4>Praktikum terbimbing: kartu peserta</h4>
+              <ol>
+                <li>Jalankan program sapaan dan catat input serta output.</li>
+                <li>Ubah profil menjadi kartu praktikum dengan NIM sebagai teks agar nol depan tetap ada.</li>
+                <li>Uji nama kosong, nama dua kata, dan prodi kosong; jelaskan hasil setiap kasus.</li>
+                <li>Kumpulkan kode dan tabel uji. Sertakan bukti eksekusi jika diminta pengajar.</li>
+                <li>Tulis kontrak data sah, output, penolakan, dan pisahkan fitur wajib dari pengembangan.</li>
+                <li>Lakukan dry run satu contoh normal dan satu batas sebelum mengetik kode.</li>
+                <li>Implementasikan versi terkecil lalu tambah fitur bertahap dengan menjaga kasus lama.</li>
+                <li>Uji penolakan; catat input pemicu dan hasil sebelum/sesudah bila memperbaiki bug.</li>
+              </ol>
+              <h4>Tantangan bertingkat</h4>
+              <ol>
+                <li><strong>Dasar:</strong> tambahkan kota asal ke perkenalan lengkap.</li>
+                <li><strong>Menengah:</strong> untuk nama kosong, sebutkan kolom yang salah.</li>
+                <li><strong>Lanjut:</strong> rancang pendaftaran tiga peserta; gunakan perulangan untuk langkah input/validasi yang berulang.</li>
+                <li><strong>Pengembangan:</strong> tambahkan sapaan pagi atau sore tanpa mengubah identitas. Uji nama dan kota yang mengandung spasi tengah.</li>
+                <li><strong>Adaptasi kartu:</strong> wajibkan nama, NIM, dan kelas; pertahankan NIM teks dan anggap spasi saja sebagai kosong. Bandingkan kontrak lama dan baru dengan satu input.</li>
+                <li><strong>Pembuktian biaya:</strong> biaya tetap Rp50.000 + konsumsi Rp12.000 per peserta. Trace satu uji batas dan tambahkan penolakan input nonangka.</li>
+              </ol>
+              <details class="trace-details"><summary>Pembahasan dan hasil uji semua tantangan 1–6</summary><div class="lesson-body nested-body">
+                <ol>
+                  <li><strong>Kota:</strong> kartu menampilkan kota dan kalimat perkenalan, misalnya “Saya Siti Aminah berasal dari Bandung.” Spasi di tengah nama/kota dipertahankan.</li>
+                  <li><strong>Kolom kosong:</strong> nama kosong menghasilkan pesan <code>Nama belum diisi.</code>; tidak ada kartu sukses. Semua kolom kosong dilaporkan bersamaan.</li>
+                  <li><strong>Tiga peserta:</strong> satu perulangan <code>for</code> menjalankan baca–validasi–tampil tepat tiga kali. Peserta yang ditolak tidak menghentikan peserta berikutnya.</li>
+                  <li><strong>Sapaan:</strong> <code>pagi</code> menghasilkan “Selamat pagi” dan <code>sore</code> menghasilkan “Selamat sore”; NIM dan kolom identitas tidak berubah.</li>
+                  <li><strong>Kartu wajib:</strong> versi tiga kolom dibandingkan dengan versi nama/NIM/kelas/kota. <code>00125</code> tetap teks; input spasi saja ditolak; kartu hanya keluar bila lengkap.</li>
+                  <li><strong>Biaya:</strong> untuk 1 peserta, konsumsi Rp12.000 dan total Rp62.000. <code>0</code>, <code>-2</code>, dan <code>abc</code> ditolak; tidak ada total pada jalur gagal.</li>
+                </ol>
+                <p>Implementasi ada di folder <code>Bab 1</code>; tes otomatis mencakup kartu normal, banyak kolom kosong, sapaan salah, pendaftaran berulang, batas biaya, dan input invalid.</p>
+              </div></details>
+              <details class="trace-details"><summary>Studi kasus mandiri dan kunci analisis</summary><div class="lesson-body nested-body">
+                <p><strong>Kasus:</strong> buat kartu kegiatan berisi nama, NIM, kelas, dan kota. Semua wajib terisi; tampilkan seluruh kolom yang kurang sekaligus; NIM tidak boleh kehilangan nol depan. Tambahkan pilihan sapaan pagi/sore.</p>
+                <ol>
+                  <li><strong>Tujuan/pengguna:</strong> membantu panitia menerbitkan kartu peserta; output-nya kartu atau daftar kesalahan.</li>
+                  <li><strong>Urutan:</strong> baca teks → trim → cek seluruh kolom dan sapaan → tampilkan semua kekurangan, atau terbitkan kartu.</li>
+                  <li><strong>Data:</strong> nama/NIM/kelas/kota/waktu bertipe teks; NIM tetap teks; normalisasi mendahului validasi.</li>
+                  <li><strong>Trace:</strong> `" Siti Aminah "`, `"00125"`, `"a"`, `"Bandung"`, `"pagi"` menjadi nama `Siti Aminah`, NIM `00125`, kelas `A`, kota `Bandung`; semua lolos.</li>
+                  <li><strong>Batas:</strong> tiga spasi menjadi kosong; beberapa kolom kosong harus dilaporkan bersamaan. Batas maksimum teks tidak ditentukan.</li>
+                  <li><strong>Regresi:</strong> nama dua kata dan NIM `00125` tetap; versi pengembangan menambah kota dan sapaan sebagai input.</li>
+                </ol>
+                <p><strong>Evaluasi:</strong> algoritma adalah rancangan langkah, program implementasinya; <code>strip()</code> membuang spasi tepi; profil dicetak setelah input lengkap. Uji biaya satu peserta menghasilkan Rp62.000. Input <code>abc</code> ditolak saat konversi tanpa menghitung total. Kartu dan biaya sama-sama memakai IPO tetapi memvalidasi aturan berbeda. Uji NIM nol depan dan multi-kekurangan mengungkap bug konversi NIM atau pemeriksaan kolom yang tidak lengkap.</p>
+              </div></details>
+              <details class="trace-details"><summary>Jawaban evaluasi formatif dan refleksi (1–9)</summary><div class="lesson-body nested-body">
+                <ol>
+                  <li>Algoritma adalah urutan langkah untuk menyelesaikan masalah; program adalah implementasi langkah tersebut dalam bahasa pemrograman.</li>
+                  <li>NIM bertipe teks karena identitas bukan besaran hitung dan nol di depan harus dipertahankan.</li>
+                  <li><code>strip()</code> menghapus spasi di awal/akhir teks, bukan spasi tengah.</li>
+                  <li>Kartu dicetak setelah semua kolom wajib dan pilihan sapaan lolos pemeriksaan.</li>
+                  <li>Batas biaya 1 peserta menghasilkan Rp62.000: <code>50.000 + 1 × 12.000</code>. Kondisi peserta harus positif menentukan jalur hitung.</li>
+                  <li><code>abc</code> gagal dikonversi ke integer; program menampilkan pesan dan tidak menghitung total. Uji memeriksa tidak ada output sukses.</li>
+                  <li>Profil dan biaya sama-sama mengikuti input–proses–output. Profil memvalidasi teks wajib, sedangkan biaya memvalidasi bilangan dan melakukan aritmetika.</li>
+                  <li>Kesalahan rawan: mengubah NIM menjadi angka atau hanya memeriksa kolom pertama. Uji <code>00125</code> dan beberapa kolom kosong akan menemukan kesalahan itu.</li>
+                  <li>Dipahami: pilihan tipe data memengaruhi makna hasil. Perlu dipelajari: perulangan/penyimpanan kumpulan data; contoh nyatanya pendaftaran tiga peserta.</li>
+                </ol>
+                <p>Hubungannya: kontrak IPO Bab 1 menjadi dasar flowchart dan pseudocode Bab 2. Batas contoh: biaya hanya memakai jumlah peserta bulat positif dan belum menyimpan data secara permanen.</p>
+              </div></details>
+            </div>
+          </article>
+        </section>
+
+        <section class="chapter-section" id="bab-2">
+          <div class="chapter-heading">
+            <div class="chapter-title-group"><span class="chapter-badge badge-violet">BAB 02</span><div><h2>Narasi, flowchart, dan pseudocode</h2><p>Rancang alur yang konsisten sebelum menulis program.</p></div></div>
+            <button class="mark-chapter" data-chapter="2" type="button"><span>✓</span> Tandai bab selesai</button>
+          </div>
+          <div class="chapter-intro">
+            <div><span class="section-kicker">TUJUAN BELAJAR</span><p>Terjemahkan spesifikasi yang sama ke narasi, pseudocode, flowchart, dan kode; pastikan seluruh jalur keputusan dapat ditelusuri.</p></div>
+            <div class="goal-icon goal-violet" aria-hidden="true">⌘</div>
+          </div>
+
+          <article class="lesson-card" id="b2-representasi" data-topic="b2-representasi" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number violet-text">01</span><div><h3>Tiga cara merepresentasikan algoritma</h3><p>Bahasa sehari-hari, langkah terstruktur, dan diagram alur.</p></div></div>
+            <div class="lesson-body">
+              <div class="representation-grid"><div><span class="representation-icon">Aa</span><strong>Narasi</strong><p>Jelaskan urutan langkah dengan bahasa sehari-hari.</p></div><div><span class="representation-icon violet-icon">{ }</span><strong>Pseudocode</strong><p>Tulis struktur algoritma tanpa terikat sintaks bahasa tertentu.</p></div><div><span class="representation-icon amber-icon">◇</span><strong>Flowchart</strong><p>Gambarkan urutan, operasi, dan percabangan memakai simbol.</p></div></div>
+              <h4>Simbol flowchart yang perlu diingat</h4>
+              <div class="symbol-list"><div><span class="symbol-pill terminal">○</span><span><strong>Oval</strong><small>Mulai atau selesai</small></span></div><div><span class="symbol-pill io">▱</span><span><strong>Jajar genjang</strong><small>Masukan atau keluaran</small></span></div><div><span class="symbol-pill process">▭</span><span><strong>Persegi panjang</strong><small>Proses atau perhitungan</small></span></div><div><span class="symbol-pill decision">◇</span><span><strong>Belah ketupat</strong><small>Keputusan dengan cabang berlabel</small></span></div></div>
+              <div class="callout callout-violet"><span>↳</span><p>Setiap keputusan harus memiliki cabang yang bermakna—misalnya <strong>Ya</strong> dan <strong>Tidak</strong>—dan kedua jalur harus berakhir atau berlanjut ke langkah yang jelas.</p></div>
+              <p class="question-prompt"><strong>Uji pemahaman:</strong> untuk luas persegi panjang, apakah output bisa langsung mengikuti mulai? Tidak—panjang dan lebar harus dibaca, diperiksa, lalu dihitung lebih dahulu.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b2-representasi"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b2-geometri" data-topic="b2-geometri" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number violet-text">02</span><div><h3>Luas dan keliling persegi panjang</h3><p>Validasi kedua sisi sebelum menghitung dan menampilkan hasil.</p></div></div>
+            <div class="lesson-body">
+              <div class="spec-grid"><div><small>INPUT</small><strong>Panjang p dan lebar l</strong><span>Angka positif, satuan sama</span></div><div><small>PROSES</small><strong>L = p × l</strong><span>K = 2 × (p + l)</span></div><div><small>OUTPUT</small><strong>Luas dan keliling</strong><span>Satuan² dan satuan panjang</span></div></div>
+              <div class="pseudocode-card"><div class="code-card-header"><span>Pseudocode</span><span class="tag">ALGORITMA</span></div><pre><code>MULAI
+BACA panjang, lebar
+JIKA panjang <= 0 ATAU lebar <= 0
+    TULIS "Sisi harus positif."
+SELAIN ITU
+    luas <- panjang * lebar
+    keliling <- 2 * (panjang + lebar)
+    TULIS luas dan keliling
+SELESAI</code></pre></div>
+              <div class="code-card">
+                <div class="code-card-header"><span>Python · luas &amp; keliling</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>panjang = float(input("Panjang (m): "))
+lebar = float(input("Lebar (m): "))
+
+if panjang <= 0 or lebar <= 0:
+    print("Sisi harus positif.")
+else:
+    luas = panjang * lebar
+    keliling = 2 * (panjang + lebar)
+    print(f"Luas = {luas:.2f} m2")
+    print(f"Keliling = {keliling:.2f} m")</code></pre>
+              </div>
+              <details class="trace-details"><summary>Dry run: panjang 5 m, lebar 3 m</summary><div class="trace-table"><div><b>Langkah</b><b>Nilai</b></div><div><span>Validasi</span><code>5 > 0 dan 3 > 0 → lolos</code></div><div><span>Luas</span><code>5 × 3 = 15 m²</code></div><div><span>Keliling</span><code>2 × (5 + 3) = 16 m</code></div><div><span>Output</span><code>Luas 15.00 m2 · Keliling 16.00 m</code></div></div></details>
+              <p>Sisi nol dan negatif ditolak. Samakan satuan sebelum menghitung: <code>5 m × 30 cm</code> harus dinormalisasi menjadi <code>5 m × 0,30 m = 1,50 m²</code>.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b2-geometri"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b2-parkir" data-topic="b2-parkir" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number violet-text">03</span><div><h3>Tarif parkir dengan batas harian</h3><p>Perhatikan jam pertama, jam tambahan, lalu kebijakan batas tarif.</p></div></div>
+            <div class="lesson-body">
+              <p>Tarif latihan Rp3.000 untuk satu jam pertama, lalu Rp2.000 per jam tambahan. Durasi harus bilangan bulat minimal satu jam. Pengembangan menerapkan batas maksimal harian Rp15.000 setelah tarif awal dihitung.</p>
+              <div class="formula-card"><span>tarif awal</span><code>3.000 + (jam − 1) × 2.000</code><span>tarif akhir</span><code>min(tarif awal, 15.000)</code></div>
+              <div class="code-card">
+                <div class="code-card-header"><span>Python · hitung tarif</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>jam = int(input("Durasi parkir (jam): "))
+
+if jam < 1:
+    print("Durasi minimal satu jam.")
+else:
+    jam_tambahan = jam - 1
+    biaya_awal = 3000 + jam_tambahan * 2000
+    biaya_akhir = min(biaya_awal, 15000)
+    print(f"Biaya awal: Rp{biaya_awal}")
+    print(f"Tarif akhir: Rp{biaya_akhir}")</code></pre>
+              </div>
+              <div class="test-pills"><span>1 jam → Rp3.000</span><span>3 jam → Rp7.000</span><span>7 jam → Rp15.000</span><span>8 jam → tetap Rp15.000</span></div>
+              <p class="question-prompt"><strong>Kesalahan umum:</strong> rumus <code>jam * 2000</code> untuk biaya tambahan menghitung jam pertama dua kali. Uji satu jam akan membongkar bug tersebut.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b2-parkir"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b2-tukar" data-topic="b2-tukar" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number violet-text">04</span><div><h3>Menukar dua nilai dengan variabel bantu</h3><p>Simpan nilai lama sebelum menimpa variabel.</p></div></div>
+            <div class="lesson-body">
+              <div class="code-card">
+                <div class="code-card-header"><span>Python · pertukaran</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>a = input("Isi wadah A: ")
+b = input("Isi wadah B: ")
+
+sementara = a
+a = b
+b = sementara
+
+print(f"Sesudah: A={a}, B={b}")</code></pre>
+              </div>
+              <div class="trace-table"><div><b>Tahap</b><b>a · b · sementara</b></div><div><span>Awal</span><code>merah · biru · —</code></div><div><span>Simpan a</span><code>merah · biru · merah</code></div><div><span>a = b</span><code>biru · biru · merah</code></div><div><span>b = sementara</span><code>biru · merah · merah</code></div></div>
+              <p>Jika langsung menulis <code>a = b</code>, isi awal <code>a</code> hilang. Saat <code>b = a</code> dilakukan sesudahnya, kedua variabel akan berisi nilai yang sama. Variabel sementara menjaga nilai yang masih diperlukan.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b2-tukar"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card assignment-card" id="b2-praktikum" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number violet-text">↗</span><div><h3>Praktikum, tantangan, dan tugas Bab 2</h3><p>Samakan narasi, pseudocode, diagram, kode, dan hasil dry run.</p></div></div>
+            <div class="lesson-body">
+              <h4>Praktikum terbimbing: rancangan tarif parkir</h4>
+              <ol>
+                <li>Tulis narasi yang menyebut satuan durasi.</li>
+                <li>Gambar flowchart lengkap dengan keputusan dan cabang berlabel.</li>
+                <li>Dry run 5 jam, 3 jam, dan 0 jam sebelum menulis kode.</li>
+                <li>Bandingkan setiap cabang kode dengan flowchart dan perbaiki yang tidak cocok.</li>
+                <li>Tetapkan kontrak input valid, output, dan penolakan; pisahkan aturan wajib dan fitur pengembangan.</li>
+                <li>Dry run satu kasus normal dan satu batas.</li>
+                <li>Implementasikan bertahap sambil menjaga hasil lama (regresi).</li>
+                <li>Uji penolakan dan simpan input pemicu serta hasil sebelum/sesudah perbaikan bug.</li>
+              </ol>
+              <h4>Tantangan bertingkat</h4>
+              <ol>
+                <li><strong>Dasar:</strong> tulis pseudocode keliling persegi panjang.</li>
+                <li><strong>Menengah:</strong> tampilkan luas dan keliling dari satu kali pembacaan input.</li>
+                <li><strong>Lanjut:</strong> konversikan sentimeter ke meter sebelum menghitung luas.</li>
+                <li><strong>Pengembangan:</strong> tambahkan batas tarif harian Rp15.000 sesudah biaya awal dihitung dan perbarui ketiga representasi.</li>
+                <li><strong>Adaptasi parkir:</strong> jam bulat minimal 1; Rp3.000 jam pertama, Rp2.000 per jam tambahan. Tulis pseudocode dan flowchart, pastikan jam pertama tidak dihitung dua kali, lalu bandingkan perubahan aturan dengan input yang sama.</li>
+                <li><strong>Pembuktian pertukaran:</strong> tukar nilai teks dengan variabel bantu; trace nilai awal, nilai sementara, dan hasil; tambahkan penolakan input nonteks pada helper.</li>
+              </ol>
+              <details class="trace-details"><summary>Pembahasan dan hasil uji semua tantangan 1–6</summary><div class="lesson-body nested-body">
+                <ol>
+                  <li><strong>Keliling:</strong> <code>keliling = 2 × (panjang + lebar)</code>; 5 m dan 3 m menghasilkan 16 m.</li>
+                  <li><strong>Luas dan keliling:</strong> kedua sisi dibaca sekali; 5 × 3 menghasilkan luas 15 m² dan keliling 16 m.</li>
+                  <li><strong>Konversi satuan:</strong> 250 cm dibagi 100 menjadi 2,5 m sebelum hitung; dengan lebar 4 m, luas 10 m² dan keliling 13 m.</li>
+                  <li><strong>Batas tarif:</strong> 7 jam = Rp15.000; 8 jam biaya awal Rp17.000 dibatasi menjadi Rp15.000; 3 jam tetap Rp7.000.</li>
+                  <li><strong>Tarif bertingkat:</strong> tambahan = jam − 1. Satu jam menghasilkan Rp3.000, bukan Rp5.000; tiga jam menghasilkan Rp7.000.</li>
+                  <li><strong>Pertukaran:</strong> merah/biru → simpan merah → A menjadi biru → B menjadi merah. Uji tipe salah ditolak tanpa hasil sukses.</li>
+                </ol>
+                <p>Narasi, pseudocode, flowchart, dan kode untuk parkir menerapkan keputusan yang sama. Tes otomatis juga mencakup sisi nol/negatif, input bukan angka, overflow/underflow, serta pertukaran teks.</p>
+              </div></details>
+              <details class="trace-details"><summary>Studi kasus mandiri dan kunci analisis</summary><div class="lesson-body nested-body">
+                <p><strong>Kasus:</strong> durasi parkir jam bulat minimal satu. Tarif Rp3.000 untuk jam pertama dan Rp2.000 per jam tambahan. Pengembangan menerapkan tarif maksimum Rp15.000.</p>
+                <ol>
+                  <li><strong>Tujuan/input/output:</strong> hitung tarif dari durasi; tampilkan biaya awal dan tarif akhir; jam harus bilangan bulat positif.</li>
+                  <li><strong>Alur:</strong> baca jam → bila jam &lt; 1, tolak dan selesai → hitung tambahan dan biaya awal → batasi dengan <code>min(biaya_awal, 15000)</code> → tampilkan.</li>
+                  <li><strong>Data:</strong> jam, jam tambahan, dan biaya rupiah adalah integer. Hasil hanya dibuat pada cabang valid.</li>
+                  <li><strong>Trace:</strong> 3 jam → tambahan 2 → biaya awal Rp7.000 → biaya akhir Rp7.000.</li>
+                  <li><strong>Batas:</strong> 1 jam Rp3.000; 7 jam tepat Rp15.000; 0 dan negatif ditolak. Input teks bukan jam bulat.</li>
+                  <li><strong>Regresi:</strong> 3 jam tetap Rp7.000; 8 jam berubah dari Rp17.000 menjadi Rp15.000 karena aturan batas.</li>
+                </ol>
+                <p><strong>Evaluasi:</strong> pseudocode menjelaskan algoritma bebas bahasa; dua jalur keputusan membedakan valid/tidak; variabel sementara menjaga nilai yang akan ditimpa. Uji satu jam menemukan rumus biaya tambahan yang keliru karena hasil wajib Rp3.000, bukan Rp5.000.</p>
+              </div></details>
+              <details class="trace-details"><summary>Jawaban evaluasi formatif dan refleksi (1–9)</summary><div class="lesson-body nested-body">
+                <ol>
+                  <li>Pseudocode menyatakan langkah serta keputusan secara terstruktur tanpa bergantung pada sintaks bahasa tertentu.</li>
+                  <li>Keputusan memiliki jalur Ya/Tidak agar keadaan valid dan tidak valid menghasilkan alur yang berbeda.</li>
+                  <li>Variabel sementara menyimpan nilai lama sebelum nilai lain ditimpa saat pertukaran.</li>
+                  <li>Masukkan contoh yang sama ke narasi, pseudocode, flowchart, dan kode; bandingkan syarat, rumus, cabang, dan output.</li>
+                  <li>Uji batas sisi 0 dan 3 harus ditolak karena kedua sisi wajib positif; tidak boleh menampilkan hasil luas.</li>
+                  <li>Input <code>abc</code> gagal saat parsing sehingga luas tidak dihitung. Input sangat besar dapat menyebabkan overflow; hasil tak hingga juga ditolak.</li>
+                  <li>Luas dan parkir sama-sama memeriksa prasyarat dahulu. Luas mengalikan dua sisi positif; parkir menerapkan tarif dasar lalu tambahan jam.</li>
+                  <li>Bug rawan: menghitung tarif tambahan sebanyak <code>jam</code>, bukan <code>jam - 1</code>. Uji 1 jam harus Rp3.000 dan mengungkap kekeliruan.</li>
+                  <li>Dipahami: setiap cabang diagram harus sejalan dengan kode. Perlu dipelajari: normalisasi satuan; 250 cm harus menjadi 2,5 m sebelum hitung.</li>
+                </ol>
+                <p>Hubungannya: Bab 2 mengubah spesifikasi IPO Bab 1 menjadi representasi algoritma yang dapat ditelusuri. Batas contoh: tarif adalah model latihan, hanya memakai jam bulat, dan batas Rp15.000 diterapkan pada satu transaksi.</p>
+              </div></details>
+            </div>
+          </article>
+        </section>
+
+        <section class="chapter-section" id="bab-3">
+          <div class="chapter-heading">
+            <div class="chapter-title-group"><span class="chapter-badge badge-amber">BAB 03</span><div><h2>Variabel, tipe data, dan konversi</h2><p>Pilih representasi yang tepat sebelum mulai berhitung.</p></div></div>
+            <button class="mark-chapter" data-chapter="3" type="button"><span>✓</span> Tandai bab selesai</button>
+          </div>
+          <div class="chapter-intro">
+            <div><span class="section-kicker">TUJUAN BELAJAR</span><p>Gunakan variabel, tipe data, input, output, konversi tipe dan satuan dengan tepat; telusuri bagaimana nilai berubah.</p></div>
+            <div class="goal-icon goal-amber" aria-hidden="true">ƒ</div>
+          </div>
+
+          <article class="lesson-card" id="b3-tipe" data-topic="b3-tipe" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number amber-text">01</span><div><h3>Variabel menyimpan makna, bukan hanya nilai</h3><p>Nama yang jelas membantu memilih operasi yang benar.</p></div></div>
+            <div class="lesson-body">
+              <p>Variabel adalah nama yang merujuk ke suatu objek. <code>suhu = 30</code> membuat nama <code>suhu</code> merujuk angka 30; penugasan berikutnya dapat mengubah nilai yang dirujuknya. Python peka huruf besar-kecil. Gunakan nama yang menyebut satuan seperti <code>jarak_km</code>.</p>
+              <div class="type-grid"><div><span class="type-symbol type-int">42</span><strong>int</strong><small>Bilangan bulat</small><code>jumlah = 12</code></div><div><span class="type-symbol type-float">3.5</span><strong>float</strong><small>Bilangan pecahan</small><code>volume_l = 2.5</code></div><div><span class="type-symbol type-str">Aa</span><strong>str</strong><small>Teks / identitas</small><code>nim = "00125"</code></div><div><span class="type-symbol type-bool">✓</span><strong>bool</strong><small>Benar atau salah</small><code>aktif = True</code></div></div>
+              <div class="callout callout-amber"><span>!</span><p><strong>Input selalu bertipe <code>str</code>.</strong> Teks <code>"2" + "3"</code> menghasilkan <code>"23"</code>. Konversi keduanya menjadi integer untuk memperoleh <code>5</code>. Jangan gunakan <code>bool("tidak")</code>: string apa pun yang tidak kosong bernilai <code>True</code>.</p></div>
+              <h4>Konversi tipe dengan sengaja</h4>
+              <div class="code-card">
+                <div class="code-card-header"><span>Input → konversi → hitung</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>teks = input("Masukkan jumlah: ")
+jumlah = int(teks)
+total = jumlah + 3
+print(total)  # Masukan 12 menghasilkan 15</code></pre>
+              </div>
+              <p>Gunakan <code>int</code> untuk jumlah benda, <code>float</code> untuk ukuran yang mungkin pecahan, <code>str</code> untuk nama/NIM/kode pos, dan <code>bool</code> untuk status yang sudah ditafsirkan dengan aturan eksplisit.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b3-tipe"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b3-suhu" data-topic="b3-suhu" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number amber-text">02</span><div><h3>Konversi Celsius, Fahrenheit, dan Kelvin</h3><p>Jaga rumus, tipe, dan batas fisik suhu.</p></div></div>
+            <div class="lesson-body">
+              <div class="formula-card"><span>FAHRENHEIT</span><code>F = C × 9 / 5 + 32</code><span>KELVIN</span><code>K = C + 273.15</code></div>
+              <div class="code-card">
+                <div class="code-card-header"><span>Python · konversi suhu</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>celsius = float(input("Suhu Celsius: "))
+if celsius < -273.15:
+    print("Suhu di bawah nol mutlak.")
+else:
+    fahrenheit = celsius * 9 / 5 + 32
+    kelvin = celsius + 273.15
+    print(f"Fahrenheit: {fahrenheit:.2f}")
+    print(f"Kelvin: {kelvin:.2f}")</code></pre>
+              </div>
+              <div class="test-pills"><span>0°C → 32°F · 273.15 K</span><span>100°C → 212°F · 373.15 K</span><span>−40°C → −40°F · 233.15 K</span><span>−273.15°C → 0 K</span></div>
+              <p>Program menolak suhu di bawah nol mutlak (<code>−273.15°C</code>), batas yang ditambahkan pada latihan. Format <code>.2f</code> hanya mengatur tampilan dua desimal; nilai numerik untuk perhitungan tidak berubah.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b3-suhu"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b3-durasi" data-topic="b3-durasi" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number amber-text">03</span><div><h3>Pecah durasi dan jarak dengan <code>//</code> serta <code>%</code></h3><p>Pembagian bulat menghitung unit penuh; modulo mengambil sisa.</p></div></div>
+            <div class="lesson-body">
+              <div class="operator-grid"><div><code>/</code><strong>Pembagian biasa</strong><span>135 / 60 = 2.25</span></div><div><code>//</code><strong>Pembagian bulat</strong><span>135 // 60 = 2 jam</span></div><div><code>%</code><strong>Sisa pembagian</strong><span>135 % 60 = 15 menit</span></div></div>
+              <div class="code-card">
+                <div class="code-card-header"><span>Python · menit menjadi jam dan sisa</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>menit = int(input("Durasi (menit): "))
+if menit < 0:
+    print("Durasi tidak boleh negatif.")
+else:
+    jam = menit // 60
+    sisa_menit = menit % 60
+    total_detik = menit * 60
+    print(f"{jam} jam {sisa_menit} menit")
+    print("Total detik:", total_detik)
+    print("Periksa:", jam * 60 + sisa_menit)</code></pre>
+              </div>
+              <div class="callout callout-blue"><span>↺</span><p><strong>Invariant / pemeriksaan balik:</strong> <code>jam × 60 + sisa_menit</code> harus sama dengan menit awal. Untuk 135, <code>2 × 60 + 15 = 135</code>. Nilai sisa selalu antara 0 dan 59.</p></div>
+              <p>Konversi jarak mengikuti pola sama: untuk 2.345 meter, <code>2345 // 1000 = 2 km</code> dan <code>2345 % 1000 = 345 m</code>.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b3-durasi"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b3-kecepatan" data-topic="b3-kecepatan" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number amber-text">04</span><div><h3>Kecepatan rata-rata: satuan harus cocok</h3><p>Ubah waktu ke jam sebelum membagi kilometer.</p></div></div>
+            <div class="lesson-body">
+              <div class="formula-card"><span>KONVERSI WAKTU</span><code>waktu_jam = waktu_menit / 60</code><span>KECEPATAN</span><code>km/jam = jarak_km / waktu_jam</code></div>
+              <div class="code-card">
+                <div class="code-card-header"><span>Python · hitung kecepatan</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>jarak_km = float(input("Jarak (km): "))
+waktu_menit = float(input("Waktu (menit): "))
+
+if jarak_km < 0 or waktu_menit <= 0:
+    print("Jarak harus >= 0 dan waktu > 0.")
+else:
+    waktu_jam = waktu_menit / 60
+    kecepatan = jarak_km / waktu_jam
+    print(f"Kecepatan: {kecepatan:.2f} km/jam")</code></pre>
+              </div>
+              <p><strong>Dry run:</strong> 15 km dalam 30 menit → waktu <code>30/60 = 0,5 jam</code> → kecepatan <code>15/0,5 = 30 km/jam</code>. Jarak nol sah jika waktunya positif; waktu nol ditolak sebelum pembagian.</p>
+              <div class="callout callout-amber"><span>!</span><p>Membagi kilometer langsung dengan menit menghasilkan <strong>km/menit</strong>, bukan km/jam. Angka bisa tampak masuk akal, tetapi label satuannya keliru.</p></div>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b3-kecepatan"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card assignment-card" id="b3-praktikum" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number amber-text">↗</span><div><h3>Praktikum, tantangan, dan tugas Bab 3</h3><p>Latih konversi tipe dan satuan dengan dry run serta pemeriksaan balik.</p></div></div>
+            <div class="lesson-body">
+              <h4>Praktikum terbimbing: konverter kegiatan</h4>
+              <ol>
+                <li>Buat tabel Celsius, Fahrenheit, dan Kelvin untuk semua data uji.</li>
+                <li>Uji mengganti <code>float(input())</code> dengan <code>input()</code>; jelaskan mengapa operasi matematis gagal pada string.</li>
+                <li>Buat berkas terpisah untuk mengubah kilometer menjadi meter; contoh 1,25 km menjadi 1.250 m. Program studi kasus sebaliknya mengubah meter menjadi kilometer dan sisa meter.</li>
+                <li>Bedakan kesalahan format (teks bukan angka) dan kesalahan rumus atau satuan.</li>
+                <li>Tetapkan kontrak input valid, output, pesan penolakan, serta fitur pengembangan.</li>
+                <li>Lakukan dry run normal dan batas sebelum mengetik.</li>
+                <li>Implementasikan versi terkecil lalu tambah fitur bertahap dengan menjaga regresi.</li>
+                <li>Uji penolakan dan catat input pemicu serta hasil sebelum/sesudah perbaikan bug.</li>
+              </ol>
+              <h4>Tantangan bertingkat</h4>
+              <ol>
+                <li><strong>Dasar:</strong> konversikan menit bulat menjadi detik.</li>
+                <li><strong>Menengah:</strong> pecah 135 menit menjadi 2 jam 15 menit dengan <code>//</code> dan <code>%</code>.</li>
+                <li><strong>Lanjut:</strong> tolak suhu Celsius di bawah −273,15; uji nilai tepat di batas dan sedikit di bawahnya.</li>
+                <li><strong>Pengembangan:</strong> konversikan meter menjadi kilometer dan meter sisa; pisahkan nama peserta dari variabel pengukuran.</li>
+                <li><strong>Adaptasi durasi:</strong> input menit bulat tidak negatif dan tampilkan jam/sisa; bandingkan versi awal dengan versi pengembangan yang juga menampilkan detik dan pemeriksaan balik.</li>
+                <li><strong>Pembuktian kecepatan:</strong> ubah menit ke jam sebelum menghitung km/jam; gunakan jarak nol sebagai uji batas sah dan waktu nol sebagai uji penolakan.</li>
+              </ol>
+              <details class="trace-details"><summary>Pembahasan dan hasil uji semua tantangan 1–6</summary><div class="lesson-body nested-body">
+                <ol>
+                  <li><strong>Menit ke detik:</strong> <code>detik = menit × 60</code>; 135 menit menjadi 8.100 detik; 0 diterima, nilai negatif ditolak.</li>
+                  <li><strong>Jam dan sisa:</strong> <code>135 // 60 = 2</code> dan <code>135 % 60 = 15</code>; hasilnya 2 jam 15 menit. Tidak menggunakan pembulatan pembagian biasa.</li>
+                  <li><strong>Nol mutlak:</strong> −273,15°C diterima sebagai batas dan menghasilkan 0 K; −273,16°C ditolak.</li>
+                  <li><strong>Jarak:</strong> 2.345 m menjadi 2 km 345 m dengan <code>// 1000</code> dan <code>% 1000</code>; identitas nama tetap terpisah. Program tambahan mengubah 1,25 km menjadi 1.250 m.</li>
+                  <li><strong>Durasi:</strong> pengembangan menambah total detik dan pemeriksaan balik tanpa mengubah 135 menit → 2 jam 15 menit. Invariant: <code>jam * 60 + sisa == menit</code>.</li>
+                  <li><strong>Kecepatan:</strong> 0 km dalam 20 menit sah dan menghasilkan 0 km/jam. 10 km dalam 0 menit ditolak sebelum pembagian.</li>
+                </ol>
+                <p>Implementasi dan tes ada di folder <code>Bab 3</code>; tes meliputi format, nilai batas, penolakan, konversi dua arah satuan jarak, dan invariant rekonstruksi.</p>
+              </div></details>
+              <details class="trace-details"><summary>Studi kasus mandiri dan kunci analisis</summary><div class="lesson-body nested-body">
+                <p><strong>Kasus:</strong> konverter membaca menit bulat tidak negatif, menghasilkan jam, sisa menit, detik total, dan rekonstruksi. Pengembangan menambah jarak meter ke kilometer dan sisa meter.</p>
+                <ol>
+                  <li><strong>Tujuan:</strong> membantu peserta/panitia membaca durasi dan jarak kegiatan dalam unit yang sesuai.</li>
+                  <li><strong>Urutan:</strong> parse dan validasi → <code>jam = menit // 60</code> → <code>sisa = menit % 60</code> → detik → rekonstruksi → kilometer dan sisa meter → tampilkan.</li>
+                  <li><strong>Data:</strong> nama berupa teks; menit dan meter berupa integer. Identitas tidak dicampur ke besaran yang dihitung.</li>
+                  <li><strong>Trace:</strong> `Rani`, 135 menit, 2345 m → 2 jam 15 menit, 8100 detik, balik 135, 2 km 345 m.</li>
+                  <li><strong>Batas:</strong> nol diterima; 59/60/61 menghasilkan 0:59, 1:00, 1:01. Nilai negatif ditolak. Nilai maksimum tidak ditentukan soal; integer Python dibatasi memori.</li>
+                  <li><strong>Regresi:</strong> durasi 135 menit tetap menjadi 2 jam 15 menit; versi baru menambah detik, pemeriksaan balik, dan jarak.</li>
+                </ol>
+                <p><strong>Evaluasi:</strong> input bertipe <code>str</code>; <code>/</code> adalah pembagian biasa, <code>//</code> pembagian bulat. Periksa durasi dengan <code>jam * 60 + sisa == menit</code>. Format <code>.2f</code> tidak mengubah nilai hitung. Bandingkan konverter Celsius dan durasi: sama-sama mengonversi input sebelum hitung, tetapi tipe dan operasi berbeda. Uji batas 59/60/61 menangkap kesalahan penggunaan pembagian biasa untuk durasi.</p>
+              </div></details>
+              <details class="trace-details"><summary>Jawaban evaluasi formatif dan refleksi (1–9)</summary><div class="lesson-body nested-body">
+                <ol>
+                  <li><code>input()</code> selalu menghasilkan <code>str</code>, termasuk ketika pengguna mengetik angka.</li>
+                  <li><code>/</code> menghasilkan pembagian biasa (dapat berupa pecahan); <code>//</code> mengambil hasil bulat ke bawah.</li>
+                  <li>Periksa dengan <code>jam * 60 + sisa == menit</code>, <code>0 &lt;= sisa &lt; 60</code>, dan <code>detik == menit * 60</code>.</li>
+                  <li><code>.2f</code> mengatur tampilan dua desimal, bukan mengubah nilai numerik yang dihitung.</li>
+                  <li>Pada −273,15°C, Kelvin tepat 0 dan input diterima. Kondisi di bawah konstanta nol mutlak menentukan penolakan.</li>
+                  <li>Durasi negatif ditolak sebelum hasil dibuat; bukti uji adalah pesan penolakan dan tidak ada output konversi.</li>
+                  <li>Suhu dan durasi sama-sama parse input sebelum menghitung. Suhu memakai <code>float</code> dan rumus skala; durasi memakai <code>int</code>, <code>//</code>, dan <code>%</code>.</li>
+                  <li>Kesalahan rawan adalah menggunakan <code>/</code> atau <code>round()</code> untuk durasi. Kasus 59, 60, dan 61 menit menguji batas unit secara langsung.</li>
+                  <li>Dipahami: hasil pembagian bulat dan modulo dapat diperiksa dengan rekonstruksi. Perlu dipelajari: presisi floating-point pada suhu/kecepatan.</li>
+                </ol>
+                <p>Hubungannya: tipe dan konversi Bab 3 memakai urutan dan keputusan dari Bab 2 serta kontrak IPO Bab 1. Batas contoh: durasi/jarak berupa integer; program tidak menyimpan data peserta secara permanen.</p>
+              </div></details>
+            </div>
+          </article>
+        </section>
+
+        <section class="quiz-section" id="latihan">
+          <div class="quiz-top"><div><span class="section-kicker">BERHENTI SEJENAK</span><h2>Cek pemahamanmu</h2><p>Jawab tiga soal singkat. Umpan balik muncul langsung—coba lagi jika belum tepat.</p></div><div class="quiz-art" aria-hidden="true">?</div></div>
+          <form id="quiz-form" class="quiz-form">
+            <fieldset class="quiz-question" data-answer="str" data-explanation="input() selalu menghasilkan teks (str). Konversikan ke int atau float sebelum operasi hitung.">
+              <legend><span>01</span> Pengguna mengetik angka 12 ke dalam <code>input()</code>. Apa tipe nilai yang diterima?</legend>
+              <label><input type="radio" name="q1" value="int"><span class="radio-ui"></span><span><code>int</code> — bilangan bulat</span></label>
+              <label><input type="radio" name="q1" value="str"><span class="radio-ui"></span><span><code>str</code> — teks</span></label>
+              <label><input type="radio" name="q1" value="bool"><span class="radio-ui"></span><span><code>bool</code> — benar/salah</span></label>
+              <p class="quiz-feedback" aria-live="polite"></p>
+            </fieldset>
+            <fieldset class="quiz-question" data-answer="2:15" data-explanation="135 // 60 menghasilkan 2 jam utuh dan 135 % 60 menghasilkan 15 menit sisa.">
+              <legend><span>02</span> Durasi 135 menit dipecah menjadi berapa jam dan menit sisa?</legend>
+              <label><input type="radio" name="q2" value="2:15"><span class="radio-ui"></span><span>2 jam 15 menit</span></label>
+              <label><input type="radio" name="q2" value="1:75"><span class="radio-ui"></span><span>1 jam 75 menit</span></label>
+              <label><input type="radio" name="q2" value="2:25"><span class="radio-ui"></span><span>2 jam 25 menit</span></label>
+              <p class="quiz-feedback" aria-live="polite"></p>
+            </fieldset>
+            <fieldset class="quiz-question" data-answer="positive" data-explanation="Waktu harus positif agar dapat dijadikan pembagi. Waktu nol menyebabkan pembagian dengan nol.">
+              <legend><span>03</span> Mengapa waktu nol ditolak saat menghitung kecepatan?</legend>
+              <label><input type="radio" name="q3" value="negative"><span class="radio-ui"></span><span>Karena jarak harus selalu negatif</span></label>
+              <label><input type="radio" name="q3" value="positive"><span class="radio-ui"></span><span>Karena waktu adalah pembagi dan harus positif</span></label>
+              <label><input type="radio" name="q3" value="float"><span class="radio-ui"></span><span>Karena float tidak dapat menyimpan angka nol</span></label>
+              <p class="quiz-feedback" aria-live="polite"></p>
+            </fieldset>
+            <div class="quiz-actions"><button class="button button-primary" type="submit">Periksa jawaban <span aria-hidden="true">→</span></button><span id="quiz-result" aria-live="polite"></span></div>
+          </form>
+        </section>
+
+        <section class="reference-section" id="referensi">
+          <div class="reference-heading"><div><span class="section-kicker">SIMPAN UNTUK NANTI</span><h2>Referensi cepat</h2><p>Ringkasan konsep yang akan sering kamu pakai.</p></div><span class="reference-symbol" aria-hidden="true">{ }</span></div>
+          <div class="reference-grid">
+            <div class="reference-card"><strong>Tipe data</strong><div><code>int</code><span>bilangan bulat</span></div><div><code>float</code><span>bilangan pecahan</span></div><div><code>str</code><span>teks &amp; identitas</span></div><div><code>bool</code><span>True / False</span></div></div>
+            <div class="reference-card"><strong>Operasi penting</strong><div><code>/</code><span>pembagian biasa</span></div><div><code>//</code><span>pembagian bulat</span></div><div><code>%</code><span>sisa pembagian</span></div><div><code>.strip()</code><span>buang spasi tepi</span></div></div>
+            <div class="reference-card"><strong>Rumus konversi</strong><div><code>°F</code><span>°C × 9/5 + 32</span></div><div><code>K</code><span>°C + 273.15</span></div><div><code>jam</code><span>menit / 60</span></div><div><code>km/jam</code><span>km / jam</span></div></div>
+          </div>
+        </section>
+
+        <footer class="site-footer"><a class="brand footer-brand" href="#beranda"><span class="brand-mark" aria-hidden="true">&lt;/&gt;</span><span><strong>Belajar Algoritma</strong><small>Berpikir terstruktur, berkarya dengan kode.</small></span></a><span>Materi pembelajaran · Algoritma dan Struktur Data I</span><a href="#beranda">Kembali ke atas ↑</a></footer>
+      </main>
+    </div>
+  </body>
+</html>

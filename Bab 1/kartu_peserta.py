@@ -30,6 +30,7 @@ def buat_kartu(data: Mapping[str, str]) -> tuple[str | None, list[str]]:
             f"NIM  : {nilai['NIM']}",
             f"Kelas: {nilai['kelas']}",
             f"Kota : {nilai['kota']}",
+            f"Saya {nilai['nama']} berasal dari {nilai['kota']}.",
         )
     )
     return kartu, []

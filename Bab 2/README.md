@@ -111,6 +111,30 @@ Variabel `sementara` menyimpan nilai lama `a` sebelum `a` ditimpa. Dry run `mera
 
 Pengujian penolakan tambahan: `None` bukan teks masukan yang dapat diberikan melalui prompt, sehingga helper menolaknya sebagai pelanggaran tipe; string kosong tetap valid agar kasus buku “A kosong dan B isi” menghasilkan pertukaran yang benar.
 
+## Pelaksanaan lengkap praktikum dan tantangan
+
+### Praktikum terbimbing: bukti langkah 1–8
+
+1. **Narasi dan satuan:** input adalah durasi parkir dalam jam bulat; tarif menggunakan rupiah. Jam harus minimal satu.
+2. **Flowchart:** mulai → baca jam → keputusan `jam >= 1?`; cabang Tidak menampilkan penolakan lalu selesai, cabang Ya menghitung tambahan dan biaya awal, menerapkan batas harian, menampilkan hasil, lalu selesai. Diagram Mermaid di bagian tarif adalah flowchart final.
+3. **Dry run sebelum kode:** 5 jam → 4 tambahan → biaya awal/akhir Rp11.000; 3 jam → 2 tambahan → Rp7.000; 0 jam → kondisi gagal, tidak ada biaya.
+4. **Cocokkan cabang:** `if jam < 1` harus sama dengan cabang Tidak pada diagram; rumus biaya hanya berada di cabang valid; `min()` membatasi setelah biaya awal dihitung.
+5. **Kontrak:** jam bulat positif diterima; jam nol/negatif dan tipe noninteger ditolak. Versi dasar menghitung tarif tanpa maksimum; fitur pengembangan menambahkan maksimum Rp15.000.
+6. **Dry run batas:** 1 jam → 0 jam tambahan dan Rp3.000. Pada pengembangan, 7 jam menghasilkan tepat Rp15.000; 8 jam menghasilkan biaya awal Rp17.000 lalu tarif akhir Rp15.000.
+7. **Implementasi bertahap:** `hitung_tarif()` memvalidasi dan menghitung jam tambahan serta biaya awal, lalu menerapkan batas. Fungsi terpisah memudahkan pengujian tanpa input terminal.
+8. **Penolakan/regresi:** tes jam 0/-1 memastikan tidak ada tarif; tes 3 jam memastikan hasil lama Rp7.000 tidak berubah; tes 8 jam membuktikan aturan maksimum baru berlaku.
+
+### Hasil setiap tantangan bertingkat
+
+| Tantangan | Implementasi dan pembuktian |
+|---|---|
+| 1. Pseudocode keliling | Rumus: `keliling <- 2 * (panjang + lebar)`. Contoh 5 m dan 3 m menghasilkan 16 m; input dibaca dan divalidasi sebelum rumus. |
+| 2. Luas dan keliling | `luas_dan_keliling.py` membaca panjang serta lebar satu kali, lalu menghasilkan luas 15 m² dan keliling 16 m untuk 5×3. Tes memeriksa kedua nilai. |
+| 3. Sentimeter ke meter | Helper `hitung_geometri_dengan_panjang_cm(250, 4)` mengubah 250 cm menjadi 2,5 m sebelum menghitung; hasil 10 m² dan 13 m. Nilai nol, tipe salah, dan nilai tidak terbatas ditolak. |
+| 4. Maksimum tarif | Biaya dihitung dahulu, lalu `min(biaya_awal, 15000)`. 7 jam tepat Rp15.000; 8 jam berubah dari Rp17.000 menjadi Rp15.000; 3 jam tetap Rp7.000. Narasi, pseudocode, dan flowchart mencerminkan urutan ini. |
+| 5. Aturan tarif bertingkat | Jam bulat minimal 1; `tambahan = jam - 1`; `biaya = 3000 + tambahan * 2000`. Perbandingan input 3 jam menunjukkan Rp7.000; input 1 jam (pembeda) harus Rp3.000, bukan Rp5.000. |
+| 6. Pertukaran teks | `tukar("merah", "biru")` menghasilkan A=`biru`, B=`merah`; keadaan sementara berurutan `–`, `merah`, `merah`. Uji tambahan tipe salah (`None`) ditolak dan helper tidak mengembalikan hasil sukses. |
+
 ## Tabel uji dan hasil yang diharapkan
 
 | Kasus | Input | Hasil |

@@ -77,6 +77,30 @@ Total rencana: Rp110000
 
 Urutan program: tetapkan konstanta tarif → baca dan konversi jumlah peserta → tolak jika bukan integer/positif → hitung konsumsi → jumlahkan biaya tetap → tampilkan hasil.
 
+## Pelaksanaan lengkap praktikum dan tantangan
+
+### Praktikum terbimbing: bukti langkah 1–8
+
+1. **Jalankan contoh inti:** `profil.py` dengan `Rani` dan `Teknologi Informasi` menghasilkan sapaan serta profil. Catat kedua input dan output ini sebagai baseline.
+2. **Ubah menjadi kartu:** `kartu_praktikum.py` membaca nama, NIM, dan kelas. Input `Siti Aminah`, `00125`, `a` menghasilkan kartu dengan NIM `00125` dan kelas `A`; NIM tidak dikonversi ke integer.
+3. **Uji input:** nama kosong ditolak; nama `Siti Aminah` diterima dan spasi tengah dipertahankan; prodi kosong pada `profil.py` menghasilkan pesan kekurangan. Tes otomatis mencakup nama whitespace-only dan nama dua kata.
+4. **Bukti:** kode final berada di berkas Python bab ini; hasil kasus normal dan penolakan ada di tabel uji. Untuk bukti tangkapan layar, jalankan perintah program di terminal dan ambil gambar yang memperlihatkan input serta hasil.
+5. **Kontrak:** nama, NIM, kelas, dan kota adalah teks wajib; sapaan hanya `pagi`/`sore`. Output kartu hanya dibuat bila semua lolos. Spasi tepi dibuang, spasi tengah dan nol depan NIM dipertahankan. Kota dan sapaan merupakan pengembangan kasus dari kartu awal.
+6. **Dry run:** normal `Siti Aminah / 00125 / a / Bandung / pagi` → `Siti Aminah / 00125 / A / Bandung / pagi` → sapaan dan kartu. Batas `nama="   "`, NIM kosong, kelas `A`, kota kosong → tiga kesalahan ditampilkan sekaligus; kartu tidak dibuat.
+7. **Implementasi bertahap:** mulai dari profil, tambah NIM dan kelas, lalu kota, validasi semua kolom, dan akhirnya sapaan. `kartu_praktikum.py` mempertahankan kontrak tiga kolom; `kartu_peserta.py` menjalankan kontrak pengembangan.
+8. **Penolakan/regresi:** suite menguji beberapa kolom kosong, sapaan invalid, nama/kota dengan spasi tengah, dan NIM `00125`. `pendaftaran_tiga_peserta.py` juga diuji agar penolakan peserta pertama tidak menghentikan dua pendaftaran berikutnya.
+
+### Hasil setiap tantangan bertingkat
+
+| Tantangan | Implementasi dan pembuktian |
+|---|---|
+| 1. Kota dan perkenalan | `kartu_peserta.py` menampilkan kota pada kartu dan kalimat `Saya Siti Aminah berasal dari Bandung.`; nama/kota dua kata diuji agar spasi tengah tetap utuh. |
+| 2. Pesan kolom kosong | `buat_kartu()` mengembalikan nama kolom yang bermasalah, bukan pesan generik. Input nama kosong dan kolom lainnya lengkap menghasilkan `Nama belum diisi.` |
+| 3. Tiga pendaftar | `pendaftaran_tiga_peserta.py` menggunakan `for nomor in range(1, 4)` untuk menjalankan satu alur tiga kali. Uji CLI memberikan satu pendaftar invalid diikuti dua valid; ketiganya diproses dan dua kartu tetap keluar. |
+| 4. Sapaan waktu | `pagi` menghasilkan `Selamat pagi`; `sore` menghasilkan `Selamat sore`. Pilihan sapaan tidak mengubah identitas pada kartu. Nilai lain ditolak. |
+| 5. Kartu wajib | Kontrak lama tiga kolom dibandingkan dengan pengembangan empat kolom dan sapaan. Input lama yang sama kini ditolak jika kota/waktu belum ada; setelah dilengkapi, `00125` tetap utuh. Nilai whitespace dianggap kosong. |
+| 6. Biaya kegiatan | `biaya_kegiatan.py`: 1 peserta → konsumsi Rp12.000 dan total Rp62.000; 5 peserta → Rp60.000 dan Rp110.000. Uji tambahan `abc`, 0, dan -2 ditolak tanpa total. |
+
 ## Tabel uji dan hasil yang diharapkan
 
 | Kasus | Input | Hasil |
