@@ -230,3 +230,17 @@ python -m unittest -v
 ```
 
 Suite menguji contoh normal, nilai batas, penolakan, format, invariant rekonstruksi, dan fungsi gabungan. Tabel di atas adalah ekspektasi; hasil otomatis diverifikasi dengan `unittest`. Bantuan penyusunan kode dan penjelasan berasal dari asisten, dan tes dijalankan pada workspace ini.
+
+## Indeks kode seluruh tugas buku
+
+| Tugas | Program lengkap | Penjelasan yang diterapkan |
+|---|---|---|
+| Praktikum suhu dan tantangan 3 | `konversi_suhu.py` | Celsius menjadi Fahrenheit/Kelvin, tipe `float`, dan batas nol mutlak. |
+| Praktikum durasi dan tantangan 1, 2, 5 | `konversi_durasi.py` | Detik total, pembagian bulat, sisa menit, nilai nonnegatif, serta pemeriksaan balik. |
+| Praktikum konversi kilometer ke meter | `konversi_kilometer_ke_meter.py` | Konversi pecahan kilometer ke meter dengan validasi nilai hingga dan tidak negatif. |
+| Tantangan 4: meter ke kilometer dan sisa | `konversi_jarak.py` | `// 1000` dan `% 1000` untuk unit utuh/sisa, tanpa mencampur identitas dan pengukuran. |
+| Tantangan 4 dan studi kasus laporan kegiatan | `konverter_kegiatan.py` | Nama teks terpisah dari durasi/jarak, validasi sebelum laporan, serta penggabungan konversi. |
+| Tantangan 6: kecepatan rata-rata | `kecepatan_perjalanan.py` | Normalisasi menit ke jam, jarak nol yang sah, dan penolakan waktu nol sebelum pembagian. |
+| Latihan konsep, evaluasi formatif, refleksi | Pembahasan dan kunci jawaban pada README ini | Jawaban menerangkan tipe, konversi, trace, invariant, batas suhu, dan kasus uji pembeda. |
+
+Penjelasan tiap program, rumus, variabel, contoh hasil, batas, dan tabel pengujian ada pada bagian-bagian di atas. Peta “Peta cakupan tugas buku” di situs menghubungkan setiap tugas dengan kode sumber dan panduan variabel/fungsi yang sama.

@@ -7,7 +7,12 @@ Situs pembelajaran statis berbahasa Indonesia untuk materi Bab 1–3. Dibuat den
 - **Bab 2:** narasi, pseudocode, simbol flowchart, luas/keliling, tarif parkir, pertukaran nilai, tantangan dan studi kasus.
 - **Bab 3:** variabel, tipe data, input/konversi, suhu, durasi, jarak, kecepatan, pemeriksaan balik, praktikum dan studi kasus.
 - Pencarian materi, progres topik lokal, tombol salin kode, kuis dengan umpan balik, mode gelap, dan tata letak responsif.
+- Navigasi horizontal desktop, menu samping untuk tablet/ponsel, animasi masuk saat menggulir, mode fokus, dan materi tersimpan yang tetap ada di browser.
+- Timer fokus bergaya Pomodoro dengan pilihan sesi 25/5, 50/10, dan 90/15 menit, jeda/lanjut, atur ulang, dan progres animasi.
+- Peta web menghubungkan 24 praktikum, tantangan, dan studi kasus buku ke semua 14 program Python; setiap tugas membuka kode beserta panduan variabel. Jawaban latihan konsep tersedia di pembahasan masing-masing bab.
 - Laboratorium mini untuk mencoba konversi durasi, tarif parkir, dan geometri dengan penelusuran langkah hasil.
+- Penampil kode lengkap untuk seluruh 14 program tugas Bab 1–3, dilengkapi panduan variabel/fungsi serta tautan unduh dan salin kode. Kode diambil langsung dari berkas Python yang diuji.
+- Kredit penulis situs: **Mr.4Nony Alias Josua**.
 
 ## Struktur proyek
 
@@ -27,14 +32,13 @@ PDF materi sumber berada di [Materi](./Materi/README.md).
 
 ## Menjalankan lokal
 
-Tidak perlu memasang paket. Dari PowerShell:
+Tidak perlu memasang paket. Buka PowerShell di folder proyek, lalu jalankan:
 
 ```powershell
-Set-Location 'D:\MR.4NONY\TUGTIKUM'
 python -m http.server 8000
 ```
 
-Buka `http://localhost:8000` di browser.
+Buka `http://localhost:8000` di browser. Jalankan melalui server lokal (bukan membuka `index.html` sebagai `file://`) agar penampil kode dapat membaca berkas Python.
 
 ## Deploy ke GitHub Pages
 
@@ -45,16 +49,16 @@ Workflow `.github/workflows/pages.yml` mengunggah isi root repo sebagai situs Pa
 3. Push perubahan ke `main`.
 4. Periksa **Actions → Deploy learning site to GitHub Pages** sampai berhasil. URL situs akan muncul di halaman deployment atau **Settings → Pages**.
 
-Repo ini bernama `jxxzy.github.io`, sehingga URL akun GitHub Pages biasanya `https://jxxzy.github.io/` setelah Pages diaktifkan.
+Untuk repository proyek ini, URL GitHub Pages biasanya `https://jxxzy.github.io/algoritima1/` setelah Pages diaktifkan, kecuali jika repository memakai custom domain.
 
 ## Memverifikasi
 
 Tes program latihan berada per bab:
 
 ```powershell
-Set-Location 'D:\MR.4NONY\TUGTIKUM\Bab 1'; python -B -m unittest -v
-Set-Location 'D:\MR.4NONY\TUGTIKUM\Bab 2'; python -B -m unittest -v
-Set-Location 'D:\MR.4NONY\TUGTIKUM\Bab 3'; python -B -m unittest -v
+python -B -m unittest discover -s 'Bab 1' -v
+python -B -m unittest discover -s 'Bab 2' -v
+python -B -m unittest discover -s 'Bab 3' -v
 ```
 
 `-B` mencegah Python membuat file cache bytecode saat pengujian.

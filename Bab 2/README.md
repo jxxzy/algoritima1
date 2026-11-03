@@ -214,3 +214,17 @@ python -m unittest -v
 ```
 
 Suite menguji perhitungan normal, batas sisi, konversi 250 cm, overflow/underflow, tarif parkir, pertukaran, dan jalur pesan CLI. Uji satuan bukan sekadar hitungan manual; helper konversi diuji otomatis. Bantuan penyusunan kode dan penjelasan berasal dari asisten; verifikasi dilakukan dengan menjalankan tes pada folder ini.
+
+## Indeks kode seluruh tugas buku
+
+| Tugas | Program lengkap | Penjelasan yang diterapkan |
+|---|---|---|
+| Contoh dan praktikum luas/keliling | `luas_dan_keliling.py` | Input dua sisi sekali, validasi, rumus luas dan keliling, serta penolakan overflow/underflow. |
+| Tantangan 1–2: pseudocode keliling dan dua hasil | `luas_dan_keliling.py` | Rumus keliling `2 × (panjang + lebar)` dan luas memakai masukan tervalidasi yang sama. |
+| Tantangan 3: sentimeter ke meter | `luas_dan_keliling.py` | Helper mengubah sentimeter menjadi meter sebelum memakai fungsi geometri utama. |
+| Praktikum dan tantangan 4–5: tarif parkir | `tarif_parkir.py` | Jam bulat, tarif jam pertama/tambahan, penolakan jam nol, dan batas maksimum harian. |
+| Tantangan 6: pertukaran dua wadah | `tukar_nilai.py` | Variabel `sementara` menyimpan nilai A agar pertukaran teks tidak kehilangan nilai awal. |
+| Studi kasus mandiri tarif parkir | `tarif_parkir.py` | Nilai normal, batas tepat 7 jam, pembatasan 8 jam, dan kasus input invalid. |
+| Latihan konsep, evaluasi formatif, refleksi | Pembahasan dan kunci jawaban pada README ini | Jawaban mencakup representasi algoritma, cabang keputusan, satuan, dry run, regresi, dan batas solusi. |
+
+Penjelasan setiap program, langkah algoritma, hasil contoh, variabel, dan pengujian berada pada bagian-bagian di atas. Peta “Peta cakupan tugas buku” di situs menyediakan tombol dari setiap tugas ke kode yang sama beserta panduan variabel/fungsi.

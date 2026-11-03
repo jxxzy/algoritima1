@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f5f7fb">
     <meta name="description" content="Web pembelajaran interaktif Algoritma dan Struktur Data I: algoritma, flowchart, variabel, tipe data, dan konversi Python.">
+    <meta name="author" content="Mr.4Nony Alias Josua">
     <title>Belajar Algoritma — Algoritma dan Struktur Data I</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%234b65e8'/%3E%3Cpath d='M22 18 10 32l12 14M42 18l12 14-12 14M37 14 27 50' fill='none' stroke='white' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="styles.css">
@@ -35,10 +36,10 @@
         </label>
         <p class="search-status" id="search-status" aria-live="polite"></p>
 
-        <nav class="chapter-nav">
+        <nav class="chapter-nav" aria-label="Navigasi utama materi">
           <a class="nav-link" href="#beranda"><span class="nav-icon">⌂</span> Beranda</a>
-          <details class="nav-group" data-nav-group data-chapter-group="1" open>
-            <summary class="nav-chapter"><span class="chapter-number">01</span><span><strong>Algoritma &amp; program</strong><small>Dasar pemecahan masalah</small></span><span class="nav-chevron" aria-hidden="true">⌄</span></summary>
+          <details class="nav-group" data-nav-group data-chapter-group="1">
+            <summary class="nav-chapter"><span class="chapter-number">01</span><span><strong>Bab 1</strong><small>Algoritma &amp; program</small></span><span class="nav-chevron" aria-hidden="true">⌄</span></summary>
             <div class="nav-subtopics">
               <a class="nav-topic" href="#bab-1">Ikhtisar bab</a>
               <a class="nav-topic" href="#b1-ipo">Input, proses, output</a>
@@ -48,7 +49,7 @@
             </div>
           </details>
           <details class="nav-group" data-nav-group data-chapter-group="2">
-            <summary class="nav-chapter"><span class="chapter-number violet">02</span><span><strong>Narasi, flowchart, pseudocode</strong><small>Merancang alur program</small></span><span class="nav-chevron" aria-hidden="true">⌄</span></summary>
+            <summary class="nav-chapter"><span class="chapter-number violet">02</span><span><strong>Bab 2</strong><small>Narasi, flowchart, pseudocode</small></span><span class="nav-chevron" aria-hidden="true">⌄</span></summary>
             <div class="nav-subtopics">
               <a class="nav-topic" href="#bab-2">Ikhtisar bab</a>
               <a class="nav-topic" href="#b2-representasi">Tiga representasi</a>
@@ -59,7 +60,7 @@
             </div>
           </details>
           <details class="nav-group" data-nav-group data-chapter-group="3">
-            <summary class="nav-chapter"><span class="chapter-number amber">03</span><span><strong>Variabel &amp; tipe data</strong><small>Input, konversi, satuan</small></span><span class="nav-chevron" aria-hidden="true">⌄</span></summary>
+            <summary class="nav-chapter"><span class="chapter-number amber">03</span><span><strong>Bab 3</strong><small>Variabel &amp; tipe data</small></span><span class="nav-chevron" aria-hidden="true">⌄</span></summary>
             <div class="nav-subtopics">
               <a class="nav-topic" href="#bab-3">Ikhtisar bab</a>
               <a class="nav-topic" href="#b3-tipe">Memilih tipe data</a>
@@ -71,6 +72,9 @@
           </details>
           <a class="nav-link" href="#latihan"><span class="nav-icon">✳</span> Cek pemahaman</a>
           <a class="nav-link" href="#lab"><span class="nav-icon">⌘</span> Lab interaktif</a>
+          <a class="nav-link" href="#timer"><span class="nav-icon">◷</span> Timer fokus</a>
+          <a class="nav-link" href="#kode-tugas"><span class="nav-icon">{ }</span> Kode lengkap tugas</a>
+          <a class="nav-link" href="#tersimpan"><span class="nav-icon">☆</span> Tersimpan</a>
           <a class="nav-link" href="#referensi"><span class="nav-icon">↗</span> Referensi ringkas</a>
         </nav>
 
@@ -84,19 +88,20 @@
         <header class="topbar">
           <button class="mobile-menu" id="mobile-menu" type="button" aria-expanded="false" aria-controls="sidebar" aria-label="Buka navigasi">☰</button>
           <div class="breadcrumb"><span>Kursus</span><span aria-hidden="true">/</span><strong>Materi inti</strong></div>
+          <button class="focus-toggle" id="focus-toggle" type="button" aria-pressed="false"><span aria-hidden="true">◎</span> Mode fokus</button>
           <a class="topbar-link" href="#bab-1">Mulai belajar <span aria-hidden="true">↗</span></a>
         </header>
 
-        <section class="hero" id="beranda" data-searchable>
+        <section class="hero" id="beranda" data-searchable aria-labelledby="page-title">
           <div class="hero-copy">
             <div class="eyebrow"><span class="eyebrow-dot"></span> KELAS DASAR · PYTHON 3</div>
-            <h1>Belajar berpikir.<br><span>Baru menulis kode.</span></h1>
+            <h1 id="page-title">Belajar berpikir.<br><span>Baru menulis kode.</span></h1>
             <p class="hero-description">Pahami cara memecahkan masalah dengan algoritma, merancang alur, lalu menerjemahkannya menjadi program Python yang benar.</p>
             <div class="hero-actions">
               <a class="button button-primary" href="#bab-1">Mulai dari Bab 1 <span aria-hidden="true">→</span></a>
               <a class="button button-quiet" href="#referensi">Lihat peta belajar</a>
             </div>
-            <div class="hero-meta"><span class="avatar-stack" aria-hidden="true"><i>A</i><i>+</i><i>Py</i></span><span>3 bab · contoh · latihan interaktif</span><span class="meta-separator">•</span><span>Belajar sesuai ritme sendiri</span></div>
+            <div class="hero-meta"><span class="avatar-stack" aria-hidden="true"><i>A</i><i>+</i><i>Py</i></span><span>3 bab · contoh · latihan interaktif</span><span class="meta-separator" aria-hidden="true">•</span><span>Belajar sesuai ritme sendiri</span></div>
           </div>
           <div class="hero-art" aria-label="Ilustrasi alur berpikir menjadi program">
             <div class="art-glow"></div>
@@ -118,12 +123,46 @@
           </div>
         </section>
 
-        <section class="learning-path" aria-label="Urutan materi">
-          <div class="path-heading"><div><span class="section-kicker">PETA BELAJAR</span><h2>Tiga langkah menuju program pertamamu</h2></div><span class="path-caption">Ikuti urutannya atau langsung ke topik yang kamu perlukan.</span></div>
+        <section class="learning-path" aria-labelledby="path-title">
+          <div class="path-heading"><div><span class="section-kicker">PETA BELAJAR</span><h2 id="path-title">Tiga langkah menuju program pertamamu</h2></div><span class="path-caption">Ikuti urutannya atau langsung ke topik yang kamu perlukan.</span></div>
           <div class="path-cards">
             <a class="path-card" href="#bab-1"><span class="path-index index-blue">01</span><span class="path-card-copy"><strong>Kenali masalah</strong><small>Algoritma, IPO, dan program pertama</small></span><span class="path-arrow">↗</span></a>
             <a class="path-card" href="#bab-2"><span class="path-index index-violet">02</span><span class="path-card-copy"><strong>Rancang alurnya</strong><small>Narasi, pseudocode, flowchart</small></span><span class="path-arrow">↗</span></a>
             <a class="path-card" href="#bab-3"><span class="path-index index-amber">03</span><span class="path-card-copy"><strong>Olah datanya</strong><small>Variabel, tipe, konversi satuan</small></span><span class="path-arrow">↗</span></a>
+          </div>
+        </section>
+
+        <section class="focus-timer-section" id="timer" data-searchable aria-labelledby="timer-title">
+          <div class="focus-timer-card">
+            <div class="timer-copy">
+              <span class="section-kicker">ATUR RITME BELAJARMU</span>
+              <h2 id="timer-title">Fokus satu langkah, lalu rehat.</h2>
+              <p>Pilih durasi, mulai sesi fokus, dan biarkan jeda singkat menjaga energimu.</p>
+              <div class="timer-presets" role="group" aria-label="Pilih durasi sesi fokus">
+                <button class="timer-preset" type="button" data-focus-minutes="25" data-break-minutes="5" aria-pressed="true">25 / 5 menit</button>
+                <button class="timer-preset" type="button" data-focus-minutes="50" data-break-minutes="10" aria-pressed="false">50 / 10 menit</button>
+                <button class="timer-preset" type="button" data-focus-minutes="90" data-break-minutes="15" aria-pressed="false">90 / 15 menit</button>
+              </div>
+              <div class="timer-actions">
+                <button class="button button-primary" id="timer-start" type="button">Mulai fokus</button>
+                <button class="button button-quiet" id="timer-reset" type="button">Atur ulang</button>
+                <button class="timer-skip" id="timer-skip" type="button">Lewati fase</button>
+              </div>
+              <p class="timer-status" id="timer-status" role="status" aria-live="polite">Siap memulai sesi fokus.</p>
+            </div>
+            <div class="timer-dial" id="timer-dial" role="group" aria-label="Timer sesi fokus">
+              <svg class="timer-ring" viewBox="0 0 180 180" aria-hidden="true">
+                <circle class="timer-ring-track" cx="90" cy="90" r="79"></circle>
+                <circle class="timer-ring-progress" id="timer-ring-progress" cx="90" cy="90" r="79"></circle>
+              </svg>
+              <div class="timer-dial-copy">
+                <span class="timer-phase" id="timer-phase">WAKTU FOKUS</span>
+                <time class="timer-display" id="timer-display" role="timer" aria-label="25 menit tersisa">25:00</time>
+                <span class="timer-sessions">Sesi selesai <strong id="timer-sessions">0</strong></span>
+              </div>
+              <span class="timer-orbit" aria-hidden="true"></span>
+            </div>
+            <span class="visually-hidden" id="timer-progress" role="progressbar" aria-label="Progres sesi fokus" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0% selesai"></span>
           </div>
         </section>
 
@@ -157,9 +196,9 @@
           </div>
         </section>
 
-        <section class="chapter-section" id="bab-1">
+        <section class="chapter-section" id="bab-1" aria-labelledby="bab-1-title">
           <div class="chapter-heading">
-            <div class="chapter-title-group"><span class="chapter-badge badge-blue">BAB 01</span><div><h2>Algoritma dan program pertama</h2><p>Ubah masalah menjadi langkah terurut yang dapat dijalankan.</p></div></div>
+            <div class="chapter-title-group"><span class="chapter-badge badge-blue">BAB 01</span><div><h2 id="bab-1-title">Algoritma dan program pertama</h2><p>Ubah masalah menjadi langkah terurut yang dapat dijalankan.</p></div></div>
             <button class="mark-chapter" data-chapter="1" type="button"><span>✓</span> Tandai bab selesai</button>
           </div>
           <div class="chapter-intro">
@@ -236,6 +275,7 @@ else:
           <article class="lesson-card assignment-card" id="b1-praktikum" data-searchable>
             <div class="lesson-heading"><span class="lesson-number">↗</span><div><h3>Praktikum, tantangan, dan tugas Bab 1</h3><p>Kerjakan tugas dengan spesifikasi, dry run, program, dan bukti pengujian.</p></div></div>
             <div class="lesson-body">
+              <p><a class="solution-jump" href="#kode-tugas">Buka kode lengkap dan penjelasan variabel untuk semua tugas →</a></p>
               <h4>Praktikum terbimbing: kartu peserta</h4>
               <ol>
                 <li>Jalankan program sapaan dan catat input serta output.</li>
@@ -297,9 +337,9 @@ else:
           </article>
         </section>
 
-        <section class="chapter-section" id="bab-2">
+        <section class="chapter-section" id="bab-2" aria-labelledby="bab-2-title">
           <div class="chapter-heading">
-            <div class="chapter-title-group"><span class="chapter-badge badge-violet">BAB 02</span><div><h2>Narasi, flowchart, dan pseudocode</h2><p>Rancang alur yang konsisten sebelum menulis program.</p></div></div>
+            <div class="chapter-title-group"><span class="chapter-badge badge-violet">BAB 02</span><div><h2 id="bab-2-title">Narasi, flowchart, dan pseudocode</h2><p>Rancang alur yang konsisten sebelum menulis program.</p></div></div>
             <button class="mark-chapter" data-chapter="2" type="button"><span>✓</span> Tandai bab selesai</button>
           </div>
           <div class="chapter-intro">
@@ -398,6 +438,7 @@ print(f"Sesudah: A={a}, B={b}")</code></pre>
           <article class="lesson-card assignment-card" id="b2-praktikum" data-searchable>
             <div class="lesson-heading"><span class="lesson-number violet-text">↗</span><div><h3>Praktikum, tantangan, dan tugas Bab 2</h3><p>Samakan narasi, pseudocode, diagram, kode, dan hasil dry run.</p></div></div>
             <div class="lesson-body">
+              <p><a class="solution-jump" href="#kode-tugas">Buka kode lengkap dan penjelasan variabel untuk semua tugas →</a></p>
               <h4>Praktikum terbimbing: rancangan tarif parkir</h4>
               <ol>
                 <li>Tulis narasi yang menyebut satuan durasi.</li>
@@ -459,9 +500,9 @@ print(f"Sesudah: A={a}, B={b}")</code></pre>
           </article>
         </section>
 
-        <section class="chapter-section" id="bab-3">
+        <section class="chapter-section" id="bab-3" aria-labelledby="bab-3-title">
           <div class="chapter-heading">
-            <div class="chapter-title-group"><span class="chapter-badge badge-amber">BAB 03</span><div><h2>Variabel, tipe data, dan konversi</h2><p>Pilih representasi yang tepat sebelum mulai berhitung.</p></div></div>
+            <div class="chapter-title-group"><span class="chapter-badge badge-amber">BAB 03</span><div><h2 id="bab-3-title">Variabel, tipe data, dan konversi</h2><p>Pilih representasi yang tepat sebelum mulai berhitung.</p></div></div>
             <button class="mark-chapter" data-chapter="3" type="button"><span>✓</span> Tandai bab selesai</button>
           </div>
           <div class="chapter-intro">
@@ -557,6 +598,7 @@ else:
           <article class="lesson-card assignment-card" id="b3-praktikum" data-searchable>
             <div class="lesson-heading"><span class="lesson-number amber-text">↗</span><div><h3>Praktikum, tantangan, dan tugas Bab 3</h3><p>Latih konversi tipe dan satuan dengan dry run serta pemeriksaan balik.</p></div></div>
             <div class="lesson-body">
+              <p><a class="solution-jump" href="#kode-tugas">Buka kode lengkap dan penjelasan variabel untuk semua tugas →</a></p>
               <h4>Praktikum terbimbing: konverter kegiatan</h4>
               <ol>
                 <li>Buat tabel Celsius, Fahrenheit, dan Kelvin untuk semua data uji.</li>
@@ -618,8 +660,63 @@ else:
           </article>
         </section>
 
-        <section class="quiz-section" id="latihan">
-          <div class="quiz-top"><div><span class="section-kicker">BERHENTI SEJENAK</span><h2>Cek pemahamanmu</h2><p>Jawab tiga soal singkat. Umpan balik muncul langsung—coba lagi jika belum tepat.</p></div><div class="quiz-art" aria-hidden="true">?</div></div>
+        <section class="solutions-section" id="kode-tugas" data-searchable aria-labelledby="solutions-title">
+          <div class="solutions-heading">
+            <div><span class="section-kicker">JAWABAN PROGRAM · BAB 1–3</span><h2 id="solutions-title">Kode lengkap setiap tugas</h2><p>Peta tugas menghubungkan praktikum, enam tantangan, dan studi kasus setiap bab ke programnya. Pilih “Lihat kode” untuk membuka kode utuh beserta panduan variabel.</p></div>
+            <span class="reference-symbol" aria-hidden="true">&lt;/&gt;</span>
+          </div>
+          <details class="task-map" id="task-map">
+            <summary><span>Peta cakupan tugas buku</span><span class="task-map-count">24 paket tugas · 14 program</span></summary>
+            <p class="task-map-note">Tugas refleksi dan evaluasi konsep dijawab pada bagian pembahasan masing-masing bab. Setiap tombol di bawah membuka program Python, ringkasan langkah, serta penjelasan variabel dan fungsi yang dipakai.</p>
+            <div class="task-coverage" id="task-coverage">
+              <p role="status">Memuat peta tugas…</p>
+            </div>
+          </details>
+          <div class="solutions-panel">
+            <div class="solution-controls">
+              <label for="solution-select">Pilih tugas
+                <select id="solution-select">
+                  <optgroup label="Bab 1 · Algoritma dan program pertama">
+                    <option value="profil">Program profil</option>
+                    <option value="kartu_praktikum">Kartu peserta praktikum</option>
+                    <option value="kartu_peserta">Kartu peserta kegiatan</option>
+                    <option value="pendaftaran_tiga_peserta">Pendaftaran tiga peserta</option>
+                    <option value="biaya_kegiatan">Biaya kegiatan</option>
+                  </optgroup>
+                  <optgroup label="Bab 2 · Flowchart dan pseudocode">
+                    <option value="luas_dan_keliling">Luas dan keliling</option>
+                    <option value="tarif_parkir">Tarif parkir</option>
+                    <option value="tukar_nilai">Menukar dua nilai</option>
+                  </optgroup>
+                  <optgroup label="Bab 3 · Variabel, tipe data, dan konversi">
+                    <option value="konversi_suhu">Konversi suhu</option>
+                    <option value="konversi_durasi">Konversi durasi</option>
+                    <option value="konversi_jarak">Konversi jarak</option>
+                    <option value="konversi_kilometer_ke_meter">Kilometer ke meter</option>
+                    <option value="kecepatan_perjalanan">Kecepatan perjalanan</option>
+                    <option value="konverter_kegiatan">Konverter kegiatan</option>
+                  </optgroup>
+                </select>
+              </label>
+              <a class="button button-quiet solution-download" id="solution-download" href="Bab%201/profil.py" download>Unduh berkas .py</a>
+            </div>
+            <p class="solution-description" id="solution-description"></p>
+            <p class="solution-glossary"><strong>Panduan membaca kode:</strong> variabel menyimpan nilai, parameter menerima data fungsi, nama berhuruf kapital menandai konstanta, dan fungsi mengelompokkan langkah yang dapat digunakan kembali. <code>return</code> mengembalikan hasil; <code>main()</code> menjalankan alur interaktif program.</p>
+            <div class="variable-guide">
+              <h3>Variabel, parameter, dan fungsi</h3>
+              <ul id="solution-variables"></ul>
+            </div>
+            <div class="code-card solution-code-card">
+              <div class="code-card-header"><span id="solution-filename">Python · Bab 1</span><button class="copy-code" id="copy-solution" type="button">Salin kode</button></div>
+              <pre><code id="solution-code" aria-live="polite">Memuat kode lengkap…</code></pre>
+            </div>
+            <p class="solution-status" id="solution-status" role="status" aria-live="polite"></p>
+            <p class="solution-run-note">Untuk menjalankan tugas, unduh berkas atau buka folder bab di terminal lalu jalankan <code>python nama_berkas.py</code>. Kode lengkap diambil dari berkas sumber proyek agar versi web selalu cocok dengan versi yang diuji.</p>
+          </div>
+        </section>
+
+        <section class="quiz-section" id="latihan" aria-labelledby="quiz-title">
+          <div class="quiz-top"><div><span class="section-kicker">BERHENTI SEJENAK</span><h2 id="quiz-title">Cek pemahamanmu</h2><p>Jawab tiga soal singkat. Umpan balik muncul langsung—coba lagi jika belum tepat.</p></div><div class="quiz-art" aria-hidden="true">?</div></div>
           <form id="quiz-form" class="quiz-form">
             <fieldset class="quiz-question" data-answer="str" data-explanation="input() selalu menghasilkan teks (str). Konversikan ke int atau float sebelum operasi hitung.">
               <legend><span>01</span> Pengguna mengetik angka 12 ke dalam <code>input()</code>. Apa tipe nilai yang diterima?</legend>
@@ -646,8 +743,8 @@ else:
           </form>
         </section>
 
-        <section class="reference-section" id="referensi">
-          <div class="reference-heading"><div><span class="section-kicker">SIMPAN UNTUK NANTI</span><h2>Referensi cepat</h2><p>Ringkasan konsep yang akan sering kamu pakai.</p></div><span class="reference-symbol" aria-hidden="true">{ }</span></div>
+        <section class="reference-section" id="referensi" aria-labelledby="reference-title">
+          <div class="reference-heading"><div><span class="section-kicker">SIMPAN UNTUK NANTI</span><h2 id="reference-title">Referensi cepat</h2><p>Ringkasan konsep yang akan sering kamu pakai.</p></div><span class="reference-symbol" aria-hidden="true">{ }</span></div>
           <div class="reference-grid">
             <div class="reference-card"><strong>Tipe data</strong><div><code>int</code><span>bilangan bulat</span></div><div><code>float</code><span>bilangan pecahan</span></div><div><code>str</code><span>teks &amp; identitas</span></div><div><code>bool</code><span>True / False</span></div></div>
             <div class="reference-card"><strong>Operasi penting</strong><div><code>/</code><span>pembagian biasa</span></div><div><code>//</code><span>pembagian bulat</span></div><div><code>%</code><span>sisa pembagian</span></div><div><code>.strip()</code><span>buang spasi tepi</span></div></div>
@@ -655,7 +752,12 @@ else:
           </div>
         </section>
 
-        <footer class="site-footer"><a class="brand footer-brand" href="#beranda"><span class="brand-mark" aria-hidden="true">&lt;/&gt;</span><span><strong>Belajar Algoritma</strong><small>Berpikir terstruktur, berkarya dengan kode.</small></span></a><span>Materi pembelajaran · Algoritma dan Struktur Data I</span><a href="#beranda">Kembali ke atas ↑</a></footer>
+        <section class="bookmarks-section" id="tersimpan" aria-labelledby="bookmarks-title">
+          <div class="reference-heading"><div><span class="section-kicker">KUMPULKAN MATERI PENTING</span><h2 id="bookmarks-title">Materi tersimpan <span class="bookmark-count" id="bookmark-count">0</span></h2><p>Simpan topik yang ingin kamu ulangi dan buka lagi kapan saja.</p></div><span class="reference-symbol" aria-hidden="true">☆</span></div>
+          <div class="bookmarks-panel"><p id="bookmarks-empty">Belum ada materi tersimpan. Tekan “Simpan” pada topik untuk menambahkannya ke daftar ini.</p><ul id="saved-lessons"></ul></div>
+        </section>
+
+        <footer class="site-footer"><a class="brand footer-brand" href="#beranda"><span class="brand-mark" aria-hidden="true">&lt;/&gt;</span><span><strong>Belajar Algoritma</strong><small>Berpikir terstruktur, berkarya dengan kode.</small></span></a><span>Materi pembelajaran · Algoritma dan Struktur Data I</span><span class="site-author">Dibuat oleh <strong>Mr.4Nony Alias Josua</strong></span><a href="#beranda">Kembali ke atas ↑</a></footer>
       </main>
     </div>
   </body>

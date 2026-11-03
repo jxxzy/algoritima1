@@ -146,3 +146,18 @@ python -m unittest -v
 ```
 
 Tabel di atas adalah prediksi; output uji aktual diverifikasi dengan suite `unittest`. Bantuan penyusunan kode dan penjelasan berasal dari asisten; verifikasi dilakukan dengan menjalankan tes pada folder ini.
+
+## Indeks kode seluruh tugas buku
+
+| Tugas | Program lengkap | Penjelasan yang diterapkan |
+|---|---|---|
+| Contoh profil dan latihan awal langkah 1–4 | `profil.py` | Input nama/prodi, `strip()`, kontrak IPO, dan penolakan sebelum profil dicetak. |
+| Praktikum terbimbing dan studi kasus kartu peserta | `kartu_peserta.py` | Nama, NIM teks, kelas, kota, sapaan, pemeriksaan semua kolom, dan keluaran hanya setelah valid. |
+| Tantangan 1–2: kota dan pesan kolom kosong | `kartu_peserta.py` | Kolom kota ditampilkan; nama whitespace-only ditolak dengan nama kolom yang jelas. |
+| Tantangan 3: mendaftarkan tiga peserta | `pendaftaran_tiga_peserta.py` | Perulangan tiga putaran dan validasi tiap peserta secara independen. |
+| Tantangan 4: sapaan pagi/sore | `kartu_peserta.py` | Pilihan sapaan divalidasi tanpa mengubah data identitas. |
+| Tantangan 5: kartu nama/NIM/kelas | `kartu_praktikum.py`, `kartu_peserta.py` | Kontrak tiga kolom dibandingkan dengan versi kasus pengembangan; nol depan NIM tetap teks. |
+| Tantangan 6: perencanaan biaya | `biaya_kegiatan.py` | Konstanta biaya, jumlah peserta positif, konsumsi per orang, total, serta pesan untuk input invalid. |
+| Latihan konsep, evaluasi formatif, refleksi | Pembahasan dan kunci jawaban pada README ini | Jawaban menjelaskan tipe data, IPO, batas, trace, alasan keputusan, dan kasus uji pembeda. |
+
+Setiap program memiliki penjelasan alur, hasil contoh, variabel penting, dan tabel uji pada bagian-bagian di atas. Peta “Peta cakupan tugas buku” di situs menghubungkan tiap tugas tersebut dengan penampil kode, penjelasan variabel/fungsi, dan tombol unduh program yang sama.

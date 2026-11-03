@@ -1,6 +1,7 @@
 (() => {
   const progressKey = 'belajar-algoritma-progress-v1';
   const themeKey = 'belajar-algoritma-theme-v1';
+  const bookmarksKey = 'belajar-algoritma-bookmarks-v1';
   const progressInputs = [...document.querySelectorAll('[data-progress]')];
   const chapterButtons = [...document.querySelectorAll('[data-chapter]')];
   const progressFill = document.getElementById('progress-fill');
@@ -13,7 +14,18 @@
   const mobileMenu = document.getElementById('mobile-menu');
   const sidebarBackdrop = document.getElementById('sidebar-backdrop');
   const themeToggle = document.getElementById('theme-toggle');
+  const focusToggle = document.getElementById('focus-toggle');
   const quizForm = document.getElementById('quiz-form');
+  const timerCard = document.querySelector('.focus-timer-card');
+  const timerDial = document.getElementById('timer-dial');
+  const timerProgress = document.getElementById('timer-progress');
+  const timerRing = document.getElementById('timer-ring-progress');
+  const timerDisplay = document.getElementById('timer-display');
+  const timerPhase = document.getElementById('timer-phase');
+  const timerStatus = document.getElementById('timer-status');
+  const timerSessions = document.getElementById('timer-sessions');
+  const timerStart = document.getElementById('timer-start');
+  const timerPresets = [...document.querySelectorAll('.timer-preset')];
 
   function readProgress() {
     try {
@@ -62,6 +74,153 @@
       updateProgress();
     });
   });
+
+  focusToggle.addEventListener('click', () => {
+    const isFocused = document.body.classList.toggle('focus-mode');
+    if (isFocused && sidebar.classList.contains('is-open')) closeSidebar();
+    focusToggle.setAttribute('aria-pressed', String(isFocused));
+    focusToggle.innerHTML = isFocused
+      ? '<span aria-hidden="true">×</span> Keluar dari fokus'
+      : '<span aria-hidden="true">◎</span> Mode fokus';
+  });
+
+  const timerCircumference = 2 * Math.PI * 79;
+  let focusDuration = 25 * 60_000;
+  let breakDuration = 5 * 60_000;
+  let timerPhaseValue = 'focus';
+  let timerRemaining = focusDuration;
+  let timerDeadline = null;
+  let timerInterval = null;
+  let completedFocusSessions = 0;
+  let phaseAnimationTimeout = null;
+
+  function formatTimer(milliseconds) {
+    const totalSeconds = Math.ceil(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }
+
+  function timerDuration() {
+    return timerPhaseValue === 'focus' ? focusDuration : breakDuration;
+  }
+
+  function renderTimer() {
+    const duration = timerDuration();
+    const elapsedRatio = duration > 0 ? Math.min(1, Math.max(0, 1 - timerRemaining / duration)) : 0;
+    const totalSeconds = Math.ceil(timerRemaining / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    const remainingLabel = minutes
+      ? `${minutes} menit${seconds ? ` ${seconds} detik` : ''} tersisa`
+      : `${seconds} detik tersisa`;
+    timerDisplay.textContent = formatTimer(timerRemaining);
+    timerDisplay.setAttribute('aria-label', remainingLabel);
+    timerPhase.textContent = timerPhaseValue === 'focus' ? 'WAKTU FOKUS' : 'WAKTU ISTIRAHAT';
+    timerDial.setAttribute('aria-label', `Timer sesi ${timerPhaseValue === 'focus' ? 'fokus' : 'istirahat'}`);
+    const percentComplete = Math.round(elapsedRatio * 100);
+    timerProgress.setAttribute('aria-label', `Progres sesi ${timerPhaseValue === 'focus' ? 'fokus' : 'istirahat'}`);
+    timerProgress.setAttribute('aria-valuenow', String(percentComplete));
+    timerProgress.setAttribute('aria-valuetext', `${percentComplete}% selesai`);
+    timerRing.style.strokeDashoffset = String(timerCircumference * (1 - elapsedRatio));
+    timerSessions.textContent = String(completedFocusSessions);
+    timerStart.textContent = timerDeadline === null
+      ? (timerRemaining < timerDuration() ? 'Lanjutkan' : timerPhaseValue === 'focus' ? 'Mulai fokus' : 'Mulai istirahat')
+      : 'Jeda';
+    timerCard.dataset.running = String(timerDeadline !== null);
+    timerCard.dataset.phase = timerPhaseValue;
+  }
+
+  function stopTimerInterval() {
+    if (timerInterval !== null) {
+      window.clearInterval(timerInterval);
+      timerInterval = null;
+    }
+  }
+
+  function finishTimerPhase() {
+    stopTimerInterval();
+    timerDeadline = null;
+    timerRemaining = 0;
+    if (timerPhaseValue === 'focus') {
+      completedFocusSessions += 1;
+      timerPhaseValue = 'break';
+      timerRemaining = breakDuration;
+      timerStatus.textContent = 'Sesi fokus selesai. Saatnya istirahat sejenak.';
+    } else {
+      timerPhaseValue = 'focus';
+      timerRemaining = focusDuration;
+      timerStatus.textContent = 'Waktu istirahat selesai. Siap untuk sesi fokus berikutnya?';
+    }
+    timerCard.classList.remove('is-phase-change');
+    window.requestAnimationFrame(() => timerCard.classList.add('is-phase-change'));
+    window.clearTimeout(phaseAnimationTimeout);
+    phaseAnimationTimeout = window.setTimeout(() => timerCard.classList.remove('is-phase-change'), 650);
+    renderTimer();
+  }
+
+  function tickTimer() {
+    if (timerDeadline === null) return;
+    timerRemaining = Math.max(0, timerDeadline - Date.now());
+    if (timerRemaining === 0) {
+      finishTimerPhase();
+      return;
+    }
+    renderTimer();
+  }
+
+  timerStart.addEventListener('click', () => {
+    if (timerDeadline !== null) {
+      timerRemaining = Math.max(0, timerDeadline - Date.now());
+      timerDeadline = null;
+      stopTimerInterval();
+      timerStatus.textContent = `${timerPhaseValue === 'focus' ? 'Sesi fokus' : 'Waktu istirahat'} dijeda.`;
+      renderTimer();
+      return;
+    }
+    if (timerRemaining <= 0) timerRemaining = timerDuration();
+    timerDeadline = Date.now() + timerRemaining;
+    timerInterval = window.setInterval(tickTimer, 250);
+    timerStatus.textContent = `${timerPhaseValue === 'focus' ? 'Sesi fokus dimulai.' : 'Waktu istirahat dimulai.'}`;
+    renderTimer();
+  });
+
+  document.getElementById('timer-reset').addEventListener('click', () => {
+    stopTimerInterval();
+    timerDeadline = null;
+    timerPhaseValue = 'focus';
+    timerRemaining = focusDuration;
+    timerStatus.textContent = 'Timer diatur ulang. Siap memulai sesi fokus.';
+    renderTimer();
+  });
+
+  document.getElementById('timer-skip').addEventListener('click', () => {
+    stopTimerInterval();
+    timerDeadline = null;
+    timerPhaseValue = timerPhaseValue === 'focus' ? 'break' : 'focus';
+    timerRemaining = timerDuration();
+    timerStatus.textContent = `Fase dilewati. ${timerPhaseValue === 'focus' ? 'Waktu fokus' : 'Waktu istirahat'} siap dimulai.`;
+    renderTimer();
+  });
+
+  timerPresets.forEach((preset) => {
+    preset.addEventListener('click', () => {
+      stopTimerInterval();
+      timerDeadline = null;
+      focusDuration = Number(preset.dataset.focusMinutes) * 60_000;
+      breakDuration = Number(preset.dataset.breakMinutes) * 60_000;
+      timerPhaseValue = 'focus';
+      timerRemaining = focusDuration;
+      timerPresets.forEach((option) => option.setAttribute('aria-pressed', String(option === preset)));
+      timerStatus.textContent = `Durasi sesi diatur ke ${preset.dataset.focusMinutes} menit fokus dan ${preset.dataset.breakMinutes} menit istirahat.`;
+      renderTimer();
+    });
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && timerDeadline !== null) tickTimer();
+  });
+  renderTimer();
 
   chapterButtons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -259,7 +418,7 @@
       if (link.hash === `#${section.id}`) {
         link.setAttribute('aria-current', 'location');
         const group = link.closest('[data-nav-group]');
-        if (group) group.open = true;
+        if (group && window.matchMedia('(max-width: 1700px)').matches) group.open = true;
       } else {
         link.removeAttribute('aria-current');
       }
@@ -292,6 +451,10 @@
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'j') {
       event.preventDefault();
       themeToggle.click();
+    }
+    if ((event.metaKey || event.ctrlKey) && event.shiftKey && event.key.toLowerCase() === 'f') {
+      event.preventDefault();
+      focusToggle.click();
     }
     if (event.key === 'Escape' && document.activeElement === searchInput) {
       searchInput.value = '';
@@ -327,7 +490,11 @@
   });
   sidebar.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
-      if (window.matchMedia('(max-width: 820px)').matches) closeSidebar();
+      if (window.matchMedia('(max-width: 1700px)').matches) closeSidebar();
+      else {
+        const group = link.closest('[data-nav-group]');
+        if (group && window.matchMedia('(min-width: 1701px)').matches) group.open = false;
+      }
     });
   });
   document.addEventListener('click', (event) => {
@@ -376,6 +543,491 @@
       ? `Skor: ${correctCount} dari ${questions.length}.`
       : 'Lengkapi semua jawaban untuk melihat skor.';
   });
+
+  const bookmarkCards = [...document.querySelectorAll('.lesson-card[id]')];
+  const bookmarkCount = document.getElementById('bookmark-count');
+  const bookmarkList = document.getElementById('saved-lessons');
+  const bookmarksEmpty = document.getElementById('bookmarks-empty');
+  let bookmarks = [];
+  try {
+    const savedBookmarks = JSON.parse(localStorage.getItem(bookmarksKey) || '[]');
+    if (Array.isArray(savedBookmarks)) {
+      const validIds = new Set(bookmarkCards.map((card) => card.id));
+      bookmarks = savedBookmarks.filter((id) => typeof id === 'string' && validIds.has(id));
+    }
+  } catch {
+    searchStatus.textContent = 'Daftar materi tersimpan tidak dapat dibaca di browser ini.';
+  }
+
+  function updateBookmarks() {
+    bookmarkList.replaceChildren();
+    const savedCards = bookmarkCards.filter((card) => bookmarks.includes(card.id));
+    bookmarkCount.textContent = String(savedCards.length);
+    bookmarksEmpty.hidden = savedCards.length > 0;
+    savedCards.forEach((card) => {
+      const item = document.createElement('li');
+      const link = document.createElement('a');
+      link.href = `#${card.id}`;
+      link.textContent = card.querySelector('.lesson-heading h3').textContent.trim();
+      item.append(link);
+      bookmarkList.append(item);
+    });
+    bookmarkCards.forEach((card) => {
+      const button = card.querySelector('.bookmark-toggle');
+      const isSaved = bookmarks.includes(card.id);
+      button.setAttribute('aria-pressed', String(isSaved));
+      button.textContent = isSaved ? 'Tersimpan ★' : 'Simpan ☆';
+      button.setAttribute('aria-label', `${isSaved ? 'Hapus dari' : 'Simpan ke'} materi tersimpan: ${card.querySelector('.lesson-heading h3').textContent.trim()}`);
+    });
+  }
+
+  bookmarkCards.forEach((card) => {
+    const title = card.querySelector('.lesson-heading h3').textContent.trim();
+    const button = document.createElement('button');
+    button.className = 'bookmark-toggle';
+    button.type = 'button';
+    button.textContent = 'Simpan ☆';
+    button.addEventListener('click', () => {
+      bookmarks = bookmarks.includes(card.id)
+        ? bookmarks.filter((id) => id !== card.id)
+        : [...bookmarks, card.id];
+      updateBookmarks();
+      try {
+        localStorage.setItem(bookmarksKey, JSON.stringify(bookmarks));
+      } catch {
+        searchStatus.textContent = 'Daftar materi tersimpan tidak dapat disimpan di browser ini.';
+      }
+    });
+    card.querySelector('.lesson-heading').append(button);
+    button.setAttribute('aria-label', `Simpan ke materi tersimpan: ${title}`);
+  });
+  updateBookmarks();
+
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      && 'IntersectionObserver' in window) {
+    const revealTargets = document.querySelectorAll(
+      '.hero, .path-card, .focus-timer-section, .practice-lab, .chapter-heading, .chapter-intro, .lesson-card, .solutions-section, .bookmarks-section, .quiz-section, .reference-section',
+    );
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -48px 0px', threshold: 0.06 });
+    document.body.classList.add('has-reveal-motion');
+    revealTargets.forEach((element, index) => {
+      element.classList.add('reveal-on-scroll');
+      element.style.setProperty('--reveal-delay', `${Math.min(index % 4, 3) * 55}ms`);
+      revealObserver.observe(element);
+    });
+  }
+
+  const solutionSelect = document.getElementById('solution-select');
+  const solutionDescription = document.getElementById('solution-description');
+  const solutionVariables = document.getElementById('solution-variables');
+  const solutionCode = document.getElementById('solution-code');
+  const solutionFilename = document.getElementById('solution-filename');
+  const solutionDownload = document.getElementById('solution-download');
+  const solutionStatus = document.getElementById('solution-status');
+  const taskCoverage = document.getElementById('task-coverage');
+  const solutions = {
+    profil: {
+      chapter: 'Bab 1',
+      file: 'profil.py',
+      description: 'Membaca nama dan program studi, menolak teks kosong, lalu menampilkan profil lengkap.',
+      variables: [
+        ['nama', 'Parameter dan variabel teks untuk nama; strip() membuang spasi tepi.'],
+        ['prodi', 'Parameter dan variabel teks untuk program studi.'],
+        ['pesan', 'Menampung teks profil saat input valid.'],
+        ['kesalahan', 'Menampung pesan penolakan saat ada input wajib yang kosong.'],
+        ['buat_profil()', 'Fungsi yang mengembalikan pasangan (pesan, kesalahan); None berarti tidak ada nilai untuk bagian itu.'],
+      ],
+    },
+    kartu_praktikum: {
+      chapter: 'Bab 1',
+      file: 'kartu_praktikum.py',
+      description: 'Membuat kartu praktikum setelah nama, NIM, dan kelas diisi. NIM tetap teks agar nol awal tidak hilang.',
+      variables: [
+        ['nama, nim, kelas', 'Parameter teks yang menjadi masukan kartu; kelas dinormalisasi ke huruf kapital.'],
+        ['data', 'Dictionary yang memasangkan label kolom dengan nilai yang sudah dirapikan.'],
+        ['kolom, nilai', 'Variabel perulangan untuk memeriksa setiap pasangan dalam dictionary.'],
+        ['kesalahan', 'Daftar semua kolom yang masih kosong; kartu hanya dibuat jika daftar ini kosong.'],
+        ['kartu', 'Teks kartu yang disusun dari nama, NIM, dan kelas yang valid.'],
+      ],
+    },
+    kartu_peserta: {
+      chapter: 'Bab 1',
+      file: 'kartu_peserta.py',
+      description: 'Memvalidasi seluruh data dan pilihan sapaan sebelum menerbitkan kartu peserta.',
+      variables: [
+        ['data', 'Mapping masukan berisi nama, NIM, kelas, kota, dan waktu sapaan.'],
+        ['kolom, nilai', 'Dictionary kolom dan nilai hasil trim; kelas diubah ke huruf kapital.'],
+        ['kesalahan', 'Daftar semua kolom kosong dan kesalahan pilihan sapaan.'],
+        ['waktu', 'Teks pilihan pagi/sore yang sudah dirapikan dan dibuat huruf kecil.'],
+        ['sapaan, kartu', 'Teks hasil yang baru disusun setelah seluruh validasi lolos.'],
+      ],
+    },
+    pendaftaran_tiga_peserta: {
+      chapter: 'Bab 1',
+      file: 'pendaftaran_tiga_peserta.py',
+      description: 'Mengulang alur input dan validasi tepat tiga kali; penolakan satu peserta tidak menghentikan peserta berikutnya.',
+      variables: [
+        ['nomor', 'Penghitung perulangan dari 1 sampai 3 untuk menandai peserta yang sedang didaftarkan.'],
+        ['data', 'Dictionary jawaban satu peserta yang dibentuk pada setiap putaran.'],
+        ['kartu', 'Kartu hasil fungsi buat_kartu() atau None jika data tidak valid.'],
+        ['kesalahan', 'Daftar pesan validasi; setiap pesan ditampilkan sebelum lanjut ke peserta berikutnya.'],
+      ],
+    },
+    biaya_kegiatan: {
+      chapter: 'Bab 1',
+      file: 'biaya_kegiatan.py',
+      description: 'Menghitung biaya tetap dan konsumsi dengan validasi jumlah peserta positif.',
+      variables: [
+        ['BIAYA_TETAP', 'Konstanta biaya dasar Rp50.000 yang tidak berubah selama perhitungan.'],
+        ['KONSUMSI_PER_ORANG', 'Konstanta tarif konsumsi Rp12.000 untuk setiap peserta.'],
+        ['peserta', 'Masukan integer; harus lebih besar dari nol.'],
+        ['konsumsi', 'Hasil peserta dikalikan tarif konsumsi per orang.'],
+        ['total', 'Jumlah biaya tetap dan biaya konsumsi.'],
+      ],
+    },
+    luas_dan_keliling: {
+      chapter: 'Bab 2',
+      file: 'luas_dan_keliling.py',
+      description: 'Menghitung luas dan keliling persegi panjang serta menolak sisi atau hasil yang tidak dapat direpresentasikan dengan aman.',
+      variables: [
+        ['panjang, lebar', 'Parameter ukuran dalam satuan yang sama; harus berupa angka terbatas dan positif.'],
+        ['luas', 'Hasil panjang dikali lebar.'],
+        ['keliling', 'Hasil 2 dikali jumlah panjang dan lebar.'],
+        ['panjang_cm, lebar_m', 'Masukan variasi satuan; panjang_cm dibagi 100 sebelum hitung.'],
+        ['kesalahan', 'Exception ValueError yang menjelaskan input atau hasil di luar batas.'],
+      ],
+    },
+    tarif_parkir: {
+      chapter: 'Bab 2',
+      file: 'tarif_parkir.py',
+      description: 'Menghitung tarif satu jam pertama, jam tambahan, lalu menerapkan batas maksimum harian.',
+      variables: [
+        ['TARIF_JAM_PERTAMA', 'Konstanta tarif jam pertama, Rp3.000.'],
+        ['TARIF_PER_JAM_TAMBAHAN', 'Konstanta tarif untuk setiap jam setelah jam pertama, Rp2.000.'],
+        ['BATAS_HARIAN', 'Konstanta pembatas biaya akhir sebesar Rp15.000.'],
+        ['jam', 'Masukan integer minimal 1; bool dan tipe selain integer ditolak.'],
+        ['jam_tambahan, biaya_awal, biaya_akhir', 'Jumlah jam setelah jam pertama, tarif sebelum batas, dan tarif setelah batas.'],
+      ],
+    },
+    tukar_nilai: {
+      chapter: 'Bab 2',
+      file: 'tukar_nilai.py',
+      description: 'Menukar dua nilai teks menggunakan variabel bantu agar nilai pertama tidak hilang.',
+      variables: [
+        ['a, b', 'Dua parameter teks yang nilainya akan ditukar.'],
+        ['sementara', 'Salinan nilai awal a yang disimpan sebelum a ditimpa.'],
+        ['a, b hasil', 'Nilai baru yang dikembalikan berurutan setelah pertukaran.'],
+      ],
+    },
+    konversi_suhu: {
+      chapter: 'Bab 3',
+      file: 'konversi_suhu.py',
+      description: 'Mengonversi Celsius ke Fahrenheit dan Kelvin, dengan batas suhu nol mutlak.',
+      variables: [
+        ['CELSIUS_MINIMUM', 'Konstanta batas nol mutlak, −273,15 °C.'],
+        ['celsius', 'Masukan float yang harus terbatas dan tidak kurang dari batas minimum.'],
+        ['fahrenheit', 'Hasil rumus Celsius × 9 / 5 + 32.'],
+        ['kelvin', 'Hasil rumus Celsius + 273,15.'],
+      ],
+    },
+    konversi_durasi: {
+      chapter: 'Bab 3',
+      file: 'konversi_durasi.py',
+      description: 'Memecah menit menjadi jam utuh dan sisa menit, menghitung detik, lalu memeriksa hasil dengan rekonstruksi.',
+      variables: [
+        ['MENIT_PER_JAM', 'Konstanta 60 menit untuk satu jam.'],
+        ['DETIK_PER_MENIT', 'Konstanta 60 detik untuk satu menit.'],
+        ['menit', 'Masukan integer tidak negatif.'],
+        ['jam, sisa_menit', 'Hasil pembagian bulat (//) dan sisa pembagian (%).'],
+        ['total_detik, rekonstruksi_menit', 'Total detik dan pemeriksaan balik jam × 60 + sisa.'],
+      ],
+    },
+    konversi_jarak: {
+      chapter: 'Bab 3',
+      file: 'konversi_jarak.py',
+      description: 'Memecah meter menjadi kilometer utuh dan sisa meter menggunakan pembagian bulat dan modulo.',
+      variables: [
+        ['METER_PER_KILOMETER', 'Konstanta 1.000 meter untuk satu kilometer.'],
+        ['jarak_meter', 'Masukan integer tidak negatif.'],
+        ['kilometer', 'Jumlah kilometer penuh dari jarak_meter // 1000.'],
+        ['sisa_meter', 'Sisa meter dari jarak_meter % 1000.'],
+      ],
+    },
+    konversi_kilometer_ke_meter: {
+      chapter: 'Bab 3',
+      file: 'konversi_kilometer_ke_meter.py',
+      description: 'Mengonversi jarak kilometer ke meter, termasuk nilai pecahan, dengan pemeriksaan angka terbatas.',
+      variables: [
+        ['jarak_kilometer', 'Parameter input kilometer bertipe angka (int/float), tidak negatif.'],
+        ['jarak_km', 'Nilai masukan setelah dikonversi menjadi float dan diperiksa batasnya.'],
+        ['jarak_meter', 'Hasil jarak_km dikali 1.000 meter per kilometer.'],
+        ['METER_PER_KILOMETER', 'Konstanta konversi satu kilometer menjadi 1.000 meter.'],
+        ['isfinite()', 'Fungsi pemeriksa agar input dan hasil bukan NaN atau tak hingga.'],
+      ],
+    },
+    kecepatan_perjalanan: {
+      chapter: 'Bab 3',
+      file: 'kecepatan_perjalanan.py',
+      description: 'Mengubah waktu menit ke jam terlebih dahulu, lalu menghitung kecepatan dalam km/jam.',
+      variables: [
+        ['MENIT_PER_JAM', 'Konstanta 60 untuk mengubah menit menjadi jam.'],
+        ['jarak_km', 'Masukan jarak angka terbatas; nilai nol boleh, nilai negatif ditolak.'],
+        ['waktu_menit, waktu_jam', 'Waktu masukan positif dan hasil normalisasinya dalam jam.'],
+        ['kecepatan_km_per_jam', 'Hasil jarak_km dibagi waktu_jam, dengan satuan km/jam.'],
+      ],
+    },
+    konverter_kegiatan: {
+      chapter: 'Bab 3',
+      file: 'konverter_kegiatan.py',
+      description: 'Menggabungkan identitas peserta dengan konversi durasi dan jarak; nama tetap terpisah dari besaran hitung.',
+      variables: [
+        ['nama', 'Identitas teks yang dirapikan dan divalidasi terpisah dari ukuran.'],
+        ['menit, jarak_meter', 'Masukan integer tidak negatif untuk durasi dan jarak.'],
+        ['jam, sisa_menit, total_detik', 'Hasil konversi durasi serta hitung detik.'],
+        ['kilometer, sisa_meter', 'Hasil konversi jarak meter dengan // dan %.'],
+        ['laporan', 'Teks hasil gabungan yang hanya dibuat setelah input valid.'],
+      ],
+    },
+  };
+  let solutionRequest = 0;
+
+  async function loadSolution() {
+    const solution = solutions[solutionSelect.value];
+    if (!solution) return;
+
+    const request = ++solutionRequest;
+    const filePath = `${solution.chapter}/${solution.file}`;
+    const encodedPath = filePath.split('/').map(encodeURIComponent).join('/');
+    solutionDescription.textContent = solution.description;
+    solutionFilename.textContent = `Python · ${filePath}`;
+    solutionDownload.href = encodedPath;
+    solutionDownload.download = solution.file;
+    solutionStatus.textContent = 'Memuat kode tugas…';
+    solutionCode.textContent = 'Memuat kode lengkap…';
+    solutionVariables.replaceChildren();
+    solution.variables.forEach(([name, explanation]) => {
+      const item = document.createElement('li');
+      const variableName = document.createElement('code');
+      variableName.textContent = name;
+      item.append(variableName, ` — ${explanation}`);
+      solutionVariables.append(item);
+    });
+
+    try {
+      const response = await fetch(new URL(encodedPath, document.baseURI));
+      if (!response.ok) {
+        throw new Error(`Server mengembalikan status ${response.status}.`);
+      }
+      const code = await response.text();
+      if (request !== solutionRequest) return;
+      solutionCode.textContent = code;
+      solutionStatus.textContent = `Kode lengkap ${solution.file} berhasil dimuat.`;
+    } catch (error) {
+      if (request !== solutionRequest) return;
+      solutionCode.textContent = 'Kode tidak dapat dimuat otomatis. Gunakan tautan unduh untuk membuka berkas sumber.';
+      solutionStatus.textContent = `Gagal memuat ${solution.file}: ${error.message}`;
+    }
+  }
+
+  solutionSelect.addEventListener('change', loadSolution);
+  loadSolution();
+
+  const assignmentCoverage = [
+    {
+      chapter: 'Bab 1 · Algoritma dan program pertama',
+      tasks: [
+        {
+          title: 'Praktikum terbimbing · Profil dan kartu peserta',
+          explanation: 'Mulai dari kontrak IPO, rapikan input, simpan NIM sebagai teks, dan hanya terbitkan kartu setelah data wajib valid.',
+          programs: ['profil', 'kartu_praktikum', 'kartu_peserta'],
+        },
+        {
+          title: 'Tantangan 1 · Kota asal dan perkenalan',
+          explanation: 'Tambahkan kota tanpa menghilangkan spasi tengah pada nama atau nama kota.',
+          programs: ['kartu_peserta'],
+        },
+        {
+          title: 'Tantangan 2 · Pesan untuk kolom kosong',
+          explanation: 'Sebut kolom yang salah secara spesifik dan tahan output sukses sampai seluruh validasi lolos.',
+          programs: ['kartu_peserta'],
+        },
+        {
+          title: 'Tantangan 3 · Pendaftaran tiga peserta',
+          explanation: 'Gunakan perulangan untuk menjalankan alur yang sama tepat tiga kali; satu peserta invalid tidak menghentikan peserta berikutnya.',
+          programs: ['pendaftaran_tiga_peserta'],
+        },
+        {
+          title: 'Tantangan 4 · Sapaan pagi atau sore',
+          explanation: 'Pilih sapaan dari waktu tanpa mengubah isi identitas peserta.',
+          programs: ['kartu_peserta'],
+        },
+        {
+          title: 'Tantangan 5 · Kartu nama, NIM, dan kelas',
+          explanation: 'Wajibkan tiga kolom, pertahankan nol depan NIM, dan perlakukan input spasi saja sebagai kosong.',
+          programs: ['kartu_praktikum', 'kartu_peserta'],
+        },
+        {
+          title: 'Tantangan 6 · Biaya kegiatan',
+          explanation: 'Hitung Rp50.000 + Rp12.000 per peserta; tolak jumlah bukan integer, nol, dan nilai negatif.',
+          programs: ['biaya_kegiatan'],
+        },
+        {
+          title: 'Studi kasus mandiri · Kartu kegiatan lengkap',
+          explanation: 'Gabungkan nama, NIM, kelas, kota, validasi semua kolom, serta pilihan sapaan; NIM dan spasi tengah tetap utuh.',
+          programs: ['kartu_peserta'],
+        },
+      ],
+    },
+    {
+      chapter: 'Bab 2 · Narasi, flowchart, dan pseudocode',
+      tasks: [
+        {
+          title: 'Praktikum terbimbing · Layanan parkir',
+          explanation: 'Susun narasi, pseudocode, flowchart, dan kode untuk jam bulat; jam nol/negatif harus ditolak.',
+          programs: ['tarif_parkir'],
+        },
+        {
+          title: 'Tantangan 1 · Pseudocode keliling',
+          explanation: 'Turunkan keliling persegi panjang dari dua sisi yang sudah dibaca dan divalidasi.',
+          programs: ['luas_dan_keliling'],
+        },
+        {
+          title: 'Tantangan 2 · Luas dan keliling sekaligus',
+          explanation: 'Baca tiap sisi satu kali, lalu hitung serta tampilkan kedua hasil dari input yang sama.',
+          programs: ['luas_dan_keliling'],
+        },
+        {
+          title: 'Tantangan 3 · Sentimeter ke meter',
+          explanation: 'Normalisasikan panjang dengan membagi 100 sebelum perhitungan geometri.',
+          programs: ['luas_dan_keliling'],
+        },
+        {
+          title: 'Tantangan 4 · Batas tarif harian',
+          explanation: 'Hitung biaya awal terlebih dahulu, lalu batasi dengan maksimum Rp15.000.',
+          programs: ['tarif_parkir'],
+        },
+        {
+          title: 'Tantangan 5 · Tarif jam pertama dan tambahan',
+          explanation: 'Jam pertama Rp3.000; jam berikutnya Rp2.000 per jam; durasi minimum satu jam.',
+          programs: ['tarif_parkir'],
+        },
+        {
+          title: 'Tantangan 6 · Tukar isi dua wadah',
+          explanation: 'Simpan nilai awal A pada variabel bantu sebelum menimpa A agar kedua nilai tidak hilang.',
+          programs: ['tukar_nilai'],
+        },
+        {
+          title: 'Studi kasus mandiri · Tarif parkir dengan batas',
+          explanation: 'Selaraskan representasi algoritma dan kode, uji batas satu/tujuh/delapan jam, serta tolak durasi invalid.',
+          programs: ['tarif_parkir'],
+        },
+      ],
+    },
+    {
+      chapter: 'Bab 3 · Variabel, tipe data, dan konversi',
+      tasks: [
+        {
+          title: 'Praktikum terbimbing · Tipe dan konversi',
+          explanation: 'Uji konversi suhu dan durasi, bandingkan format input, serta pisahkan program kilometer-ke-meter.',
+          programs: ['konversi_suhu', 'konversi_durasi', 'konversi_kilometer_ke_meter'],
+        },
+        {
+          title: 'Tantangan 1 · Menit ke detik',
+          explanation: 'Kalikan integer menit dengan 60 setelah menerima hanya nilai nonnegatif.',
+          programs: ['konversi_durasi'],
+        },
+        {
+          title: 'Tantangan 2 · Jam dan menit sisa',
+          explanation: 'Pecah 135 menit dengan pembagian bulat dan modulo menjadi 2 jam 15 menit.',
+          programs: ['konversi_durasi'],
+        },
+        {
+          title: 'Tantangan 3 · Batas nol mutlak',
+          explanation: 'Terima −273,15 °C dan tolak nilai yang lebih rendah sebelum menghitung suhu.',
+          programs: ['konversi_suhu'],
+        },
+        {
+          title: 'Tantangan 4 · Meter ke kilometer dan sisa',
+          explanation: 'Gunakan // dan % untuk memisahkan unit jarak, dan jangan campur identitas dengan nilai ukur.',
+          programs: ['konversi_jarak', 'konverter_kegiatan'],
+        },
+        {
+          title: 'Tantangan 5 · Pengembangan konverter durasi',
+          explanation: 'Pertahankan hasil jam/sisa, tambahkan detik total serta pemeriksaan balik rekonstruksi menit.',
+          programs: ['konversi_durasi'],
+        },
+        {
+          title: 'Tantangan 6 · Kecepatan rata-rata',
+          explanation: 'Ubah menit menjadi jam dahulu; jarak nol sah, tetapi waktu nol tidak boleh menjadi pembagi.',
+          programs: ['kecepatan_perjalanan'],
+        },
+        {
+          title: 'Studi kasus mandiri · Laporan kegiatan',
+          explanation: 'Gabungkan identitas teks, durasi, detik, rekonstruksi, dan konversi jarak dalam satu laporan tervalidasi.',
+          programs: ['konverter_kegiatan'],
+        },
+      ],
+    },
+  ];
+
+  function renderTaskCoverage() {
+    taskCoverage.replaceChildren();
+    assignmentCoverage.forEach(({ chapter, tasks }) => {
+      const group = document.createElement('section');
+      group.className = 'task-coverage-group';
+      const heading = document.createElement('h3');
+      heading.textContent = chapter;
+      const list = document.createElement('ol');
+      list.className = 'task-coverage-list';
+
+      tasks.forEach(({ title, explanation, programs }) => {
+        const item = document.createElement('li');
+        const copy = document.createElement('div');
+        const taskTitle = document.createElement('strong');
+        const taskExplanation = document.createElement('p');
+        const actions = document.createElement('div');
+        actions.className = 'task-coverage-actions';
+        taskTitle.textContent = title;
+        taskExplanation.textContent = explanation;
+        copy.append(taskTitle, taskExplanation);
+
+        programs.forEach((programId) => {
+          const solution = solutions[programId];
+          if (!solution) {
+            throw new Error(`Program tugas tidak ditemukan: ${programId}`);
+          }
+          const button = document.createElement('button');
+          button.className = 'task-code-link';
+          button.type = 'button';
+          button.textContent = `Lihat ${solution.file}`;
+          button.addEventListener('click', () => {
+            solutionSelect.value = programId;
+            solutionSelect.dispatchEvent(new Event('change'));
+            document.querySelector('.solution-code-card').scrollIntoView({
+              behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+              block: 'center',
+            });
+          });
+          actions.append(button);
+        });
+
+        item.append(copy, actions);
+        list.append(item);
+      });
+
+      group.append(heading, list);
+      taskCoverage.append(group);
+    });
+  }
+
+  renderTaskCoverage();
 
   const readingBar = document.getElementById('reading-progress-bar');
   let scheduled = false;
