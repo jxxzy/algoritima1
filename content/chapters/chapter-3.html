@@ -1,0 +1,159 @@
+<section class="chapter-section" id="bab-3" aria-labelledby="bab-3-title">
+          <div class="chapter-heading">
+            <div class="chapter-title-group"><span class="chapter-badge badge-amber">BAB 03</span><div><h2 id="bab-3-title">Variabel, tipe data, dan konversi</h2><p>Pilih representasi yang tepat sebelum mulai berhitung.</p></div></div>
+            <button class="mark-chapter" data-chapter="3" type="button"><span>✓</span> Tandai bab selesai</button>
+          </div>
+          <div class="chapter-intro">
+            <div><span class="section-kicker">TUJUAN BELAJAR</span><p>Gunakan variabel, tipe data, input, output, konversi tipe dan satuan dengan tepat; telusuri bagaimana nilai berubah.</p></div>
+            <div class="goal-icon goal-amber" aria-hidden="true">ƒ</div>
+          </div>
+
+          <article class="lesson-card" id="b3-tipe" data-topic="b3-tipe" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number amber-text">01</span><div><h3>Variabel menyimpan makna, bukan hanya nilai</h3><p>Nama yang jelas membantu memilih operasi yang benar.</p></div></div>
+            <div class="lesson-body">
+              <p>Variabel adalah nama yang merujuk ke suatu objek. <code>suhu = 30</code> membuat nama <code>suhu</code> merujuk angka 30; penugasan berikutnya dapat mengubah nilai yang dirujuknya. Python peka huruf besar-kecil. Gunakan nama yang menyebut satuan seperti <code>jarak_km</code>.</p>
+              <div class="type-grid"><div><span class="type-symbol type-int">42</span><strong>int</strong><small>Bilangan bulat</small><code>jumlah = 12</code></div><div><span class="type-symbol type-float">3.5</span><strong>float</strong><small>Bilangan pecahan</small><code>volume_l = 2.5</code></div><div><span class="type-symbol type-str">Aa</span><strong>str</strong><small>Teks / identitas</small><code>nim = "00125"</code></div><div><span class="type-symbol type-bool">✓</span><strong>bool</strong><small>Benar atau salah</small><code>aktif = True</code></div></div>
+              <div class="callout callout-amber"><span>!</span><p><strong>Input selalu bertipe <code>str</code>.</strong> Teks <code>"2" + "3"</code> menghasilkan <code>"23"</code>. Konversi keduanya menjadi integer untuk memperoleh <code>5</code>. Jangan gunakan <code>bool("tidak")</code>: string apa pun yang tidak kosong bernilai <code>True</code>.</p></div>
+              <h4>Konversi tipe dengan sengaja</h4>
+              <div class="code-card">
+                <div class="code-card-header"><span>Input → konversi → hitung</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>teks = input("Masukkan jumlah: ")
+jumlah = int(teks)
+total = jumlah + 3
+print(total)  # Masukan 12 menghasilkan 15</code></pre>
+              </div>
+              <p>Gunakan <code>int</code> untuk jumlah benda, <code>float</code> untuk ukuran yang mungkin pecahan, <code>str</code> untuk nama/NIM/kode pos, dan <code>bool</code> untuk status yang sudah ditafsirkan dengan aturan eksplisit.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b3-tipe"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b3-suhu" data-topic="b3-suhu" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number amber-text">02</span><div><h3>Konversi Celsius, Fahrenheit, dan Kelvin</h3><p>Jaga rumus, tipe, dan batas fisik suhu.</p></div></div>
+            <div class="lesson-body">
+              <div class="formula-card"><span>FAHRENHEIT</span><code>F = C × 9 / 5 + 32</code><span>KELVIN</span><code>K = C + 273.15</code></div>
+              <div class="code-card">
+                <div class="code-card-header"><span>Python · konversi suhu</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>celsius = float(input("Suhu Celsius: "))
+if celsius < -273.15:
+    print("Suhu di bawah nol mutlak.")
+else:
+    fahrenheit = celsius * 9 / 5 + 32
+    kelvin = celsius + 273.15
+    print(f"Fahrenheit: {fahrenheit:.2f}")
+    print(f"Kelvin: {kelvin:.2f}")</code></pre>
+              </div>
+              <div class="test-pills"><span>0°C → 32°F · 273.15 K</span><span>100°C → 212°F · 373.15 K</span><span>−40°C → −40°F · 233.15 K</span><span>−273.15°C → 0 K</span></div>
+              <p>Program menolak suhu di bawah nol mutlak (<code>−273.15°C</code>), batas yang ditambahkan pada latihan. Format <code>.2f</code> hanya mengatur tampilan dua desimal; nilai numerik untuk perhitungan tidak berubah.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b3-suhu"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b3-durasi" data-topic="b3-durasi" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number amber-text">03</span><div><h3>Pecah durasi dan jarak dengan <code>//</code> serta <code>%</code></h3><p>Pembagian bulat menghitung unit penuh; modulo mengambil sisa.</p></div></div>
+            <div class="lesson-body">
+              <div class="operator-grid"><div><code>/</code><strong>Pembagian biasa</strong><span>135 / 60 = 2.25</span></div><div><code>//</code><strong>Pembagian bulat</strong><span>135 // 60 = 2 jam</span></div><div><code>%</code><strong>Sisa pembagian</strong><span>135 % 60 = 15 menit</span></div></div>
+              <div class="code-card">
+                <div class="code-card-header"><span>Python · menit menjadi jam dan sisa</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>menit = int(input("Durasi (menit): "))
+if menit < 0:
+    print("Durasi tidak boleh negatif.")
+else:
+    jam = menit // 60
+    sisa_menit = menit % 60
+    total_detik = menit * 60
+    print(f"{jam} jam {sisa_menit} menit")
+    print("Total detik:", total_detik)
+    print("Periksa:", jam * 60 + sisa_menit)</code></pre>
+              </div>
+              <div class="callout callout-blue"><span>↺</span><p><strong>Invariant / pemeriksaan balik:</strong> <code>jam × 60 + sisa_menit</code> harus sama dengan menit awal. Untuk 135, <code>2 × 60 + 15 = 135</code>. Nilai sisa selalu antara 0 dan 59.</p></div>
+              <p>Konversi jarak mengikuti pola sama: untuk 2.345 meter, <code>2345 // 1000 = 2 km</code> dan <code>2345 % 1000 = 345 m</code>.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b3-durasi"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b3-kecepatan" data-topic="b3-kecepatan" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number amber-text">04</span><div><h3>Kecepatan rata-rata: satuan harus cocok</h3><p>Ubah waktu ke jam sebelum membagi kilometer.</p></div></div>
+            <div class="lesson-body">
+              <div class="formula-card"><span>KONVERSI WAKTU</span><code>waktu_jam = waktu_menit / 60</code><span>KECEPATAN</span><code>km/jam = jarak_km / waktu_jam</code></div>
+              <div class="code-card">
+                <div class="code-card-header"><span>Python · hitung kecepatan</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>jarak_km = float(input("Jarak (km): "))
+waktu_menit = float(input("Waktu (menit): "))
+
+if jarak_km < 0 or waktu_menit <= 0:
+    print("Jarak harus >= 0 dan waktu > 0.")
+else:
+    waktu_jam = waktu_menit / 60
+    kecepatan = jarak_km / waktu_jam
+    print(f"Kecepatan: {kecepatan:.2f} km/jam")</code></pre>
+              </div>
+              <p><strong>Dry run:</strong> 15 km dalam 30 menit → waktu <code>30/60 = 0,5 jam</code> → kecepatan <code>15/0,5 = 30 km/jam</code>. Jarak nol sah jika waktunya positif; waktu nol ditolak sebelum pembagian.</p>
+              <div class="callout callout-amber"><span>!</span><p>Membagi kilometer langsung dengan menit menghasilkan <strong>km/menit</strong>, bukan km/jam. Angka bisa tampak masuk akal, tetapi label satuannya keliru.</p></div>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b3-kecepatan"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card assignment-card" id="b3-praktikum" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number amber-text">↗</span><div><h3>Praktikum, tantangan, dan tugas Bab 3</h3><p>Latih konversi tipe dan satuan dengan dry run serta pemeriksaan balik.</p></div></div>
+            <div class="lesson-body">
+              <p><a class="solution-jump" href="#kode-tugas">Buka kode lengkap dan penjelasan variabel untuk semua tugas →</a></p>
+              <h4>Praktikum terbimbing: konverter kegiatan</h4>
+              <ol>
+                <li>Buat tabel Celsius, Fahrenheit, dan Kelvin untuk semua data uji.</li>
+                <li>Uji mengganti <code>float(input())</code> dengan <code>input()</code>; jelaskan mengapa operasi matematis gagal pada string.</li>
+                <li>Buat berkas terpisah untuk mengubah kilometer menjadi meter; contoh 1,25 km menjadi 1.250 m. Program studi kasus sebaliknya mengubah meter menjadi kilometer dan sisa meter.</li>
+                <li>Bedakan kesalahan format (teks bukan angka) dan kesalahan rumus atau satuan.</li>
+                <li>Tetapkan kontrak input valid, output, pesan penolakan, serta fitur pengembangan.</li>
+                <li>Lakukan dry run normal dan batas sebelum mengetik.</li>
+                <li>Implementasikan versi terkecil lalu tambah fitur bertahap dengan menjaga regresi.</li>
+                <li>Uji penolakan dan catat input pemicu serta hasil sebelum/sesudah perbaikan bug.</li>
+              </ol>
+              <h4>Tantangan bertingkat</h4>
+              <ol>
+                <li><strong>Dasar:</strong> konversikan menit bulat menjadi detik.</li>
+                <li><strong>Menengah:</strong> pecah 135 menit menjadi 2 jam 15 menit dengan <code>//</code> dan <code>%</code>.</li>
+                <li><strong>Lanjut:</strong> tolak suhu Celsius di bawah −273,15; uji nilai tepat di batas dan sedikit di bawahnya.</li>
+                <li><strong>Pengembangan:</strong> konversikan meter menjadi kilometer dan meter sisa; pisahkan nama peserta dari variabel pengukuran.</li>
+                <li><strong>Adaptasi durasi:</strong> input menit bulat tidak negatif dan tampilkan jam/sisa; bandingkan versi awal dengan versi pengembangan yang juga menampilkan detik dan pemeriksaan balik.</li>
+                <li><strong>Pembuktian kecepatan:</strong> ubah menit ke jam sebelum menghitung km/jam; gunakan jarak nol sebagai uji batas sah dan waktu nol sebagai uji penolakan.</li>
+              </ol>
+              <details class="trace-details"><summary>Pembahasan dan hasil uji semua tantangan 1–6</summary><div class="lesson-body nested-body">
+                <ol>
+                  <li><strong>Menit ke detik:</strong> <code>detik = menit × 60</code>; 135 menit menjadi 8.100 detik; 0 diterima, nilai negatif ditolak.</li>
+                  <li><strong>Jam dan sisa:</strong> <code>135 // 60 = 2</code> dan <code>135 % 60 = 15</code>; hasilnya 2 jam 15 menit. Tidak menggunakan pembulatan pembagian biasa.</li>
+                  <li><strong>Nol mutlak:</strong> −273,15°C diterima sebagai batas dan menghasilkan 0 K; −273,16°C ditolak.</li>
+                  <li><strong>Jarak:</strong> 2.345 m menjadi 2 km 345 m dengan <code>// 1000</code> dan <code>% 1000</code>; identitas nama tetap terpisah. Program tambahan mengubah 1,25 km menjadi 1.250 m.</li>
+                  <li><strong>Durasi:</strong> pengembangan menambah total detik dan pemeriksaan balik tanpa mengubah 135 menit → 2 jam 15 menit. Invariant: <code>jam * 60 + sisa == menit</code>.</li>
+                  <li><strong>Kecepatan:</strong> 0 km dalam 20 menit sah dan menghasilkan 0 km/jam. 10 km dalam 0 menit ditolak sebelum pembagian.</li>
+                </ol>
+                <p>Implementasi dan tes ada di folder <code>Bab 3</code>; tes meliputi format, nilai batas, penolakan, konversi dua arah satuan jarak, dan invariant rekonstruksi.</p>
+              </div></details>
+              <details class="trace-details"><summary>Studi kasus mandiri dan kunci analisis</summary><div class="lesson-body nested-body">
+                <p><strong>Kasus:</strong> konverter membaca menit bulat tidak negatif, menghasilkan jam, sisa menit, detik total, dan rekonstruksi. Pengembangan menambah jarak meter ke kilometer dan sisa meter.</p>
+                <ol>
+                  <li><strong>Tujuan:</strong> membantu peserta/panitia membaca durasi dan jarak kegiatan dalam unit yang sesuai.</li>
+                  <li><strong>Urutan:</strong> parse dan validasi → <code>jam = menit // 60</code> → <code>sisa = menit % 60</code> → detik → rekonstruksi → kilometer dan sisa meter → tampilkan.</li>
+                  <li><strong>Data:</strong> nama berupa teks; menit dan meter berupa integer. Identitas tidak dicampur ke besaran yang dihitung.</li>
+                  <li><strong>Trace:</strong> `Rani`, 135 menit, 2345 m → 2 jam 15 menit, 8100 detik, balik 135, 2 km 345 m.</li>
+                  <li><strong>Batas:</strong> nol diterima; 59/60/61 menghasilkan 0:59, 1:00, 1:01. Nilai negatif ditolak. Nilai maksimum tidak ditentukan soal; integer Python dibatasi memori.</li>
+                  <li><strong>Regresi:</strong> durasi 135 menit tetap menjadi 2 jam 15 menit; versi baru menambah detik, pemeriksaan balik, dan jarak.</li>
+                </ol>
+                <p><strong>Evaluasi:</strong> input bertipe <code>str</code>; <code>/</code> adalah pembagian biasa, <code>//</code> pembagian bulat. Periksa durasi dengan <code>jam * 60 + sisa == menit</code>. Format <code>.2f</code> tidak mengubah nilai hitung. Bandingkan konverter Celsius dan durasi: sama-sama mengonversi input sebelum hitung, tetapi tipe dan operasi berbeda. Uji batas 59/60/61 menangkap kesalahan penggunaan pembagian biasa untuk durasi.</p>
+              </div></details>
+              <details class="trace-details"><summary>Jawaban evaluasi formatif dan refleksi (1–9)</summary><div class="lesson-body nested-body">
+                <ol>
+                  <li><code>input()</code> selalu menghasilkan <code>str</code>, termasuk ketika pengguna mengetik angka.</li>
+                  <li><code>/</code> menghasilkan pembagian biasa (dapat berupa pecahan); <code>//</code> mengambil hasil bulat ke bawah.</li>
+                  <li>Periksa dengan <code>jam * 60 + sisa == menit</code>, <code>0 &lt;= sisa &lt; 60</code>, dan <code>detik == menit * 60</code>.</li>
+                  <li><code>.2f</code> mengatur tampilan dua desimal, bukan mengubah nilai numerik yang dihitung.</li>
+                  <li>Pada −273,15°C, Kelvin tepat 0 dan input diterima. Kondisi di bawah konstanta nol mutlak menentukan penolakan.</li>
+                  <li>Durasi negatif ditolak sebelum hasil dibuat; bukti uji adalah pesan penolakan dan tidak ada output konversi.</li>
+                  <li>Suhu dan durasi sama-sama parse input sebelum menghitung. Suhu memakai <code>float</code> dan rumus skala; durasi memakai <code>int</code>, <code>//</code>, dan <code>%</code>.</li>
+                  <li>Kesalahan rawan adalah menggunakan <code>/</code> atau <code>round()</code> untuk durasi. Kasus 59, 60, dan 61 menit menguji batas unit secara langsung.</li>
+                  <li>Dipahami: hasil pembagian bulat dan modulo dapat diperiksa dengan rekonstruksi. Perlu dipelajari: presisi floating-point pada suhu/kecepatan.</li>
+                </ol>
+                <p>Hubungannya: tipe dan konversi Bab 3 memakai urutan dan keputusan dari Bab 2 serta kontrak IPO Bab 1. Batas contoh: durasi/jarak berupa integer; program tidak menyimpan data peserta secara permanen.</p>
+              </div></details>
+            </div>
+          </article>
+        </section>

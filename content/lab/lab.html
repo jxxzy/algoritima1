@@ -1,0 +1,29 @@
+<section class="practice-lab" id="lab" data-searchable aria-labelledby="lab-title">
+          <div class="lab-intro">
+            <span class="section-kicker">COBA LANGSUNG · TANPA INSTALASI</span>
+            <h1 id="lab-title">Laboratorium mini</h1>
+            <p>Ubah input, jalankan algoritmanya, lalu telusuri dari mana hasilnya berasal.</p>
+            <div class="lab-steps"><span><i>01</i> Masukkan data</span><span><i>02</i> Jalankan</span><span><i>03</i> Pahami hasil</span></div>
+          </div>
+          <div class="lab-console">
+            <div class="lab-console-top"><span><i></i><i></i><i></i></span><strong>algoritma.py</strong><small>SIMULATOR</small></div>
+            <form id="lab-form" class="lab-form">
+              <label for="lab-operation">Pilih eksperimen</label>
+              <select id="lab-operation" name="operation">
+                <option value="duration">Pecah durasi · menit → jam</option>
+                <option value="parking">Hitung tarif parkir · Rp</option>
+                <option value="geometry">Hitung luas &amp; keliling</option>
+              </select>
+              <div class="lab-inputs">
+                <label class="lab-field" for="lab-value-a"><span id="lab-label-a">Durasi (menit)</span><input id="lab-value-a" name="valueA" type="number" step="1" value="135" required></label>
+                <label class="lab-field" id="lab-field-b" for="lab-value-b"><span id="lab-label-b">-</span><input id="lab-value-b" name="valueB" type="number" step="any" value="3"></label>
+              </div>
+              <div class="lab-actions"><button class="button button-primary" type="submit">Jalankan algoritma <span aria-hidden="true">→</span></button><button class="lab-example" id="lab-example" type="button">Muat contoh</button></div>
+            </form>
+            <div class="lab-output" id="lab-output" aria-live="polite" aria-atomic="true">
+              <span class="output-prompt">HASIL PROGRAM</span>
+              <strong>Siap untuk dicoba</strong>
+              <p>Pilih eksperimen, lalu tekan “Jalankan algoritma”.</p>
+            </div>
+          </div>
+        </section>

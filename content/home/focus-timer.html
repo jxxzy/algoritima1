@@ -1,0 +1,33 @@
+<section class="focus-timer-section" id="timer" data-searchable aria-labelledby="timer-title">
+          <div class="focus-timer-card">
+            <div class="timer-copy">
+              <span class="section-kicker">ATUR RITME BELAJARMU</span>
+              <h2 id="timer-title">Fokus satu langkah, lalu rehat.</h2>
+              <p>Pilih durasi, mulai sesi fokus, dan biarkan jeda singkat menjaga energimu.</p>
+              <div class="timer-presets" role="group" aria-label="Pilih durasi sesi fokus">
+                <button class="timer-preset" type="button" data-focus-minutes="25" data-break-minutes="5" aria-pressed="true">25 / 5 menit</button>
+                <button class="timer-preset" type="button" data-focus-minutes="50" data-break-minutes="10" aria-pressed="false">50 / 10 menit</button>
+                <button class="timer-preset" type="button" data-focus-minutes="90" data-break-minutes="15" aria-pressed="false">90 / 15 menit</button>
+              </div>
+              <div class="timer-actions">
+                <button class="button button-primary" id="timer-start" type="button">Mulai fokus</button>
+                <button class="button button-quiet" id="timer-reset" type="button">Atur ulang</button>
+                <button class="timer-skip" id="timer-skip" type="button">Lewati fase</button>
+              </div>
+              <p class="timer-status" id="timer-status" role="status" aria-live="polite">Siap memulai sesi fokus.</p>
+            </div>
+            <div class="timer-dial" id="timer-dial" role="group" aria-label="Timer sesi fokus">
+              <svg class="timer-ring" viewBox="0 0 180 180" aria-hidden="true">
+                <circle class="timer-ring-track" cx="90" cy="90" r="79"></circle>
+                <circle class="timer-ring-progress" id="timer-ring-progress" cx="90" cy="90" r="79"></circle>
+              </svg>
+              <div class="timer-dial-copy">
+                <span class="timer-phase" id="timer-phase">WAKTU FOKUS</span>
+                <time class="timer-display" id="timer-display" role="timer" aria-label="25 menit tersisa">25:00</time>
+                <span class="timer-sessions">Sesi selesai <strong id="timer-sessions">0</strong></span>
+              </div>
+              <span class="timer-orbit" aria-hidden="true"></span>
+            </div>
+            <span class="visually-hidden" id="timer-progress" role="progressbar" aria-label="Progres sesi fokus" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0% selesai"></span>
+          </div>
+        </section>

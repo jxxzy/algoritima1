@@ -1,0 +1,162 @@
+<section class="chapter-section" id="bab-2" aria-labelledby="bab-2-title">
+          <div class="chapter-heading">
+            <div class="chapter-title-group"><span class="chapter-badge badge-violet">BAB 02</span><div><h2 id="bab-2-title">Narasi, flowchart, dan pseudocode</h2><p>Rancang alur yang konsisten sebelum menulis program.</p></div></div>
+            <button class="mark-chapter" data-chapter="2" type="button"><span>✓</span> Tandai bab selesai</button>
+          </div>
+          <div class="chapter-intro">
+            <div><span class="section-kicker">TUJUAN BELAJAR</span><p>Terjemahkan spesifikasi yang sama ke narasi, pseudocode, flowchart, dan kode; pastikan seluruh jalur keputusan dapat ditelusuri.</p></div>
+            <div class="goal-icon goal-violet" aria-hidden="true">⌘</div>
+          </div>
+
+          <article class="lesson-card" id="b2-representasi" data-topic="b2-representasi" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number violet-text">01</span><div><h3>Tiga cara merepresentasikan algoritma</h3><p>Bahasa sehari-hari, langkah terstruktur, dan diagram alur.</p></div></div>
+            <div class="lesson-body">
+              <div class="representation-grid"><div><span class="representation-icon">Aa</span><strong>Narasi</strong><p>Jelaskan urutan langkah dengan bahasa sehari-hari.</p></div><div><span class="representation-icon violet-icon">{ }</span><strong>Pseudocode</strong><p>Tulis struktur algoritma tanpa terikat sintaks bahasa tertentu.</p></div><div><span class="representation-icon amber-icon">◇</span><strong>Flowchart</strong><p>Gambarkan urutan, operasi, dan percabangan memakai simbol.</p></div></div>
+              <h4>Simbol flowchart yang perlu diingat</h4>
+              <div class="symbol-list"><div><span class="symbol-pill terminal">○</span><span><strong>Oval</strong><small>Mulai atau selesai</small></span></div><div><span class="symbol-pill io">▱</span><span><strong>Jajar genjang</strong><small>Masukan atau keluaran</small></span></div><div><span class="symbol-pill process">▭</span><span><strong>Persegi panjang</strong><small>Proses atau perhitungan</small></span></div><div><span class="symbol-pill decision">◇</span><span><strong>Belah ketupat</strong><small>Keputusan dengan cabang berlabel</small></span></div></div>
+              <div class="callout callout-violet"><span>↳</span><p>Setiap keputusan harus memiliki cabang yang bermakna—misalnya <strong>Ya</strong> dan <strong>Tidak</strong>—dan kedua jalur harus berakhir atau berlanjut ke langkah yang jelas.</p></div>
+              <p class="question-prompt"><strong>Uji pemahaman:</strong> untuk luas persegi panjang, apakah output bisa langsung mengikuti mulai? Tidak—panjang dan lebar harus dibaca, diperiksa, lalu dihitung lebih dahulu.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b2-representasi"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b2-geometri" data-topic="b2-geometri" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number violet-text">02</span><div><h3>Luas dan keliling persegi panjang</h3><p>Validasi kedua sisi sebelum menghitung dan menampilkan hasil.</p></div></div>
+            <div class="lesson-body">
+              <div class="spec-grid"><div><small>INPUT</small><strong>Panjang p dan lebar l</strong><span>Angka positif, satuan sama</span></div><div><small>PROSES</small><strong>L = p × l</strong><span>K = 2 × (p + l)</span></div><div><small>OUTPUT</small><strong>Luas dan keliling</strong><span>Satuan² dan satuan panjang</span></div></div>
+              <div class="pseudocode-card"><div class="code-card-header"><span>Pseudocode</span><span class="tag">ALGORITMA</span></div><pre><code>MULAI
+BACA panjang, lebar
+JIKA panjang <= 0 ATAU lebar <= 0
+    TULIS "Sisi harus positif."
+SELAIN ITU
+    luas <- panjang * lebar
+    keliling <- 2 * (panjang + lebar)
+    TULIS luas dan keliling
+SELESAI</code></pre></div>
+              <div class="code-card">
+                <div class="code-card-header"><span>Python · luas &amp; keliling</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>panjang = float(input("Panjang (m): "))
+lebar = float(input("Lebar (m): "))
+
+if panjang <= 0 or lebar <= 0:
+    print("Sisi harus positif.")
+else:
+    luas = panjang * lebar
+    keliling = 2 * (panjang + lebar)
+    print(f"Luas = {luas:.2f} m2")
+    print(f"Keliling = {keliling:.2f} m")</code></pre>
+              </div>
+              <details class="trace-details"><summary>Dry run: panjang 5 m, lebar 3 m</summary><div class="trace-table"><div><b>Langkah</b><b>Nilai</b></div><div><span>Validasi</span><code>5 > 0 dan 3 > 0 → lolos</code></div><div><span>Luas</span><code>5 × 3 = 15 m²</code></div><div><span>Keliling</span><code>2 × (5 + 3) = 16 m</code></div><div><span>Output</span><code>Luas 15.00 m2 · Keliling 16.00 m</code></div></div></details>
+              <p>Sisi nol dan negatif ditolak. Samakan satuan sebelum menghitung: <code>5 m × 30 cm</code> harus dinormalisasi menjadi <code>5 m × 0,30 m = 1,50 m²</code>.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b2-geometri"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b2-parkir" data-topic="b2-parkir" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number violet-text">03</span><div><h3>Tarif parkir dengan batas harian</h3><p>Perhatikan jam pertama, jam tambahan, lalu kebijakan batas tarif.</p></div></div>
+            <div class="lesson-body">
+              <p>Tarif latihan Rp3.000 untuk satu jam pertama, lalu Rp2.000 per jam tambahan. Durasi harus bilangan bulat minimal satu jam. Pengembangan menerapkan batas maksimal harian Rp15.000 setelah tarif awal dihitung.</p>
+              <div class="formula-card"><span>tarif awal</span><code>3.000 + (jam − 1) × 2.000</code><span>tarif akhir</span><code>min(tarif awal, 15.000)</code></div>
+              <div class="code-card">
+                <div class="code-card-header"><span>Python · hitung tarif</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>jam = int(input("Durasi parkir (jam): "))
+
+if jam < 1:
+    print("Durasi minimal satu jam.")
+else:
+    jam_tambahan = jam - 1
+    biaya_awal = 3000 + jam_tambahan * 2000
+    biaya_akhir = min(biaya_awal, 15000)
+    print(f"Biaya awal: Rp{biaya_awal}")
+    print(f"Tarif akhir: Rp{biaya_akhir}")</code></pre>
+              </div>
+              <div class="test-pills"><span>1 jam → Rp3.000</span><span>3 jam → Rp7.000</span><span>7 jam → Rp15.000</span><span>8 jam → tetap Rp15.000</span></div>
+              <p class="question-prompt"><strong>Kesalahan umum:</strong> rumus <code>jam * 2000</code> untuk biaya tambahan menghitung jam pertama dua kali. Uji satu jam akan membongkar bug tersebut.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b2-parkir"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b2-tukar" data-topic="b2-tukar" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number violet-text">04</span><div><h3>Menukar dua nilai dengan variabel bantu</h3><p>Simpan nilai lama sebelum menimpa variabel.</p></div></div>
+            <div class="lesson-body">
+              <div class="code-card">
+                <div class="code-card-header"><span>Python · pertukaran</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>a = input("Isi wadah A: ")
+b = input("Isi wadah B: ")
+
+sementara = a
+a = b
+b = sementara
+
+print(f"Sesudah: A={a}, B={b}")</code></pre>
+              </div>
+              <div class="trace-table"><div><b>Tahap</b><b>a · b · sementara</b></div><div><span>Awal</span><code>merah · biru · —</code></div><div><span>Simpan a</span><code>merah · biru · merah</code></div><div><span>a = b</span><code>biru · biru · merah</code></div><div><span>b = sementara</span><code>biru · merah · merah</code></div></div>
+              <p>Jika langsung menulis <code>a = b</code>, isi awal <code>a</code> hilang. Saat <code>b = a</code> dilakukan sesudahnya, kedua variabel akan berisi nilai yang sama. Variabel sementara menjaga nilai yang masih diperlukan.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b2-tukar"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card assignment-card" id="b2-praktikum" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number violet-text">↗</span><div><h3>Praktikum, tantangan, dan tugas Bab 2</h3><p>Samakan narasi, pseudocode, diagram, kode, dan hasil dry run.</p></div></div>
+            <div class="lesson-body">
+              <p><a class="solution-jump" href="#kode-tugas">Buka kode lengkap dan penjelasan variabel untuk semua tugas →</a></p>
+              <h4>Praktikum terbimbing: rancangan tarif parkir</h4>
+              <ol>
+                <li>Tulis narasi yang menyebut satuan durasi.</li>
+                <li>Gambar flowchart lengkap dengan keputusan dan cabang berlabel.</li>
+                <li>Dry run 5 jam, 3 jam, dan 0 jam sebelum menulis kode.</li>
+                <li>Bandingkan setiap cabang kode dengan flowchart dan perbaiki yang tidak cocok.</li>
+                <li>Tetapkan kontrak input valid, output, dan penolakan; pisahkan aturan wajib dan fitur pengembangan.</li>
+                <li>Dry run satu kasus normal dan satu batas.</li>
+                <li>Implementasikan bertahap sambil menjaga hasil lama (regresi).</li>
+                <li>Uji penolakan dan simpan input pemicu serta hasil sebelum/sesudah perbaikan bug.</li>
+              </ol>
+              <h4>Tantangan bertingkat</h4>
+              <ol>
+                <li><strong>Dasar:</strong> tulis pseudocode keliling persegi panjang.</li>
+                <li><strong>Menengah:</strong> tampilkan luas dan keliling dari satu kali pembacaan input.</li>
+                <li><strong>Lanjut:</strong> konversikan sentimeter ke meter sebelum menghitung luas.</li>
+                <li><strong>Pengembangan:</strong> tambahkan batas tarif harian Rp15.000 sesudah biaya awal dihitung dan perbarui ketiga representasi.</li>
+                <li><strong>Adaptasi parkir:</strong> jam bulat minimal 1; Rp3.000 jam pertama, Rp2.000 per jam tambahan. Tulis pseudocode dan flowchart, pastikan jam pertama tidak dihitung dua kali, lalu bandingkan perubahan aturan dengan input yang sama.</li>
+                <li><strong>Pembuktian pertukaran:</strong> tukar nilai teks dengan variabel bantu; trace nilai awal, nilai sementara, dan hasil; tambahkan penolakan input nonteks pada helper.</li>
+              </ol>
+              <details class="trace-details"><summary>Pembahasan dan hasil uji semua tantangan 1–6</summary><div class="lesson-body nested-body">
+                <ol>
+                  <li><strong>Keliling:</strong> <code>keliling = 2 × (panjang + lebar)</code>; 5 m dan 3 m menghasilkan 16 m.</li>
+                  <li><strong>Luas dan keliling:</strong> kedua sisi dibaca sekali; 5 × 3 menghasilkan luas 15 m² dan keliling 16 m.</li>
+                  <li><strong>Konversi satuan:</strong> 250 cm dibagi 100 menjadi 2,5 m sebelum hitung; dengan lebar 4 m, luas 10 m² dan keliling 13 m.</li>
+                  <li><strong>Batas tarif:</strong> 7 jam = Rp15.000; 8 jam biaya awal Rp17.000 dibatasi menjadi Rp15.000; 3 jam tetap Rp7.000.</li>
+                  <li><strong>Tarif bertingkat:</strong> tambahan = jam − 1. Satu jam menghasilkan Rp3.000, bukan Rp5.000; tiga jam menghasilkan Rp7.000.</li>
+                  <li><strong>Pertukaran:</strong> merah/biru → simpan merah → A menjadi biru → B menjadi merah. Uji tipe salah ditolak tanpa hasil sukses.</li>
+                </ol>
+                <p>Narasi, pseudocode, flowchart, dan kode untuk parkir menerapkan keputusan yang sama. Tes otomatis juga mencakup sisi nol/negatif, input bukan angka, overflow/underflow, serta pertukaran teks.</p>
+              </div></details>
+              <details class="trace-details"><summary>Studi kasus mandiri dan kunci analisis</summary><div class="lesson-body nested-body">
+                <p><strong>Kasus:</strong> durasi parkir jam bulat minimal satu. Tarif Rp3.000 untuk jam pertama dan Rp2.000 per jam tambahan. Pengembangan menerapkan tarif maksimum Rp15.000.</p>
+                <ol>
+                  <li><strong>Tujuan/input/output:</strong> hitung tarif dari durasi; tampilkan biaya awal dan tarif akhir; jam harus bilangan bulat positif.</li>
+                  <li><strong>Alur:</strong> baca jam → bila jam &lt; 1, tolak dan selesai → hitung tambahan dan biaya awal → batasi dengan <code>min(biaya_awal, 15000)</code> → tampilkan.</li>
+                  <li><strong>Data:</strong> jam, jam tambahan, dan biaya rupiah adalah integer. Hasil hanya dibuat pada cabang valid.</li>
+                  <li><strong>Trace:</strong> 3 jam → tambahan 2 → biaya awal Rp7.000 → biaya akhir Rp7.000.</li>
+                  <li><strong>Batas:</strong> 1 jam Rp3.000; 7 jam tepat Rp15.000; 0 dan negatif ditolak. Input teks bukan jam bulat.</li>
+                  <li><strong>Regresi:</strong> 3 jam tetap Rp7.000; 8 jam berubah dari Rp17.000 menjadi Rp15.000 karena aturan batas.</li>
+                </ol>
+                <p><strong>Evaluasi:</strong> pseudocode menjelaskan algoritma bebas bahasa; dua jalur keputusan membedakan valid/tidak; variabel sementara menjaga nilai yang akan ditimpa. Uji satu jam menemukan rumus biaya tambahan yang keliru karena hasil wajib Rp3.000, bukan Rp5.000.</p>
+              </div></details>
+              <details class="trace-details"><summary>Jawaban evaluasi formatif dan refleksi (1–9)</summary><div class="lesson-body nested-body">
+                <ol>
+                  <li>Pseudocode menyatakan langkah serta keputusan secara terstruktur tanpa bergantung pada sintaks bahasa tertentu.</li>
+                  <li>Keputusan memiliki jalur Ya/Tidak agar keadaan valid dan tidak valid menghasilkan alur yang berbeda.</li>
+                  <li>Variabel sementara menyimpan nilai lama sebelum nilai lain ditimpa saat pertukaran.</li>
+                  <li>Masukkan contoh yang sama ke narasi, pseudocode, flowchart, dan kode; bandingkan syarat, rumus, cabang, dan output.</li>
+                  <li>Uji batas sisi 0 dan 3 harus ditolak karena kedua sisi wajib positif; tidak boleh menampilkan hasil luas.</li>
+                  <li>Input <code>abc</code> gagal saat parsing sehingga luas tidak dihitung. Input sangat besar dapat menyebabkan overflow; hasil tak hingga juga ditolak.</li>
+                  <li>Luas dan parkir sama-sama memeriksa prasyarat dahulu. Luas mengalikan dua sisi positif; parkir menerapkan tarif dasar lalu tambahan jam.</li>
+                  <li>Bug rawan: menghitung tarif tambahan sebanyak <code>jam</code>, bukan <code>jam - 1</code>. Uji 1 jam harus Rp3.000 dan mengungkap kekeliruan.</li>
+                  <li>Dipahami: setiap cabang diagram harus sejalan dengan kode. Perlu dipelajari: normalisasi satuan; 250 cm harus menjadi 2,5 m sebelum hitung.</li>
+                </ol>
+                <p>Hubungannya: Bab 2 mengubah spesifikasi IPO Bab 1 menjadi representasi algoritma yang dapat ditelusuri. Batas contoh: tarif adalah model latihan, hanya memakai jam bulat, dan batas Rp15.000 diterapkan pada satu transaksi.</p>
+              </div></details>
+            </div>
+          </article>
+        </section>

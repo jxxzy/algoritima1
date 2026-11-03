@@ -1,59 +1,49 @@
 # Belajar Algoritma — Algoritma dan Struktur Data I
 
-Situs pembelajaran statis berbahasa Indonesia untuk materi Bab 1–3. Dibuat dengan HTML, CSS, dan JavaScript
-## Isi situs
+Situs pembelajaran statis berbahasa Indonesia untuk materi Bab 1–3. Sumber materi, halaman, gaya, dan logika situs dipisahkan; `scripts/build.mjs` menghasilkan situs multi-page siap deploy ke GitHub Pages.
 
-- **Bab 1:** algoritma dan input–proses–output, kontrak masalah, validasi kartu peserta, tipe NIM, biaya kegiatan, praktikum dan studi kasus.
-- **Bab 2:** narasi, pseudocode, simbol flowchart, luas/keliling, tarif parkir, pertukaran nilai, tantangan dan studi kasus.
-- **Bab 3:** variabel, tipe data, input/konversi, suhu, durasi, jarak, kecepatan, pemeriksaan balik, praktikum dan studi kasus.
-- Pencarian materi, progres topik lokal, tombol salin kode, kuis dengan umpan balik, mode gelap, dan tata letak responsif.
-- Navigasi horizontal desktop, menu samping untuk tablet/ponsel, animasi masuk saat menggulir, mode fokus, dan materi tersimpan yang tetap ada di browser.
-- Timer fokus bergaya Pomodoro dengan pilihan sesi 25/5, 50/10, dan 90/15 menit, jeda/lanjut, atur ulang, dan progres animasi.
-- Peta web menghubungkan 24 praktikum, tantangan, dan studi kasus buku ke semua 14 program Python; setiap tugas membuka kode beserta panduan variabel. Jawaban latihan konsep tersedia di pembahasan masing-masing bab.
-- Laboratorium mini untuk mencoba konversi durasi, tarif parkir, dan geometri dengan penelusuran langkah hasil.
-- Penampil kode lengkap untuk seluruh 14 program tugas Bab 1–3, dilengkapi panduan variabel/fungsi serta tautan unduh dan salin kode. Kode diambil langsung dari berkas Python yang diuji.
-- Kredit penulis situs: **Mr.4Nony Alias Josua**.
+## Halaman dan fitur
 
-## Struktur proyek
+- Beranda dengan peta belajar, progres, timer fokus, dan materi tersimpan.
+- Materi Bab 1, Bab 2, dan Bab 3 pada halaman masing-masing.
+- Kode Python lengkap untuk tugas-tugas buku, disertai panduan variabel, parameter, dan fungsi.
+- Laboratorium interaktif, visualizer algoritma, evaluasi tiap bab, dan referensi cepat.
+- Pencarian lintas bab (`Ctrl+K` atau `/`), mode fokus, mode gelap mengikuti sistem, dan bookmark persisten.
+- Layout responsif, navigasi keyboard, indikator fokus, heading semantik, dan animasi yang menghormati preferensi reduced motion.
+- PWA untuk akses offline setelah halaman pertama dimuat, termasuk kode Python.
+- Penulis situs: **Mr.4Nony Alias Josua**.
+
+## Struktur sumber
 
 ```text
-.
-├── Bab 1/       # Program, tes, jawaban, dan tutorial Bab 1
-├── Bab 2/       # Program, tes, jawaban, dan tutorial Bab 2
-├── Bab 3/       # Program, tes, jawaban, dan tutorial Bab 3
-├── Materi/      # PDF materi sumber Bab 1–3
-├── .github/     # Workflow GitHub Pages
-├── index.html   # Situs pembelajaran (dipertahankan di root untuk Pages)
-├── styles.css
-└── app.js
+content/
+  chapters/       Materi terpisah Bab 1–3
+  home/           Fragmen dashboard
+  lab/            Konten laboratorium
+  reference/      Konten referensi
+  shared/         Navigasi, footer, dan materi kode tugas
+scripts/
+  build.mjs       Membuat halaman multi-page, aset minifikasi/hash, indeks cari, dan PWA
+app.js            Interaksi lintas halaman
+styles.css        Gaya situs
+Bab 1/, Bab 2/, Bab 3/
+                  Program Python dan tes tugas
+dist/             Hasil build (dibuat otomatis, tidak disimpan di Git)
 ```
 
-PDF materi sumber berada di [Materi](./Materi/README.md).
+`index.html` di root hanya menjadi pintu masuk dokumentasi sumber. Situs yang dihasilkan mempunyai halaman terpisah di `dist/index.html`, `dist/bab-1/`, `dist/bab-2/`, `dist/bab-3/`, `dist/lab/`, dan `dist/referensi/`.
 
-## Menjalankan lokal
+## Build dan uji lokal
 
-Tidak perlu memasang paket. Buka PowerShell di folder proyek, lalu jalankan:
+Persyaratan: Node.js 22+ dan Python 3 untuk menjalankan tes program.
 
 ```powershell
-python -m http.server 8000
+npm ci
+npm run build
+python -m http.server 8000 --directory dist
 ```
 
-Buka `http://localhost:8000` di browser. Jalankan melalui server lokal (bukan membuka `index.html` sebagai `file://`) agar penampil kode dapat membaca berkas Python.
-
-## Deploy ke GitHub Pages
-
-Workflow `.github/workflows/pages.yml` mengunggah isi root repo sebagai situs Pages saat ada push ke branch `main`, atau saat workflow dijalankan manual.
-
-1. Pastikan repository menggunakan branch `main`.
-2. Pada GitHub buka **Settings → Pages** dan pilih **GitHub Actions** sebagai sumber deployment bila belum dipilih.
-3. Push perubahan ke `main`.
-4. Periksa **Actions → Deploy learning site to GitHub Pages** sampai berhasil. URL situs akan muncul di halaman deployment atau **Settings → Pages**.
-
-Untuk repository proyek ini, URL GitHub Pages biasanya `https://jxxzy.github.io/algoritima1/` setelah Pages diaktifkan, kecuali jika repository memakai custom domain.
-
-## Memverifikasi
-
-Tes program latihan berada per bab:
+Buka `http://localhost:8000`. Jalankan tes program per bab:
 
 ```powershell
 python -B -m unittest discover -s 'Bab 1' -v
@@ -61,4 +51,13 @@ python -B -m unittest discover -s 'Bab 2' -v
 python -B -m unittest discover -s 'Bab 3' -v
 ```
 
-`-B` mencegah Python membuat file cache bytecode saat pengujian.
+## Deploy ke GitHub Pages
+
+Workflow [`.github/workflows/pages.yml`](./.github/workflows/pages.yml) memasang dependensi, membangun `dist/`, lalu mengirim hasilnya ke GitHub Pages setiap ada push ke `main`.
+
+1. Pada repository GitHub, buka **Settings → Pages** dan pilih **GitHub Actions** sebagai sumber deployment.
+2. Push perubahan ke branch `main`.
+3. Periksa **Actions → Deploy learning site to GitHub Pages** dan tunggu sampai langkah deploy berhasil.
+4. URL aktif ditampilkan pada hasil workflow atau **Settings → Pages**. Untuk repository ini biasanya `https://jxxzy.github.io/algoritima1/`.
+
+GitHub Pages mengelola header cache server. Build memberi nama hash pada CSS/JavaScript dan menggunakan service worker untuk cache versi aset serta materi offline; konfigurasi ini tidak mengubah TTL header yang ditetapkan GitHub Pages.

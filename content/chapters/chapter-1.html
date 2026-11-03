@@ -1,0 +1,140 @@
+<section class="chapter-section" id="bab-1" aria-labelledby="bab-1-title">
+          <div class="chapter-heading">
+            <div class="chapter-title-group"><span class="chapter-badge badge-blue">BAB 01</span><div><h2 id="bab-1-title">Algoritma dan program pertama</h2><p>Ubah masalah menjadi langkah terurut yang dapat dijalankan.</p></div></div>
+            <button class="mark-chapter" data-chapter="1" type="button"><span>✓</span> Tandai bab selesai</button>
+          </div>
+          <div class="chapter-intro">
+            <div><span class="section-kicker">TUJUAN BELAJAR</span><p>Setelah bab ini, kamu dapat mengidentifikasi input, proses, output, menyusun kontrak sederhana, dan menjalankan program Python interaktif.</p></div>
+            <div class="goal-icon" aria-hidden="true">◎</div>
+          </div>
+
+          <article class="lesson-card" id="b1-ipo" data-topic="b1-ipo" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number">01</span><div><h3>Berpikir dengan input, proses, output</h3><p>Algoritma adalah urutan langkah yang jelas untuk menyelesaikan masalah.</p></div></div>
+            <div class="lesson-body">
+              <p>Bayangkan petugas pendaftaran seminar. Nama peserta adalah <strong>input</strong>, menyusun sapaan adalah <strong>proses</strong>, dan pesan konfirmasi adalah <strong>output</strong>. Langkahnya harus jelas agar masukan yang sama memberi hasil yang dapat diperkirakan.</p>
+              <div class="ipo-grid"><div><span class="ipo-icon">↓</span><small>INPUT</small><strong>Nama peserta</strong><code>"Rani"</code></div><span class="ipo-connector">→</span><div><span class="ipo-icon process">⚙</span><small>PROSES</small><strong>Susun sapaan</strong><code>f"Halo, {nama}"</code></div><span class="ipo-connector">→</span><div><span class="ipo-icon output">↑</span><small>OUTPUT</small><strong>Pesan konfirmasi</strong><code>Halo, Rani!</code></div></div>
+              <div class="callout callout-blue"><span>✦</span><p><strong>Algoritma ≠ program.</strong> Algoritma adalah rancangan langkahnya; program adalah algoritma yang ditulis dalam bahasa yang bisa dieksekusi komputer.</p></div>
+              <h4>Mulai dari kontrak</h4>
+              <p>Sebelum menulis kode, tetapkan data yang tersedia, hasil yang diminta, dan syarat keberhasilan. Contoh kontrak kartu peserta:</p>
+              <ul><li>Nama dan NIM wajib diisi setelah spasi tepi dibuang.</li><li>NIM disimpan sebagai teks agar nol depan tetap ada.</li><li>Kartu diterbitkan hanya jika seluruh data wajib lengkap.</li></ul>
+              <details class="trace-details"><summary>Telusuri contoh input</summary><div class="trace-table"><div><b>Tahap</b><b>Keadaan</b></div><div><span>Input</span><code>nama = "  Siti Aminah  ", NIM = "00125"</code></div><div><span>Normalisasi</span><code>nama = "Siti Aminah", NIM tetap "00125"</code></div><div><span>Validasi</span><code>Kedua teks tidak kosong → lolos</code></div><div><span>Output</span><code>Kartu peserta lengkap ditampilkan</code></div></div></details>
+              <p class="question-prompt"><strong>Coba pikirkan:</strong> apakah nama yang isinya tiga spasi sudah memenuhi kontrak? Apa yang harus dilakukan sebelum memutuskan?</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b1-ipo"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b1-kartu" data-topic="b1-kartu" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number">02</span><div><h3>Validasi sebelum menampilkan kartu</h3><p>Laporkan semua data yang kurang, jangan tampilkan keberhasilan palsu.</p></div></div>
+            <div class="lesson-body">
+              <p>Data yang hanya berisi spasi dianggap kosong setelah <code>.strip()</code>. Kumpulkan semua kesalahan terlebih dahulu; jangan berhenti pada kesalahan pertama. Nama dan kota dua kata tetap utuh, sedangkan NIM bukan angka hitung.</p>
+              <div class="code-card">
+                <div class="code-card-header"><span>Python · kartu peserta</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>nama = input("Nama lengkap: ").strip()
+nim = input("NIM: ").strip()
+kelas = input("Kelas: ").strip().upper()
+kota = input("Kota: ").strip()
+
+data = {"Nama": nama, "NIM": nim,
+        "Kelas": kelas, "Kota": kota}
+kosong = [label for label, nilai in data.items()
+          if not nilai]
+
+if kosong:
+    print("Belum lengkap:", ", ".join(kosong))
+else:
+    for label, nilai in data.items():
+        print(f"{label}: {nilai}")</code></pre>
+              </div>
+              <div class="callout callout-amber"><span>!</span><p><strong>Kenapa NIM bertipe teks?</strong> Mengubah `"00125"` menjadi integer menghasilkan `125`. Nol depan adalah bagian identitas, bukan nilai untuk dijumlahkan.</p></div>
+              <p><strong>Kasus batas:</strong> jika nama, NIM, dan kota kosong sedangkan kelas terisi, program menyebut ketiga kolom yang kurang sekaligus dan tidak mencetak kartu.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b1-kartu"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b1-biaya" data-topic="b1-biaya" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number">03</span><div><h3>Menghitung biaya kegiatan</h3><p>Pisahkan nilai tetap, tarif per orang, dan jumlah peserta.</p></div></div>
+            <div class="lesson-body">
+              <p>Biaya tetap Rp50.000 dan konsumsi Rp12.000 per peserta. Untuk lima peserta, hitung konsumsi dahulu, lalu tambahkan biaya tetap.</p>
+              <div class="formula-card"><span>konsumsi</span><code>5 × Rp12.000 = Rp60.000</code><span>total</span><code>Rp50.000 + Rp60.000 = Rp110.000</code></div>
+              <div class="code-card">
+                <div class="code-card-header"><span>Python · biaya kegiatan</span><button class="copy-code" type="button">Salin kode</button></div>
+                <pre><code>BIAYA_TETAP = 50_000
+KONSUMSI_PER_ORANG = 12_000
+peserta = int(input("Banyak peserta: "))
+
+if peserta <= 0:
+    print("Peserta harus lebih dari nol.")
+else:
+    konsumsi = peserta * KONSUMSI_PER_ORANG
+    total = BIAYA_TETAP + konsumsi
+    print(f"Total rencana: Rp{total}")</code></pre>
+              </div>
+              <p>Input <code>1</code> menghasilkan Rp62.000. Input <code>0</code> atau bilangan negatif ditolak. Input teks seperti <code>abc</code> tidak dapat dikonversi dengan <code>int()</code>; versi yang lebih tangguh menangani kesalahan format tersebut dan menjelaskan penolakannya.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b1-biaya"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card assignment-card" id="b1-praktikum" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number">↗</span><div><h3>Praktikum, tantangan, dan tugas Bab 1</h3><p>Kerjakan tugas dengan spesifikasi, dry run, program, dan bukti pengujian.</p></div></div>
+            <div class="lesson-body">
+              <p><a class="solution-jump" href="#kode-tugas">Buka kode lengkap dan penjelasan variabel untuk semua tugas →</a></p>
+              <h4>Praktikum terbimbing: kartu peserta</h4>
+              <ol>
+                <li>Jalankan program sapaan dan catat input serta output.</li>
+                <li>Ubah profil menjadi kartu praktikum dengan NIM sebagai teks agar nol depan tetap ada.</li>
+                <li>Uji nama kosong, nama dua kata, dan prodi kosong; jelaskan hasil setiap kasus.</li>
+                <li>Kumpulkan kode dan tabel uji. Sertakan bukti eksekusi jika diminta pengajar.</li>
+                <li>Tulis kontrak data sah, output, penolakan, dan pisahkan fitur wajib dari pengembangan.</li>
+                <li>Lakukan dry run satu contoh normal dan satu batas sebelum mengetik kode.</li>
+                <li>Implementasikan versi terkecil lalu tambah fitur bertahap dengan menjaga kasus lama.</li>
+                <li>Uji penolakan; catat input pemicu dan hasil sebelum/sesudah bila memperbaiki bug.</li>
+              </ol>
+              <h4>Tantangan bertingkat</h4>
+              <ol>
+                <li><strong>Dasar:</strong> tambahkan kota asal ke perkenalan lengkap.</li>
+                <li><strong>Menengah:</strong> untuk nama kosong, sebutkan kolom yang salah.</li>
+                <li><strong>Lanjut:</strong> rancang pendaftaran tiga peserta; gunakan perulangan untuk langkah input/validasi yang berulang.</li>
+                <li><strong>Pengembangan:</strong> tambahkan sapaan pagi atau sore tanpa mengubah identitas. Uji nama dan kota yang mengandung spasi tengah.</li>
+                <li><strong>Adaptasi kartu:</strong> wajibkan nama, NIM, dan kelas; pertahankan NIM teks dan anggap spasi saja sebagai kosong. Bandingkan kontrak lama dan baru dengan satu input.</li>
+                <li><strong>Pembuktian biaya:</strong> biaya tetap Rp50.000 + konsumsi Rp12.000 per peserta. Trace satu uji batas dan tambahkan penolakan input nonangka.</li>
+              </ol>
+              <details class="trace-details"><summary>Pembahasan dan hasil uji semua tantangan 1–6</summary><div class="lesson-body nested-body">
+                <ol>
+                  <li><strong>Kota:</strong> kartu menampilkan kota dan kalimat perkenalan, misalnya “Saya Siti Aminah berasal dari Bandung.” Spasi di tengah nama/kota dipertahankan.</li>
+                  <li><strong>Kolom kosong:</strong> nama kosong menghasilkan pesan <code>Nama belum diisi.</code>; tidak ada kartu sukses. Semua kolom kosong dilaporkan bersamaan.</li>
+                  <li><strong>Tiga peserta:</strong> satu perulangan <code>for</code> menjalankan baca–validasi–tampil tepat tiga kali. Peserta yang ditolak tidak menghentikan peserta berikutnya.</li>
+                  <li><strong>Sapaan:</strong> <code>pagi</code> menghasilkan “Selamat pagi” dan <code>sore</code> menghasilkan “Selamat sore”; NIM dan kolom identitas tidak berubah.</li>
+                  <li><strong>Kartu wajib:</strong> versi tiga kolom dibandingkan dengan versi nama/NIM/kelas/kota. <code>00125</code> tetap teks; input spasi saja ditolak; kartu hanya keluar bila lengkap.</li>
+                  <li><strong>Biaya:</strong> untuk 1 peserta, konsumsi Rp12.000 dan total Rp62.000. <code>0</code>, <code>-2</code>, dan <code>abc</code> ditolak; tidak ada total pada jalur gagal.</li>
+                </ol>
+                <p>Implementasi ada di folder <code>Bab 1</code>; tes otomatis mencakup kartu normal, banyak kolom kosong, sapaan salah, pendaftaran berulang, batas biaya, dan input invalid.</p>
+              </div></details>
+              <details class="trace-details"><summary>Studi kasus mandiri dan kunci analisis</summary><div class="lesson-body nested-body">
+                <p><strong>Kasus:</strong> buat kartu kegiatan berisi nama, NIM, kelas, dan kota. Semua wajib terisi; tampilkan seluruh kolom yang kurang sekaligus; NIM tidak boleh kehilangan nol depan. Tambahkan pilihan sapaan pagi/sore.</p>
+                <ol>
+                  <li><strong>Tujuan/pengguna:</strong> membantu panitia menerbitkan kartu peserta; output-nya kartu atau daftar kesalahan.</li>
+                  <li><strong>Urutan:</strong> baca teks → trim → cek seluruh kolom dan sapaan → tampilkan semua kekurangan, atau terbitkan kartu.</li>
+                  <li><strong>Data:</strong> nama/NIM/kelas/kota/waktu bertipe teks; NIM tetap teks; normalisasi mendahului validasi.</li>
+                  <li><strong>Trace:</strong> `" Siti Aminah "`, `"00125"`, `"a"`, `"Bandung"`, `"pagi"` menjadi nama `Siti Aminah`, NIM `00125`, kelas `A`, kota `Bandung`; semua lolos.</li>
+                  <li><strong>Batas:</strong> tiga spasi menjadi kosong; beberapa kolom kosong harus dilaporkan bersamaan. Batas maksimum teks tidak ditentukan.</li>
+                  <li><strong>Regresi:</strong> nama dua kata dan NIM `00125` tetap; versi pengembangan menambah kota dan sapaan sebagai input.</li>
+                </ol>
+                <p><strong>Evaluasi:</strong> algoritma adalah rancangan langkah, program implementasinya; <code>strip()</code> membuang spasi tepi; profil dicetak setelah input lengkap. Uji biaya satu peserta menghasilkan Rp62.000. Input <code>abc</code> ditolak saat konversi tanpa menghitung total. Kartu dan biaya sama-sama memakai IPO tetapi memvalidasi aturan berbeda. Uji NIM nol depan dan multi-kekurangan mengungkap bug konversi NIM atau pemeriksaan kolom yang tidak lengkap.</p>
+              </div></details>
+              <details class="trace-details"><summary>Jawaban evaluasi formatif dan refleksi (1–9)</summary><div class="lesson-body nested-body">
+                <ol>
+                  <li>Algoritma adalah urutan langkah untuk menyelesaikan masalah; program adalah implementasi langkah tersebut dalam bahasa pemrograman.</li>
+                  <li>NIM bertipe teks karena identitas bukan besaran hitung dan nol di depan harus dipertahankan.</li>
+                  <li><code>strip()</code> menghapus spasi di awal/akhir teks, bukan spasi tengah.</li>
+                  <li>Kartu dicetak setelah semua kolom wajib dan pilihan sapaan lolos pemeriksaan.</li>
+                  <li>Batas biaya 1 peserta menghasilkan Rp62.000: <code>50.000 + 1 × 12.000</code>. Kondisi peserta harus positif menentukan jalur hitung.</li>
+                  <li><code>abc</code> gagal dikonversi ke integer; program menampilkan pesan dan tidak menghitung total. Uji memeriksa tidak ada output sukses.</li>
+                  <li>Profil dan biaya sama-sama mengikuti input–proses–output. Profil memvalidasi teks wajib, sedangkan biaya memvalidasi bilangan dan melakukan aritmetika.</li>
+                  <li>Kesalahan rawan: mengubah NIM menjadi angka atau hanya memeriksa kolom pertama. Uji <code>00125</code> dan beberapa kolom kosong akan menemukan kesalahan itu.</li>
+                  <li>Dipahami: pilihan tipe data memengaruhi makna hasil. Perlu dipelajari: perulangan/penyimpanan kumpulan data; contoh nyatanya pendaftaran tiga peserta.</li>
+                </ol>
+                <p>Hubungannya: kontrak IPO Bab 1 menjadi dasar flowchart dan pseudocode Bab 2. Batas contoh: biaya hanya memakai jumlah peserta bulat positif dan belum menyimpan data secara permanen.</p>
+              </div></details>
+            </div>
+          </article>
+        </section>

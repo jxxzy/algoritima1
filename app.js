@@ -2,8 +2,19 @@
   const progressKey = 'belajar-algoritma-progress-v1';
   const themeKey = 'belajar-algoritma-theme-v1';
   const bookmarksKey = 'belajar-algoritma-bookmarks-v1';
+  const quizKey = 'belajar-algoritma-quizzes-v1';
+  const progressIds = [
+    'b1-ipo', 'b1-kartu', 'b1-biaya',
+    'b2-representasi', 'b2-geometri', 'b2-parkir', 'b2-tukar',
+    'b3-tipe', 'b3-suhu', 'b3-durasi', 'b3-kecepatan',
+  ];
+  const chapterProgressIds = {
+    1: progressIds.filter((id) => id.startsWith('b1-')),
+    2: progressIds.filter((id) => id.startsWith('b2-')),
+    3: progressIds.filter((id) => id.startsWith('b3-')),
+  };
   const progressInputs = [...document.querySelectorAll('[data-progress]')];
-  const chapterButtons = [...document.querySelectorAll('[data-chapter]')];
+  const chapterButtons = [...document.querySelectorAll('button[data-chapter]')];
   const progressFill = document.getElementById('progress-fill');
   const progressLabel = document.getElementById('progress-label');
   const progressDetail = document.getElementById('progress-detail');
@@ -15,17 +26,7 @@
   const sidebarBackdrop = document.getElementById('sidebar-backdrop');
   const themeToggle = document.getElementById('theme-toggle');
   const focusToggle = document.getElementById('focus-toggle');
-  const quizForm = document.getElementById('quiz-form');
   const timerCard = document.querySelector('.focus-timer-card');
-  const timerDial = document.getElementById('timer-dial');
-  const timerProgress = document.getElementById('timer-progress');
-  const timerRing = document.getElementById('timer-ring-progress');
-  const timerDisplay = document.getElementById('timer-display');
-  const timerPhase = document.getElementById('timer-phase');
-  const timerStatus = document.getElementById('timer-status');
-  const timerSessions = document.getElementById('timer-sessions');
-  const timerStart = document.getElementById('timer-start');
-  const timerPresets = [...document.querySelectorAll('.timer-preset')];
 
   function readProgress() {
     try {
@@ -37,6 +38,15 @@
   }
 
   let progress = readProgress();
+  function readQuizzes() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(quizKey) || '{}');
+      return saved && typeof saved === 'object' && !Array.isArray(saved) ? saved : {};
+    } catch {
+      return {};
+    }
+  }
+  let quizzes = readQuizzes();
 
   function saveProgress() {
     try {
@@ -47,21 +57,47 @@
   }
 
   function updateProgress() {
-    const completeCount = progressInputs.filter((input) => progress[input.dataset.progress]).length;
-    const percent = Math.round((completeCount / progressInputs.length) * 100);
-    progressFill.style.width = `${percent}%`;
-    progressLabel.textContent = `${percent}%`;
-    progressDetail.textContent = `${completeCount} dari ${progressInputs.length} topik selesai`;
-    progressTrack.setAttribute('aria-valuenow', String(percent));
+    const completeCount = progressIds.filter((id) => progress[id]).length;
+    const percent = Math.round((completeCount / progressIds.length) * 100);
+    if (progressFill) progressFill.style.width = `${percent}%`;
+    if (progressLabel) progressLabel.textContent = `${percent}%`;
+    if (progressDetail) progressDetail.textContent = `${completeCount} dari ${progressIds.length} topik selesai`;
+    if (progressTrack) progressTrack.setAttribute('aria-valuenow', String(percent));
     chapterButtons.forEach((button) => {
       const chapterId = button.dataset.chapter;
-      const chapterInputs = progressInputs.filter((input) => input.dataset.progress.startsWith(`b${chapterId}-`));
-      const done = chapterInputs.length > 0 && chapterInputs.every((input) => progress[input.dataset.progress]);
+      const done = chapterProgressIds[chapterId].every((id) => progress[id]);
       button.setAttribute('aria-pressed', String(done));
       button.innerHTML = done
         ? '<span>✓</span> Bab selesai'
         : '<span>✓</span> Tandai bab selesai';
     });
+    [1, 2, 3].forEach((chapterId) => {
+      const ids = chapterProgressIds[chapterId];
+      const count = ids.filter((id) => progress[id]).length;
+      const chapterPercent = Math.round((count / ids.length) * 100);
+      const summary = document.getElementById(`chapter-progress-${chapterId}`);
+      const badge = document.getElementById(`chapter-badge-${chapterId}`);
+      const badgeEarned = count === ids.length || Boolean(quizzes[chapterId]);
+      if (summary) summary.textContent = `${count} dari ${ids.length} topik · ${chapterPercent}%`;
+      if (badge) {
+        badge.hidden = !badgeEarned;
+        badge.textContent = badgeEarned ? `Lencana Bab ${chapterId} terbuka ✓` : `Lencana Bab ${chapterId} terkunci`;
+      }
+    });
+    const dashboardProgress = document.getElementById('dashboard-progress');
+    const dashboardBadges = document.getElementById('dashboard-badges');
+    if (dashboardProgress) dashboardProgress.textContent = `${percent}%`;
+    if (dashboardBadges) dashboardBadges.textContent = `${[1, 2, 3].filter((id) => chapterProgressIds[id].every((topic) => progress[topic]) || quizzes[id]).length} / 3`;
+    const continueLink = document.getElementById('continue-learning');
+    const continueCopy = document.getElementById('continue-learning-copy');
+    if (continueLink) {
+      const nextChapter = [1, 2, 3].find((id) => !chapterProgressIds[id].every((topic) => progress[topic]));
+      continueLink.href = nextChapter ? `bab-${nextChapter}/index.html` : 'lab/index.html#lab';
+      continueLink.textContent = nextChapter ? `Lanjutkan Bab ${nextChapter} →` : 'Semua bab selesai · Buka lab →';
+      if (continueCopy) continueCopy.textContent = nextChapter
+        ? `${completeCount} dari ${progressIds.length} topik selesai. Progres tersimpan otomatis.`
+        : 'Semua bab selesai. Uji pemahamanmu di laboratorium interaktif.';
+    }
   }
 
   progressInputs.forEach((input) => {
@@ -75,15 +111,27 @@
     });
   });
 
-  focusToggle.addEventListener('click', () => {
-    const isFocused = document.body.classList.toggle('focus-mode');
-    if (isFocused && sidebar.classList.contains('is-open')) closeSidebar();
-    focusToggle.setAttribute('aria-pressed', String(isFocused));
-    focusToggle.innerHTML = isFocused
-      ? '<span aria-hidden="true">×</span> Keluar dari fokus'
-      : '<span aria-hidden="true">◎</span> Mode fokus';
-  });
+  if (focusToggle) {
+    focusToggle.addEventListener('click', () => {
+      const isFocused = document.body.classList.toggle('focus-mode');
+      if (isFocused && sidebar.classList.contains('is-open')) closeSidebar();
+      focusToggle.setAttribute('aria-pressed', String(isFocused));
+      focusToggle.innerHTML = isFocused
+        ? '<span aria-hidden="true">×</span> Keluar dari fokus'
+        : '<span aria-hidden="true">◎</span> Mode fokus';
+    });
+  }
 
+  if (timerCard) {
+  const timerDial = document.getElementById('timer-dial');
+  const timerProgress = document.getElementById('timer-progress');
+  const timerRing = document.getElementById('timer-ring-progress');
+  const timerDisplay = document.getElementById('timer-display');
+  const timerPhase = document.getElementById('timer-phase');
+  const timerStatus = document.getElementById('timer-status');
+  const timerSessions = document.getElementById('timer-sessions');
+  const timerStart = document.getElementById('timer-start');
+  const timerPresets = [...document.querySelectorAll('.timer-preset')];
   const timerCircumference = 2 * Math.PI * 79;
   let focusDuration = 25 * 60_000;
   let breakDuration = 5 * 60_000;
@@ -221,6 +269,7 @@
     if (!document.hidden && timerDeadline !== null) tickTimer();
   });
   renderTimer();
+  }
 
   chapterButtons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -246,16 +295,21 @@
     document.querySelector('meta[name="theme-color"]').content = isDark ? '#111522' : '#f5f7fb';
   }
 
-  let savedTheme = 'light';
+  let savedTheme = null;
   try {
-    savedTheme = localStorage.getItem(themeKey) || 'light';
+    savedTheme = localStorage.getItem(themeKey);
   } catch {
-    savedTheme = 'light';
+    savedTheme = null;
   }
-  applyTheme(savedTheme);
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+  applyTheme(savedTheme || (systemPrefersDark.matches ? 'dark' : 'light'));
+  systemPrefersDark.addEventListener('change', (event) => {
+    if (savedTheme === null) applyTheme(event.matches ? 'dark' : 'light');
+  });
   themeToggle.addEventListener('click', () => {
     const nextTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
     applyTheme(nextTheme);
+    savedTheme = nextTheme;
     try {
       localStorage.setItem(themeKey, nextTheme);
     } catch {
@@ -264,6 +318,7 @@
   });
 
   const labForm = document.getElementById('lab-form');
+  if (labForm) {
   const labOperation = document.getElementById('lab-operation');
   const labInputA = document.getElementById('lab-value-a');
   const labInputB = document.getElementById('lab-value-b');
@@ -363,9 +418,66 @@
       `Luas = ${nilaiA} × ${nilaiB} = ${luas} m²\nKeliling = 2 × (${nilaiA} + ${nilaiB}) = ${keliling} m`,
     );
   });
+  }
 
   function normalize(value) {
     return value.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('id');
+  }
+
+  const searchResults = document.getElementById('search-results');
+  let searchIndexPromise;
+  function loadSearchIndex() {
+    if (!searchIndexPromise) {
+      searchIndexPromise = fetch(new URL('search-index.json', document.baseURI))
+        .then((response) => {
+          if (!response.ok) throw new Error(`Server mengembalikan status ${response.status}.`);
+          return response.json();
+        })
+        .then((entries) => {
+          if (!Array.isArray(entries)) throw new Error('Format indeks pencarian tidak valid.');
+          return entries;
+        });
+    }
+    return searchIndexPromise;
+  }
+
+  function renderSearchResults(query) {
+    if (!query) {
+      searchResults.replaceChildren();
+      searchResults.hidden = true;
+      return;
+    }
+    loadSearchIndex().then((entries) => {
+      if (normalize(searchInput.value.trim()) !== query) return;
+      const matches = entries
+        .filter((entry) => normalize(`${entry.title} ${entry.text}`).includes(query))
+        .slice(0, 6);
+      searchResults.replaceChildren();
+      matches.forEach((entry) => {
+        const item = document.createElement('li');
+        item.setAttribute('role', 'presentation');
+        const link = document.createElement('a');
+        link.setAttribute('role', 'option');
+        link.href = entry.href;
+        link.textContent = `Bab ${entry.chapter} · ${entry.title}`;
+        item.append(link);
+        searchResults.append(item);
+      });
+      searchResults.hidden = matches.length === 0;
+      if (matches.length) searchStatus.textContent = `${matches.length} hasil pencarian di seluruh bab.`;
+      else {
+        const localMatches = document.querySelectorAll('[data-searchable]:not(.search-hidden)').length;
+        searchStatus.textContent = localMatches
+          ? `${localMatches} bagian materi di halaman ini ditemukan.`
+          : 'Belum ada materi yang cocok.';
+      }
+    }).catch((error) => {
+      if (normalize(searchInput.value.trim()) !== query) return;
+      console.error('Indeks pencarian materi gagal dimuat.', error);
+      searchResults.replaceChildren();
+      searchResults.hidden = true;
+      searchStatus.textContent = 'Pencarian semua bab gagal dimuat; hasil halaman ini tetap tersedia.';
+    });
   }
 
   searchInput.addEventListener('input', () => {
@@ -382,10 +494,6 @@
       const visibleTopics = chapter.querySelectorAll('[data-searchable]:not(.search-hidden)').length;
       chapter.classList.toggle('search-hidden', Boolean(query && visibleTopics === 0));
     });
-    document.querySelector('.hero').classList.toggle('search-hidden', Boolean(query) && !normalize(document.querySelector('.hero').innerText).includes(query));
-    document.querySelector('.learning-path').classList.toggle('search-hidden', Boolean(query));
-    document.getElementById('latihan').classList.toggle('search-hidden', Boolean(query));
-    document.getElementById('referensi').classList.toggle('search-hidden', Boolean(query));
     sidebar.querySelectorAll('.nav-link').forEach((link) => {
       link.classList.toggle('nav-search-hidden', Boolean(query) && !normalize(link.textContent).includes(query));
     });
@@ -394,7 +502,8 @@
       const topicLinks = [...group.querySelectorAll('.nav-topic')];
       let topicMatches = 0;
       topicLinks.forEach((link) => {
-        const target = document.querySelector(link.getAttribute('href'));
+        const targetId = new URL(link.href).hash.slice(1);
+        const target = document.getElementById(targetId);
         const matches = !query || normalize(`${link.textContent} ${target?.textContent || ''}`).includes(query);
         link.classList.toggle('nav-search-hidden', !matches);
         if (matches) topicMatches += 1;
@@ -403,11 +512,30 @@
       group.classList.toggle('nav-search-hidden', Boolean(query) && !chapterMatches && topicMatches === 0);
       if (query && topicMatches > 0) group.open = true;
     });
-    searchStatus.textContent = query ? `${matches} bagian materi ditemukan.` : '';
-    if (query && matches === 0) searchStatus.textContent = 'Belum ada materi yang cocok.';
+    searchStatus.textContent = query ? `${matches} bagian materi di halaman ini ditemukan.` : '';
+    if (query && matches === 0) searchStatus.textContent = 'Mencari di semua bab…';
+    renderSearchResults(query);
   });
 
-  const navTargets = [...sidebar.querySelectorAll('a[href^="#"]')];
+  const currentPath = location.pathname.endsWith('/')
+    ? `${location.pathname}index.html`
+    : location.pathname;
+  sidebar.querySelectorAll('.brand, .nav-link').forEach((link) => {
+    const linkPath = new URL(link.href).pathname;
+    const normalizedPath = linkPath.endsWith('/') ? `${linkPath}index.html` : linkPath;
+    if (normalizedPath === currentPath) {
+      link.setAttribute('aria-current', 'page');
+    }
+  });
+  const activeChapterGroup = document.body.dataset.chapter;
+  if (activeChapterGroup) {
+    sidebar.querySelector(`[data-chapter-group="${activeChapterGroup}"] summary`)
+      ?.setAttribute('aria-current', 'page');
+  }
+  const navTargets = [...sidebar.querySelectorAll('.nav-topic')].filter((link) => {
+    const linkPath = new URL(link.href).pathname;
+    return (linkPath.endsWith('/') ? `${linkPath}index.html` : linkPath) === currentPath;
+  });
   const navLinkById = new Map(navTargets.map((link) => [link.hash.slice(1), link]));
   const navSections = [...new Set(navTargets
     .map((link) => document.getElementById(link.hash.slice(1)))
@@ -448,13 +576,17 @@
       event.preventDefault();
       searchInput.focus();
     }
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+      event.preventDefault();
+      searchInput.focus();
+    }
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'j') {
       event.preventDefault();
       themeToggle.click();
     }
     if ((event.metaKey || event.ctrlKey) && event.shiftKey && event.key.toLowerCase() === 'f') {
       event.preventDefault();
-      focusToggle.click();
+      focusToggle?.click();
     }
     if (event.key === 'Escape' && document.activeElement === searchInput) {
       searchInput.value = '';
@@ -504,55 +636,117 @@
     }
   });
 
-  document.querySelectorAll('.copy-code').forEach((button) => {
-    button.addEventListener('click', async () => {
-      const code = button.closest('.code-card').querySelector('pre code').innerText;
-      try {
-        await navigator.clipboard.writeText(code);
-        button.textContent = 'Tersalin ✓';
-      } catch {
-        button.textContent = 'Gagal menyalin';
+  function fallbackCopy(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.append(textarea);
+    try {
+      textarea.select();
+      if (!document.execCommand('copy')) throw new Error('Browser menolak akses papan klip.');
+    } finally {
+      textarea.remove();
+    }
+  }
+
+  document.addEventListener('click', async (event) => {
+    if (!(event.target instanceof Element)) return;
+    const button = event.target.closest('.copy-code');
+    if (!button) return;
+    const code = button.closest('.code-card')?.querySelector('pre code')?.innerText;
+    if (!code) {
+      button.textContent = 'Kode tidak tersedia';
+      return;
+    }
+    try {
+      if (navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(code);
+        } catch {
+          fallbackCopy(code);
+        }
+      } else {
+        fallbackCopy(code);
       }
-      window.setTimeout(() => {
-        button.textContent = 'Salin kode';
-      }, 1800);
-    });
+      button.textContent = 'Tersalin ✓';
+    } catch (error) {
+      console.error('Kode gagal disalin.', error);
+      button.textContent = 'Gagal menyalin';
+    }
+    window.setTimeout(() => {
+      button.textContent = button.dataset.defaultLabel || 'Salin kode';
+    }, 1800);
   });
 
-  quizForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    let correctCount = 0;
-    const questions = [...quizForm.querySelectorAll('.quiz-question')];
-    questions.forEach((question) => {
-      const selected = question.querySelector('input:checked');
-      const feedback = question.querySelector('.quiz-feedback');
-      if (!selected) {
-        feedback.textContent = 'Pilih satu jawaban dahulu.';
-        feedback.className = 'quiz-feedback incorrect';
-        return;
+  document.querySelectorAll('.print-summary').forEach((button) => {
+    button.addEventListener('click', () => window.print());
+  });
+
+  document.querySelectorAll('.quiz-form').forEach((quizForm) => {
+    quizForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      let correctCount = 0;
+      const questions = [...quizForm.querySelectorAll('.quiz-question')];
+      questions.forEach((question) => {
+        const selected = question.querySelector('input:checked');
+        const feedback = question.querySelector('.quiz-feedback');
+        if (!selected) {
+          feedback.textContent = 'Pilih satu jawaban dahulu.';
+          feedback.className = 'quiz-feedback incorrect';
+          return;
+        }
+        const correct = selected.value === question.dataset.answer;
+        if (correct) correctCount += 1;
+        feedback.textContent = correct
+          ? `Benar! ${question.dataset.explanation}`
+          : `Belum tepat. ${question.dataset.explanation}`;
+        feedback.className = `quiz-feedback ${correct ? 'correct' : 'incorrect'}`;
+      });
+      const answeredCount = questions.filter((question) => question.querySelector('input:checked')).length;
+      const result = quizForm.querySelector('.quiz-result') || document.getElementById('quiz-result');
+      if (result) result.textContent = answeredCount === questions.length
+        ? `Skor: ${correctCount} dari ${questions.length}.`
+        : 'Lengkapi semua jawaban untuk melihat skor.';
+      if (answeredCount === questions.length && correctCount === questions.length) {
+        const chapter = quizForm.dataset.quiz;
+        const badge = document.getElementById(`chapter-badge-${chapter}`);
+        try {
+          quizzes = readQuizzes();
+          quizzes[chapter] = true;
+          localStorage.setItem(quizKey, JSON.stringify(quizzes));
+          updateProgress();
+          if (badge) badge.textContent = `Lencana Bab ${chapter} terbuka · kuis sempurna ✓`;
+        } catch {
+          searchStatus.textContent = 'Hasil kuis tidak dapat disimpan di browser ini.';
+        }
       }
-      const correct = selected.value === question.dataset.answer;
-      if (correct) correctCount += 1;
-      feedback.textContent = correct
-        ? `Benar! ${question.dataset.explanation}`
-        : `Belum tepat. ${question.dataset.explanation}`;
-      feedback.className = `quiz-feedback ${correct ? 'correct' : 'incorrect'}`;
     });
-    const answeredCount = questions.filter((question) => question.querySelector('input:checked')).length;
-    document.getElementById('quiz-result').textContent = answeredCount === questions.length
-      ? `Skor: ${correctCount} dari ${questions.length}.`
-      : 'Lengkapi semua jawaban untuk melihat skor.';
   });
 
   const bookmarkCards = [...document.querySelectorAll('.lesson-card[id]')];
   const bookmarkCount = document.getElementById('bookmark-count');
   const bookmarkList = document.getElementById('saved-lessons');
   const bookmarksEmpty = document.getElementById('bookmarks-empty');
+  const bookmarkTitles = {
+    'b1-ipo': ['Berpikir dengan input, proses, output', 1],
+    'b1-kartu': ['Validasi sebelum menampilkan kartu', 1],
+    'b1-biaya': ['Menghitung biaya kegiatan', 1],
+    'b2-representasi': ['Tiga cara merepresentasikan algoritma', 2],
+    'b2-geometri': ['Luas dan keliling persegi panjang', 2],
+    'b2-parkir': ['Tarif parkir dengan batas harian', 2],
+    'b2-tukar': ['Menukar dua nilai dengan variabel bantu', 2],
+    'b3-tipe': ['Variabel menyimpan makna, bukan hanya nilai', 3],
+    'b3-suhu': ['Konversi Celsius, Fahrenheit, dan Kelvin', 3],
+    'b3-durasi': ['Pecah durasi dan jarak', 3],
+    'b3-kecepatan': ['Kecepatan rata-rata: satuan harus cocok', 3],
+  };
   let bookmarks = [];
   try {
     const savedBookmarks = JSON.parse(localStorage.getItem(bookmarksKey) || '[]');
     if (Array.isArray(savedBookmarks)) {
-      const validIds = new Set(bookmarkCards.map((card) => card.id));
+      const validIds = new Set(Object.keys(bookmarkTitles));
       bookmarks = savedBookmarks.filter((id) => typeof id === 'string' && validIds.has(id));
     }
   } catch {
@@ -560,30 +754,33 @@
   }
 
   function updateBookmarks() {
-    bookmarkList.replaceChildren();
-    const savedCards = bookmarkCards.filter((card) => bookmarks.includes(card.id));
-    bookmarkCount.textContent = String(savedCards.length);
-    bookmarksEmpty.hidden = savedCards.length > 0;
-    savedCards.forEach((card) => {
-      const item = document.createElement('li');
-      const link = document.createElement('a');
-      link.href = `#${card.id}`;
-      link.textContent = card.querySelector('.lesson-heading h3').textContent.trim();
-      item.append(link);
-      bookmarkList.append(item);
-    });
+    if (bookmarkCount) bookmarkCount.textContent = String(bookmarks.length);
+    if (bookmarksEmpty) bookmarksEmpty.hidden = bookmarks.length > 0;
+    if (bookmarkList) {
+      bookmarkList.replaceChildren();
+      bookmarks.forEach((id) => {
+        const [title, chapter] = bookmarkTitles[id];
+        const item = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = `bab-${chapter}/index.html#${id}`;
+        link.textContent = title;
+        item.append(link);
+        bookmarkList.append(item);
+      });
+    }
     bookmarkCards.forEach((card) => {
       const button = card.querySelector('.bookmark-toggle');
       const isSaved = bookmarks.includes(card.id);
       button.setAttribute('aria-pressed', String(isSaved));
       button.textContent = isSaved ? 'Tersimpan ★' : 'Simpan ☆';
-      button.setAttribute('aria-label', `${isSaved ? 'Hapus dari' : 'Simpan ke'} materi tersimpan: ${card.querySelector('.lesson-heading h3').textContent.trim()}`);
+      button.setAttribute('aria-label', `${isSaved ? 'Hapus dari' : 'Simpan ke'} materi tersimpan: ${card.querySelector('.lesson-heading h2').textContent.trim()}`);
     });
   }
 
   bookmarkCards.forEach((card) => {
-    const title = card.querySelector('.lesson-heading h3').textContent.trim();
-    const button = document.createElement('button');
+    const title = card.querySelector('.lesson-heading h2').textContent.trim();
+    let button = card.querySelector('.bookmark-toggle');
+    if (!button) button = document.createElement('button');
     button.className = 'bookmark-toggle';
     button.type = 'button';
     button.textContent = 'Simpan ☆';
@@ -598,10 +795,39 @@
         searchStatus.textContent = 'Daftar materi tersimpan tidak dapat disimpan di browser ini.';
       }
     });
-    card.querySelector('.lesson-heading').append(button);
+    if (!button.isConnected) card.querySelector('.lesson-heading').append(button);
     button.setAttribute('aria-label', `Simpan ke materi tersimpan: ${title}`);
   });
   updateBookmarks();
+  window.addEventListener('storage', (event) => {
+    if (event.key === progressKey) {
+      progress = readProgress();
+      progressInputs.forEach((input) => {
+        input.checked = Boolean(progress[input.dataset.progress]);
+        input.closest('.lesson-card').classList.toggle('is-complete', input.checked);
+      });
+      updateProgress();
+    }
+    if (event.key === quizKey) {
+      quizzes = readQuizzes();
+      updateProgress();
+    }
+    if (event.key === bookmarksKey) {
+      try {
+        const saved = JSON.parse(event.newValue || '[]');
+        bookmarks = Array.isArray(saved)
+          ? saved.filter((id) => Object.hasOwn(bookmarkTitles, id))
+          : [];
+        updateBookmarks();
+      } catch {
+        searchStatus.textContent = 'Daftar materi tersimpan dari tab lain tidak dapat dibaca.';
+      }
+    }
+    if (event.key === themeKey) {
+      savedTheme = event.newValue;
+      applyTheme(savedTheme || (systemPrefersDark.matches ? 'dark' : 'light'));
+    }
+  });
 
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches
       && 'IntersectionObserver' in window) {
@@ -625,6 +851,7 @@
   }
 
   const solutionSelect = document.getElementById('solution-select');
+  if (solutionSelect) {
   const solutionDescription = document.getElementById('solution-description');
   const solutionVariables = document.getElementById('solution-variables');
   const solutionCode = document.getElementById('solution-code');
@@ -811,6 +1038,11 @@
     solutionDownload.download = solution.file;
     solutionStatus.textContent = 'Memuat kode tugas…';
     solutionCode.textContent = 'Memuat kode lengkap…';
+    const experiment = solutionSelect.value === 'tarif_parkir' || solutionSelect.value === 'biaya_kegiatan'
+      ? 'parking'
+      : solutionSelect.value === 'luas_dan_keliling' ? 'geometry' : 'duration';
+    const labLink = solutionCode.closest('.code-card')?.querySelector('.lab-code-link');
+    if (labLink) labLink.href = `lab/index.html?experiment=${experiment}#lab`;
     solutionVariables.replaceChildren();
     solution.variables.forEach(([name, explanation]) => {
       const item = document.createElement('li');
@@ -977,9 +1209,20 @@
     },
   ];
 
+  const chapterFilter = document.querySelector('.solutions-section')?.dataset.chapterFilter;
+  if (chapterFilter) {
+    [...solutionSelect.querySelectorAll('optgroup')].forEach((group, index) => {
+      group.hidden = String(index + 1) !== chapterFilter;
+    });
+    const firstOption = solutionSelect.querySelector(`optgroup:nth-of-type(${chapterFilter}) option`);
+    if (firstOption) solutionSelect.value = firstOption.value;
+  }
+
   function renderTaskCoverage() {
     taskCoverage.replaceChildren();
-    assignmentCoverage.forEach(({ chapter, tasks }) => {
+    assignmentCoverage
+      .filter((_group, index) => !chapterFilter || String(index + 1) === chapterFilter)
+      .forEach(({ chapter, tasks }) => {
       const group = document.createElement('section');
       group.className = 'task-coverage-group';
       const heading = document.createElement('h3');
@@ -1024,10 +1267,108 @@
 
       group.append(heading, list);
       taskCoverage.append(group);
-    });
+      });
   }
 
   renderTaskCoverage();
+  }
+
+  document.querySelectorAll('.code-card').forEach((card) => {
+    const code = card.querySelector('pre code');
+    const header = card.querySelector('.code-card-header');
+    if (!code || !header) return;
+    if (!header.querySelector('.copy-code')) {
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-code';
+      copyButton.type = 'button';
+      copyButton.textContent = 'Salin kode';
+      header.append(copyButton);
+    }
+    if (!header.querySelector('.lab-code-link')) {
+      const sample = code.textContent.toLowerCase();
+      const experiment = sample.includes('parkir') || sample.includes('biaya')
+        ? 'parking'
+        : sample.includes('luas') || sample.includes('keliling') ? 'geometry' : 'duration';
+      const tryLink = document.createElement('a');
+      tryLink.className = 'lab-code-link';
+      tryLink.href = `lab/index.html?experiment=${experiment}#lab`;
+      tryLink.textContent = 'Coba di Lab';
+      header.append(tryLink);
+    }
+  });
+
+  const visualizer = document.getElementById('visualizer-algorithm');
+  if (visualizer) {
+    const output = document.getElementById('visualizer-state');
+    const next = document.getElementById('visualizer-next');
+    const stepLabel = document.getElementById('visualizer-step');
+    const examples = {
+      swap: {
+        title: 'Tukar nilai A dan B',
+        steps: [
+          'Awal: a = "merah", b = "biru", sementara belum terisi.',
+          'sementara = a → sementara = "merah".',
+          'a = b → a = "biru", b tetap "biru".',
+          'b = sementara → a = "biru", b = "merah".',
+        ],
+      },
+      duration: {
+        title: '135 menit menjadi jam dan sisa',
+        steps: [
+          'Awal: menit = 135.',
+          'jam = 135 // 60 → jam = 2.',
+          'sisa = 135 % 60 → sisa = 15.',
+          'Pemeriksaan balik: 2 × 60 + 15 = 135 menit.',
+        ],
+      },
+      parking: {
+        title: 'Tarif parkir selama 8 jam',
+        steps: [
+          'Awal: jam = 8; tarif pertama Rp3.000, tarif tambahan Rp2.000/jam.',
+          'jam_tambahan = 8 − 1 → 7 jam.',
+          'biaya_awal = 3.000 + 7 × 2.000 → Rp17.000.',
+          'biaya_akhir = min(17.000, 15.000) → Rp15.000.',
+        ],
+      },
+      geometry: {
+        title: 'Persegi panjang 5 m × 3 m',
+        steps: [
+          'Awal: panjang = 5 m, lebar = 3 m.',
+          'Validasi: kedua sisi lebih besar dari nol.',
+          'luas = 5 × 3 → 15 m².',
+          'keliling = 2 × (5 + 3) → 16 m.',
+        ],
+      },
+    };
+    let activeStep = 0;
+    function renderVisualizer() {
+      const example = examples[visualizer.value];
+      output.querySelector('strong').textContent = example.title;
+      output.querySelector('p').textContent = example.steps[activeStep];
+      stepLabel.textContent = `Langkah ${activeStep + 1} dari ${example.steps.length}`;
+      next.disabled = activeStep === example.steps.length - 1;
+    }
+    visualizer.addEventListener('change', () => {
+      activeStep = 0;
+      renderVisualizer();
+    });
+    next.addEventListener('click', () => {
+      activeStep = Math.min(activeStep + 1, examples[visualizer.value].steps.length - 1);
+      renderVisualizer();
+    });
+    document.getElementById('visualizer-reset').addEventListener('click', () => {
+      activeStep = 0;
+      renderVisualizer();
+    });
+    renderVisualizer();
+  }
+
+  const labExperiment = new URLSearchParams(location.search).get('experiment');
+  const labOperation = document.getElementById('lab-operation');
+  if (labOperation && ['duration', 'parking', 'geometry'].includes(labExperiment)) {
+    labOperation.value = labExperiment;
+    labOperation.dispatchEvent(new Event('change'));
+  }
 
   const readingBar = document.getElementById('reading-progress-bar');
   let scheduled = false;
@@ -1041,4 +1382,12 @@
       scheduled = false;
     });
   }, { passive: true });
+
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register(new URL('sw.js', document.baseURI)).catch((error) => {
+        console.error('Pendaftaran mode offline gagal.', error);
+      });
+    }, { once: true });
+  }
 })();
