@@ -97,6 +97,22 @@ else:
             <div class="lesson-heading"><span class="lesson-number amber-text">↗</span><div><h3>Praktikum, tantangan, dan tugas Bab 3</h3><p>Latih konversi tipe dan satuan dengan dry run serta pemeriksaan balik.</p></div></div>
             <div class="lesson-body">
               <p><a class="solution-jump" href="#kode-tugas">Buka kode lengkap dan penjelasan variabel untuk semua tugas →</a></p>
+              <section class="chapter-feature" aria-labelledby="b3-feature-title">
+                <h4 id="b3-feature-title">Fitur Bab 3 · konverter satuan interaktif</h4>
+                <p>Pilih jenis konversi untuk mengganti input. Coba nilai nol mutlak, kelipatan 60 menit, batas 1.000 meter, atau waktu perjalanan nol.</p>
+                <form id="unit-converter-form" class="chapter-tool-form">
+                  <label>Jenis konversi<select name="jenis" id="unit-converter-kind">
+                    <option value="suhu">Celsius → Fahrenheit &amp; Kelvin</option>
+                    <option value="durasi">Menit → jam, sisa &amp; detik</option>
+                    <option value="jarak">Meter → kilometer &amp; sisa</option>
+                    <option value="kecepatan">Jarak &amp; waktu → km/jam</option>
+                  </select></label>
+                  <label id="unit-converter-label-a"><span>Suhu (°C)</span><input name="nilaiA" type="number" step="any" value="25"></label>
+                  <label id="unit-converter-label-b" hidden><span>Waktu (menit)</span><input name="nilaiB" type="number" step="any" value="30"></label>
+                  <button class="button button-primary" type="submit">Konversi</button>
+                  <p class="chapter-tool-result" id="unit-converter-result" role="status" aria-live="polite">Hasil beserta langkah perhitungan akan muncul di sini.</p>
+                </form>
+              </section>
               <h4>Praktikum terbimbing: konverter kegiatan</h4>
               <ol>
                 <li>Buat tabel Celsius, Fahrenheit, dan Kelvin untuk semua data uji.</li>

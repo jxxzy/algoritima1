@@ -78,6 +78,23 @@ else:
             <div class="lesson-heading"><span class="lesson-number">↗</span><div><h3>Praktikum, tantangan, dan tugas Bab 1</h3><p>Kerjakan tugas dengan spesifikasi, dry run, program, dan bukti pengujian.</p></div></div>
             <div class="lesson-body">
               <p><a class="solution-jump" href="#kode-tugas">Buka kode lengkap dan penjelasan variabel untuk semua tugas →</a></p>
+              <section class="chapter-feature" aria-labelledby="b1-feature-title">
+                <h4 id="b1-feature-title">Fitur Bab 1 · pembuat kartu &amp; estimasi kegiatan</h4>
+                <p>Uji validasi seluruh kolom sekaligus. NIM diperlakukan sebagai teks agar nol di depan tetap utuh.</p>
+                <form id="participant-card-form" class="chapter-tool-form">
+                  <label>Nama<input name="nama" type="text" autocomplete="name" placeholder="Siti Aminah"></label>
+                  <label>NIM<input name="nim" type="text" inputmode="numeric" placeholder="00125"></label>
+                  <label>Kelas<input name="kelas" type="text" placeholder="A"></label>
+                  <label>Kota<input name="kota" type="text" autocomplete="address-level2" placeholder="Bandung"></label>
+                  <button class="button button-primary" type="submit">Validasi &amp; buat kartu</button>
+                  <p class="chapter-tool-result" id="participant-card-result" role="status" aria-live="polite">Kartu baru ditampilkan hanya jika semua kolom valid.</p>
+                </form>
+                <form id="activity-budget-form" class="chapter-tool-form compact-tool">
+                  <label>Jumlah peserta<input name="peserta" type="number" min="1" step="1" value="5"></label>
+                  <button class="button button-quiet" type="submit">Hitung biaya kegiatan</button>
+                  <p class="chapter-tool-result" id="activity-budget-result" role="status" aria-live="polite">Rumus: Rp50.000 + jumlah peserta × Rp12.000.</p>
+                </form>
+              </section>
               <h4>Praktikum terbimbing: kartu peserta</h4>
               <ol>
                 <li>Jalankan program sapaan dan catat input serta output.</li>

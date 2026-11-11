@@ -25,6 +25,7 @@ const [nav, footer, fragments] = await Promise.all([
     readContent('chapters/chapter-1.html'),
     readContent('chapters/chapter-2.html'),
     readContent('chapters/chapter-3.html'),
+    readContent('chapters/chapter-4.html'),
     readContent('shared/solutions.html'),
     readContent('reference/references.html'),
     readContent('home/bookmarks.html'),
@@ -37,10 +38,10 @@ const [nav, footer, fragments] = await Promise.all([
     path: entries[1],
     timer: entries[2],
     lab: entries[3],
-    chapters: entries.slice(4, 7),
-    solutions: entries[7],
-    reference: entries[8],
-    bookmarks: entries[9],
+    chapters: entries.slice(4, 8),
+    solutions: entries[8],
+    reference: entries[9],
+    bookmarks: entries[10],
   },
 ]);
 
@@ -59,6 +60,11 @@ const quizzes = {
     { prompt: 'Apa tipe nilai yang dikembalikan input() sebelum dikonversi?', answer: 'str', options: [['int', 'int'], ['str', 'str'], ['bool', 'bool']] },
     { prompt: '135 menit menjadi berapa jam utuh dan menit sisa?', answer: 'duration', options: [['duration', '2 jam 15 menit menggunakan // dan %'], ['wrong', '1 jam 75 menit'], ['decimal', '2,25 jam tanpa sisa']] },
     { prompt: 'Mengapa waktu nol ditolak saat menghitung kecepatan?', answer: 'zero', options: [['zero', 'Waktu adalah pembagi sehingga harus positif'], ['float', 'float tidak dapat menyimpan nol'], ['distance', 'Jarak harus selalu negatif']] },
+  ],
+  4: [
+    { prompt: 'Apa hasil 2 + 3 * 4 dan (2 + 3) * 4?', answer: 'priority', options: [['priority', '14 dan 20 karena tanda kurung mengubah urutan'], ['same', 'Keduanya 20'], ['reverse', '20 dan 14']] },
+    { prompt: 'Syarat diskon berbunyi subtotal minimal Rp50.000. Operator mana tepat?', answer: 'inclusive', options: [['inclusive', '>= agar nilai tepat di ambang termasuk'], ['strict', '> karena sama dengan tidak termasuk'], ['assign', '= untuk menguji']] },
+    { prompt: 'Berat paket 1.001 gram ditagih per kilogram atau bagiannya. Berapa total termasuk kemasan Rp2.000?', answer: 'shipping', options: [['shipping', '2 kg; total Rp18.000'], ['one', '1 kg; total Rp10.000'], ['three', '3 kg; total Rp26.000']] },
   ],
 };
 
@@ -81,8 +87,15 @@ const chapterDetails = {
     title: 'Bab 3 · Variabel, tipe data, dan konversi',
     description: 'Pilih tipe data yang tepat, konversi input, serta olah waktu dan satuan dengan benar.',
     previous: 2,
-    next: null,
+    next: 4,
     glossary: [['int', 'Bilangan bulat untuk jumlah atau satuan utuh.'], ['float', 'Bilangan pecahan untuk ukuran dan hasil perhitungan.'], ['str', 'Teks untuk nama, NIM, dan identitas lain.'], ['Modulo (%)', 'Sisa pembagian untuk memecah unit, misalnya menit.']],
+  },
+  4: {
+    title: 'Bab 4 · Operator, ekspresi, dan aplikasi mini',
+    description: 'Gunakan operator aritmetika dan logika untuk menghitung diskon, nilai berbobot, dan ongkos kirim dengan uji batas yang jelas.',
+    previous: 3,
+    next: null,
+    glossary: [['Ekspresi', 'Kombinasi nilai, variabel, dan operator yang menghasilkan sebuah nilai.'], ['Prioritas operator', 'Urutan operasi yang menentukan bagaimana ekspresi dievaluasi.'], ['Boolean', 'Nilai True atau False yang dihasilkan perbandingan dan dipakai dalam logika.'], ['Short-circuit', 'Evaluasi logika berhenti saat hasil and/or sudah dapat ditentukan.'], ['Uji batas', 'Pengujian nilai tepat di bawah, pada, dan di atas ambang aturan.']],
   },
 };
 
@@ -93,7 +106,7 @@ function escapeHtml(value) {
 }
 
 function routeFor(id, pageKind, currentChapter) {
-  const chapterId = id.match(/^bab-([123])$/)?.[1] || id.match(/^b([123])-/)?.[1];
+  const chapterId = id.match(/^bab-([1234])$/)?.[1] || id.match(/^b([1234])-/)?.[1];
   if (chapterId) return `bab-${chapterId}/index.html#${id}`;
   if (id === 'kode-tugas') return pageKind === 'chapter' ? `bab-${currentChapter}/index.html#kode-tugas` : 'bab-1/index.html#kode-tugas';
   if (id === 'latihan') return pageKind === 'chapter' ? `bab-${currentChapter}/index.html#latihan` : 'bab-1/index.html#latihan';
@@ -171,9 +184,9 @@ function createSearchIndex() {
   });
 }
 
-const chapterCards = [1, 2, 3].map((number) => {
+const chapterCards = [1, 2, 3, 4].map((number) => {
   const details = chapterDetails[number];
-  return `<a class="dashboard-chapter path-card" href="bab-${number}/index.html"><span class="path-index index-${['blue', 'violet', 'amber'][number - 1]}">0${number}</span><span class="path-card-copy"><strong>${escapeHtml(details.title.split(' · ')[1])}</strong><small>${escapeHtml(details.description)}</small><span class="dashboard-chapter-progress" id="chapter-progress-${number}">0 dari ${[3, 4, 4][number - 1]} topik · 0%</span><span class="course-badge" id="chapter-badge-${number}" hidden>Lencana Bab ${number} terkunci</span></span><span class="path-arrow">↗</span></a>`;
+  return `<a class="dashboard-chapter path-card" href="bab-${number}/index.html"><span class="path-index index-${['blue', 'violet', 'amber', 'green'][number - 1]}">0${number}</span><span class="path-card-copy"><strong>${escapeHtml(details.title.split(' · ')[1])}</strong><small>${escapeHtml(details.description)}</small><span class="dashboard-chapter-progress" id="chapter-progress-${number}">0 dari ${[3, 4, 4, 4][number - 1]} topik · 0%</span><span class="course-badge" id="chapter-badge-${number}" hidden>Lencana Bab ${number} terkunci</span></span><span class="path-arrow">↗</span></a>`;
 }).join('');
 
 const dashboard = `
@@ -183,7 +196,7 @@ const dashboard = `
         <section class="dashboard-overview" aria-labelledby="dashboard-title">
           <div class="chapter-heading"><div><span class="section-kicker">DASHBOARD BELAJAR</span><h2 id="dashboard-title">Lanjutkan perjalananmu</h2><p id="continue-learning-copy">Progres tersimpan otomatis di browser ini.</p></div><a class="button button-primary" id="continue-learning" href="bab-1/index.html">Mulai Bab 1 →</a></div>
           <div class="path-cards dashboard-chapters">${chapterCards}</div>
-          <div class="dashboard-summary"><span><strong id="dashboard-progress">0%</strong> materi selesai</span><span><strong id="dashboard-badges">0 / 3</strong> lencana bab</span><a class="button button-quiet" href="lab/index.html#lab">Buka laboratorium interaktif</a><a class="button button-quiet" href="referensi/index.html#referensi">Buka referensi cepat</a></div>
+          <div class="dashboard-summary"><span><strong id="dashboard-progress">0%</strong> materi selesai</span><span><strong id="dashboard-badges">0 / 4</strong> lencana bab</span><a class="button button-quiet" href="lab/index.html#lab">Buka laboratorium interaktif</a><a class="button button-quiet" href="referensi/index.html#referensi">Buka referensi cepat</a></div>
         </section>
         ${fragments.timer}
         ${fragments.bookmarks}
@@ -297,13 +310,13 @@ h1{font-size:clamp(36px,4vw,52px);line-height:1.13}.skip-link{position:fixed;z-i
 const homePage = renderPage({
   kind: 'home',
   title: 'Belajar Algoritma — Algoritma dan Struktur Data I',
-  description: 'Dashboard pembelajaran interaktif Algoritma dan Struktur Data I dengan materi Bab 1–3, progres, lab, visualizer, dan kode Python.',
+  description: 'Dashboard pembelajaran interaktif Algoritma dan Struktur Data I dengan materi Bab 1–4, progres, lab, visualizer, dan kode Python.',
   canonical: 'https://jxxzy.github.io/algoritima1/',
   main: dashboard,
 });
 await writeFile(path.join(outputDirectory, 'index.html'), homePage);
 
-for (let number = 1; number <= 3; number += 1) {
+for (let number = 1; number <= 4; number += 1) {
   const directory = path.join(outputDirectory, `bab-${number}`);
   await mkdir(directory, { recursive: true });
   await writeFile(path.join(directory, 'index.html'), chapterPage(number));
@@ -334,7 +347,7 @@ const referencePage = renderPage({
 await writeFile(path.join(referenceDirectory, 'index.html'), referencePage);
 await writeFile(path.join(outputDirectory, 'search-index.json'), JSON.stringify(createSearchIndex()));
 
-const pythonDirectories = ['Bab 1', 'Bab 2', 'Bab 3'];
+const pythonDirectories = ['Bab 1', 'Bab 2', 'Bab 3', 'Bab 4'];
 const pythonFiles = [];
 async function copyPythonFiles(directory) {
   const destination = path.join(outputDirectory, directory);
@@ -352,7 +365,7 @@ await Promise.all(pythonDirectories.map(copyPythonFiles));
 const manifest = {
   name: 'Belajar Algoritma — Algoritma dan Struktur Data I',
   short_name: 'Belajar Algoritma',
-  description: 'Materi algoritma interaktif Bab 1–3.',
+  description: 'Materi algoritma interaktif Bab 1–4.',
   lang: 'id',
   start_url: './',
   scope: './',
@@ -366,7 +379,7 @@ await mkdir(path.join(outputDirectory, 'assets'), { recursive: true });
 await writeFile(path.join(outputDirectory, 'assets', 'icon.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="18" fill="#3f56d2"/><path d="M22 18 10 32l12 14M42 18l12 14-12 14M37 14 27 50" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
 
 const assetFiles = await readdir(path.join(outputDirectory, 'assets'));
-const pages = ['index.html', 'bab-1/index.html', 'bab-2/index.html', 'bab-3/index.html', 'lab/index.html', 'referensi/index.html'];
+const pages = ['index.html', 'bab-1/index.html', 'bab-2/index.html', 'bab-3/index.html', 'bab-4/index.html', 'lab/index.html', 'referensi/index.html'];
 const offlineFiles = [...pages, 'manifest.webmanifest', 'search-index.json', ...pythonFiles, ...assetFiles.map((name) => `assets/${name}`)];
 const cacheFingerprint = createHash('sha256');
 for (const file of [...offlineFiles].sort()) {

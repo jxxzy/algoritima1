@@ -7,11 +7,13 @@
     'b1-ipo', 'b1-kartu', 'b1-biaya',
     'b2-representasi', 'b2-geometri', 'b2-parkir', 'b2-tukar',
     'b3-tipe', 'b3-suhu', 'b3-durasi', 'b3-kecepatan',
+    'b4-operator', 'b4-ekspresi', 'b4-aplikasi', 'b4-praktikum',
   ];
   const chapterProgressIds = {
     1: progressIds.filter((id) => id.startsWith('b1-')),
     2: progressIds.filter((id) => id.startsWith('b2-')),
     3: progressIds.filter((id) => id.startsWith('b3-')),
+    4: progressIds.filter((id) => id.startsWith('b4-')),
   };
   const progressInputs = [...document.querySelectorAll('[data-progress]')];
   const chapterButtons = [...document.querySelectorAll('button[data-chapter]')];
@@ -71,7 +73,7 @@
         ? '<span>✓</span> Bab selesai'
         : '<span>✓</span> Tandai bab selesai';
     });
-    [1, 2, 3].forEach((chapterId) => {
+    Object.keys(chapterProgressIds).forEach((chapterId) => {
       const ids = chapterProgressIds[chapterId];
       const count = ids.filter((id) => progress[id]).length;
       const chapterPercent = Math.round((count / ids.length) * 100);
@@ -87,11 +89,12 @@
     const dashboardProgress = document.getElementById('dashboard-progress');
     const dashboardBadges = document.getElementById('dashboard-badges');
     if (dashboardProgress) dashboardProgress.textContent = `${percent}%`;
-    if (dashboardBadges) dashboardBadges.textContent = `${[1, 2, 3].filter((id) => chapterProgressIds[id].every((topic) => progress[topic]) || quizzes[id]).length} / 3`;
+    const chapterIds = Object.keys(chapterProgressIds);
+    if (dashboardBadges) dashboardBadges.textContent = `${chapterIds.filter((id) => chapterProgressIds[id].every((topic) => progress[topic]) || quizzes[id]).length} / ${chapterIds.length}`;
     const continueLink = document.getElementById('continue-learning');
     const continueCopy = document.getElementById('continue-learning-copy');
     if (continueLink) {
-      const nextChapter = [1, 2, 3].find((id) => !chapterProgressIds[id].every((topic) => progress[topic]));
+      const nextChapter = chapterIds.find((id) => !chapterProgressIds[id].every((topic) => progress[topic]));
       continueLink.href = nextChapter ? `bab-${nextChapter}/index.html` : 'lab/index.html#lab';
       continueLink.textContent = nextChapter ? `Lanjutkan Bab ${nextChapter} →` : 'Semua bab selesai · Buka lab →';
       if (continueCopy) continueCopy.textContent = nextChapter
@@ -684,6 +687,225 @@
     button.addEventListener('click', () => window.print());
   });
 
+  const discountCalculator = document.getElementById('discount-calculator');
+  if (discountCalculator) {
+    const result = document.getElementById('discount-result');
+    discountCalculator.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const formData = new FormData(discountCalculator);
+      const harga = Number(formData.get('harga'));
+      const jumlah = Number(formData.get('jumlah'));
+      if (!Number.isSafeInteger(harga) || harga <= 0 || !Number.isSafeInteger(jumlah) || jumlah <= 0) {
+        result.textContent = 'Harga dan jumlah harus berupa bilangan bulat positif yang aman dihitung.';
+        result.classList.add('has-error');
+        return;
+      }
+      const subtotal = BigInt(harga) * BigInt(jumlah);
+      if (subtotal > BigInt(Number.MAX_SAFE_INTEGER)) {
+        result.textContent = 'Subtotal terlalu besar untuk dihitung secara aman di browser.';
+        result.classList.add('has-error');
+        return;
+      }
+      const diskon = subtotal >= 50_000n ? subtotal * 5n / 100n : 0n;
+      const kemasan = 2_000n;
+      const total = subtotal - diskon + kemasan;
+      const rupiah = (nilai) => new Intl.NumberFormat('id-ID').format(nilai);
+      result.textContent = `Subtotal Rp${rupiah(subtotal)} · diskon Rp${rupiah(diskon)} · kemasan Rp${rupiah(kemasan)} · total Rp${rupiah(total)}.`;
+      result.classList.remove('has-error');
+    });
+  }
+
+  const rupiah = (nilai) => `Rp${new Intl.NumberFormat('id-ID').format(nilai)}`;
+  const participantCardForm = document.getElementById('participant-card-form');
+  if (participantCardForm) {
+    const result = document.getElementById('participant-card-result');
+    participantCardForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(participantCardForm);
+      const peserta = {
+        Nama: String(data.get('nama') || '').trim(),
+        NIM: String(data.get('nim') || '').trim(),
+        Kelas: String(data.get('kelas') || '').trim().toUpperCase(),
+        Kota: String(data.get('kota') || '').trim(),
+      };
+      const kosong = Object.entries(peserta).filter(([, value]) => !value).map(([label]) => label);
+      if (kosong.length) {
+        result.textContent = `Kartu belum dibuat. Lengkapi: ${kosong.join(', ')}.`;
+        result.classList.add('has-error');
+        return;
+      }
+      result.textContent = Object.entries(peserta).map(([label, value]) => `${label}: ${value}`).join('\n');
+      result.classList.remove('has-error');
+    });
+  }
+
+  const activityBudgetForm = document.getElementById('activity-budget-form');
+  if (activityBudgetForm) {
+    const result = document.getElementById('activity-budget-result');
+    activityBudgetForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const peserta = Number(new FormData(activityBudgetForm).get('peserta'));
+      if (!Number.isSafeInteger(peserta) || peserta < 1) {
+        result.textContent = 'Jumlah peserta harus bilangan bulat positif.';
+        result.classList.add('has-error');
+        return;
+      }
+      const total = 50_000n + BigInt(peserta) * 12_000n;
+      result.textContent = `Biaya tetap Rp50.000 + konsumsi ${peserta} × Rp12.000 = Rp${new Intl.NumberFormat('id-ID').format(total)}.`;
+      result.classList.remove('has-error');
+    });
+  }
+
+  const parkingCalculatorForm = document.getElementById('parking-calculator-form');
+  if (parkingCalculatorForm) {
+    const result = document.getElementById('parking-calculator-result');
+    parkingCalculatorForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const jam = Number(new FormData(parkingCalculatorForm).get('jam'));
+      if (!Number.isSafeInteger(jam) || jam < 1) {
+        result.textContent = 'Durasi harus bilangan bulat minimal 1 jam.';
+        result.classList.add('has-error');
+        return;
+      }
+      const jamTambahan = BigInt(jam - 1);
+      const biayaAwal = 3_000n + jamTambahan * 2_000n;
+      const biayaAkhir = biayaAwal > 15_000n ? 15_000n : biayaAwal;
+      result.textContent = `${jam} jam: Rp3.000 + (${jamTambahan} × Rp2.000) = ${rupiah(biayaAwal)}; setelah batas harian, bayar ${rupiah(biayaAkhir)}.`;
+      result.classList.remove('has-error');
+    });
+  }
+
+  const geometryCalculatorForm = document.getElementById('geometry-calculator-form');
+  if (geometryCalculatorForm) {
+    const result = document.getElementById('geometry-calculator-result');
+    geometryCalculatorForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(geometryCalculatorForm);
+      const panjang = Number(data.get('panjang'));
+      const lebar = Number(data.get('lebar'));
+      if (![panjang, lebar].every(Number.isFinite) || panjang <= 0 || lebar <= 0) {
+        result.textContent = 'Panjang dan lebar harus angka terbatas yang lebih besar dari nol.';
+        result.classList.add('has-error');
+        return;
+      }
+      const luas = panjang * lebar;
+      const keliling = 2 * (panjang + lebar);
+      if (![luas, keliling].every(Number.isFinite)) {
+        result.textContent = 'Hasil berada di luar rentang angka yang aman untuk ditampilkan.';
+        result.classList.add('has-error');
+        return;
+      }
+      result.textContent = `Luas = ${panjang} × ${lebar} = ${luas} m². Keliling = 2 × (${panjang} + ${lebar}) = ${keliling} m.`;
+      result.classList.remove('has-error');
+    });
+  }
+
+  const unitConverterForm = document.getElementById('unit-converter-form');
+  if (unitConverterForm) {
+    const kind = document.getElementById('unit-converter-kind');
+    const labelA = document.getElementById('unit-converter-label-a');
+    const labelB = document.getElementById('unit-converter-label-b');
+    const inputA = unitConverterForm.elements.namedItem('nilaiA');
+    const inputB = unitConverterForm.elements.namedItem('nilaiB');
+    const result = document.getElementById('unit-converter-result');
+    const unitSettings = {
+      suhu: { a: 'Suhu (°C)', b: '', example: [25, ''] },
+      durasi: { a: 'Durasi (menit bulat)', b: '', example: [135, ''] },
+      jarak: { a: 'Jarak (meter bulat)', b: '', example: [2_345, ''] },
+      kecepatan: { a: 'Jarak (km)', b: 'Waktu (menit)', example: [15, 30] },
+    };
+    function updateConverterInputs() {
+      const settings = unitSettings[kind.value];
+      labelA.querySelector('span').textContent = settings.a;
+      labelB.querySelector('span').textContent = settings.b;
+      labelB.hidden = !settings.b;
+      inputB.required = Boolean(settings.b);
+      inputA.step = kind.value === 'durasi' || kind.value === 'jarak' ? '1' : 'any';
+      inputB.step = 'any';
+      inputA.value = settings.example[0];
+      inputB.value = settings.example[1];
+      result.textContent = 'Hasil beserta langkah perhitungan akan muncul di sini.';
+      result.classList.remove('has-error');
+    }
+    kind.addEventListener('change', updateConverterInputs);
+    unitConverterForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const a = Number(inputA.value);
+      const b = Number(inputB.value);
+      if (!inputA.value.trim() || !Number.isFinite(a)) {
+        result.textContent = 'Masukkan angka terbatas pada kolom pertama.';
+        result.classList.add('has-error');
+        return;
+      }
+      const format = (nilai) => new Intl.NumberFormat('id-ID', { maximumFractionDigits: 2 }).format(nilai);
+      if (kind.value === 'suhu') {
+        if (a < -273.15) {
+          result.textContent = 'Suhu ditolak: tidak boleh di bawah nol mutlak (−273,15 °C).';
+          result.classList.add('has-error');
+          return;
+        }
+        result.textContent = `${format(a)} °C × 9 / 5 + 32 = ${format(a * 9 / 5 + 32)} °F; ${format(a)} + 273,15 = ${format(a + 273.15)} K.`;
+      } else if (kind.value === 'durasi') {
+        if (!Number.isSafeInteger(a) || a < 0) {
+          result.textContent = 'Durasi harus bilangan bulat menit yang tidak negatif.';
+          result.classList.add('has-error');
+          return;
+        }
+        const menit = BigInt(a);
+        result.textContent = `${menit} // 60 = ${menit / 60n} jam, sisa ${menit % 60n} menit; total ${menit * 60n} detik. Cek balik: ${menit / 60n} × 60 + ${menit % 60n} = ${menit}.`;
+      } else if (kind.value === 'jarak') {
+        if (!Number.isSafeInteger(a) || a < 0) {
+          result.textContent = 'Jarak harus bilangan bulat meter yang tidak negatif.';
+          result.classList.add('has-error');
+          return;
+        }
+        const meter = BigInt(a);
+        result.textContent = `${meter} // 1000 = ${meter / 1_000n} km; ${meter} % 1000 = ${meter % 1_000n} m.`;
+      } else {
+        if (!inputB.value.trim() || !Number.isFinite(b) || a < 0 || b <= 0) {
+          result.textContent = 'Jarak harus nonnegatif dan waktu harus lebih besar dari nol.';
+          result.classList.add('has-error');
+          return;
+        }
+        const waktuJam = b / 60;
+        const kecepatan = a / waktuJam;
+        if (!Number.isFinite(kecepatan)) {
+          result.textContent = 'Hasil berada di luar rentang angka yang dapat ditampilkan.';
+          result.classList.add('has-error');
+          return;
+        }
+        result.textContent = `${format(b)} / 60 = ${format(waktuJam)} jam; ${format(a)} km / ${format(waktuJam)} jam = ${format(kecepatan)} km/jam.`;
+      }
+      result.classList.remove('has-error');
+    });
+  }
+
+  const logicExplorerForm = document.getElementById('logic-explorer-form');
+  if (logicExplorerForm) {
+    const result = document.getElementById('logic-explorer-result');
+    logicExplorerForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(logicExplorerForm);
+      const subtotal = Number(data.get('subtotal'));
+      if (!Number.isSafeInteger(subtotal) || subtotal < 0) {
+        result.textContent = 'Subtotal harus bilangan bulat rupiah yang tidak negatif.';
+        result.classList.add('has-error');
+        return;
+      }
+      const anggota = data.get('anggota') === 'true';
+      const ambang = subtotal >= 50_000;
+      const operator = data.get('operator');
+      const nilai = operator === 'and'
+        ? anggota && ambang
+        : operator === 'or' ? anggota || ambang : !anggota;
+      const ekspresi = operator === 'not'
+        ? `not ${anggota}`
+        : `${anggota} ${operator} ${ambang}`;
+      result.textContent = `Anggota = ${anggota}; subtotal ≥ Rp50.000 = ${ambang}; ${ekspresi} → ${nilai}. ${nilai ? 'Kondisi ekspresi terpenuhi.' : 'Kondisi ekspresi tidak terpenuhi.'}`;
+      result.classList.remove('has-error');
+    });
+  }
+
   document.querySelectorAll('.quiz-form').forEach((quizForm) => {
     quizForm.addEventListener('submit', (event) => {
       event.preventDefault();
@@ -733,14 +955,21 @@
     'b1-ipo': ['Berpikir dengan input, proses, output', 1],
     'b1-kartu': ['Validasi sebelum menampilkan kartu', 1],
     'b1-biaya': ['Menghitung biaya kegiatan', 1],
+    'b1-praktikum': ['Praktikum, tantangan, dan tugas Bab 1', 1],
     'b2-representasi': ['Tiga cara merepresentasikan algoritma', 2],
     'b2-geometri': ['Luas dan keliling persegi panjang', 2],
     'b2-parkir': ['Tarif parkir dengan batas harian', 2],
     'b2-tukar': ['Menukar dua nilai dengan variabel bantu', 2],
+    'b2-praktikum': ['Praktikum, tantangan, dan tugas Bab 2', 2],
     'b3-tipe': ['Variabel menyimpan makna, bukan hanya nilai', 3],
     'b3-suhu': ['Konversi Celsius, Fahrenheit, dan Kelvin', 3],
     'b3-durasi': ['Pecah durasi dan jarak', 3],
     'b3-kecepatan': ['Kecepatan rata-rata: satuan harus cocok', 3],
+    'b3-praktikum': ['Praktikum, tantangan, dan tugas Bab 3', 3],
+    'b4-operator': ['Operator menghasilkan nilai atau keputusan', 4],
+    'b4-ekspresi': ['Prioritas, nilai Boolean, dan uji ambang', 4],
+    'b4-aplikasi': ['Kasir, nilai akhir, dan biaya kirim', 4],
+    'b4-praktikum': ['Praktikum, tantangan, dan evaluasi Bab 4', 4],
   };
   let bookmarks = [];
   try {
@@ -1022,6 +1251,42 @@
         ['laporan', 'Teks hasil gabungan yang hanya dibuat setelah input valid.'],
       ],
     },
+    kasir_belanja: {
+      chapter: 'Bab 4',
+      file: 'kasir_belanja.py',
+      description: 'Menyelesaikan contoh diskon 10% mulai Rp100.000, kalkulator latihan 5% mulai Rp50.000, ongkir tetap, diskon anggota/bertingkat, dan perbandingan dasar diskon.',
+      variables: [
+        ['harga, jumlah', 'Input integer positif untuk menghitung subtotal.'],
+        ['subtotal', 'Harga satuan dikalikan jumlah; menjadi dasar ambang diskon yang dinyatakan di kontrak.'],
+        ['AMBANG_DISKON_CONTOH, PERSEN_DISKON_CONTOH', 'Aturan contoh awal: diskon 10% mulai subtotal Rp100.000 tanpa biaya kemasan.'],
+        ['diskon', 'Persentase yang dipilih sesuai aturan; setiap rupiah pecahan dibulatkan ke bawah.'],
+        ['setelah_diskon, kemasan, ongkir, total', 'Tahapan yang dirangkai untuk menampilkan rincian tagihan.'],
+        ['layak', 'Kondisi Boolean gabungan anggota dan batas subtotal pada tantangan khusus anggota.'],
+      ],
+    },
+    nilai_berbobot: {
+      chapter: 'Bab 4',
+      file: 'nilai_berbobot.py',
+      description: 'Memvalidasi nilai 0–100; membandingkan bobot contoh 30/30/40 dengan perubahan 25/25/50 pada input yang sama.',
+      variables: [
+        ['BOBOT_TUGAS, BOBOT_UTS, BOBOT_UAS', 'Konstanta bobot 0.30, 0.30, dan 0.40; jumlahnya satu.'],
+        ['tugas, uts, uas', 'Nilai masukan yang harus terbatas dan berada pada rentang 0–100.'],
+        ['komponen_tugas, komponen_uts, komponen_uas', 'Setiap nilai dikalikan bobot masing-masing.'],
+        ['nilai_akhir', 'Jumlah seluruh komponen; pembulatan hanya dilakukan ketika ditampilkan.'],
+        ['hitung_nilai_akhir_pengembangan()', 'Pembanding perubahan bobot menjadi 25%/25%/50%; input 80/70/90 berubah dari 81 menjadi 82,50.'],
+      ],
+    },
+    biaya_pengiriman: {
+      chapter: 'Bab 4',
+      file: 'biaya_pengiriman.py',
+      description: 'Menghitung kilogram tagihan dengan pembulatan ke atas, ongkir Rp8.000 per kg, dan kemasan satu kali per paket.',
+      variables: [
+        ['berat_gram', 'Input gram integer positif.'],
+        ['kilogram_tagihan', 'Hasil (berat_gram + 999) // 1000 untuk membulatkan pecahan kilogram ke atas.'],
+        ['TARIF_PER_KG, BIAYA_KEMASAN', 'Konstanta ongkir per kilogram dan biaya kemasan per paket.'],
+        ['ongkir, total', 'Biaya berbasis berat dan jumlah akhir setelah kemasan.'],
+      ],
+    },
   };
   let solutionRequest = 0;
 
@@ -1204,6 +1469,51 @@
           title: 'Studi kasus mandiri · Laporan kegiatan',
           explanation: 'Gabungkan identitas teks, durasi, detik, rekonstruksi, dan konversi jarak dalam satu laporan tervalidasi.',
           programs: ['konverter_kegiatan'],
+        },
+      ],
+    },
+    {
+      chapter: 'Bab 4 · Operator, ekspresi, dan aplikasi mini',
+      tasks: [
+        {
+          title: 'Praktikum terbimbing · Kalkulator belanja',
+          explanation: 'Terapkan diskon 5% mulai Rp50.000, kemasan setelah diskon, ongkir tetap, dan tiga titik uji ambang.',
+          programs: ['kasir_belanja'],
+        },
+        {
+          title: 'Tantangan 1 · Biaya kemasan',
+          explanation: 'Tambahkan Rp2.000 sekali per transaksi setelah diskon tanpa mengubah perhitungan diskon.',
+          programs: ['kasir_belanja'],
+        },
+        {
+          title: 'Tantangan 2 · Diskon khusus anggota',
+          explanation: 'Gabungkan kondisi status anggota dan subtotal minimal Rp100.000 dengan and.',
+          programs: ['kasir_belanja'],
+        },
+        {
+          title: 'Tantangan 3 · Diskon bertingkat',
+          explanation: 'Pilih satu tingkat diskon: 5% mulai Rp50.000 atau 10% mulai Rp100.000; jangan menumpuk.',
+          programs: ['kasir_belanja'],
+        },
+        {
+          title: 'Tantangan 4 · Bandingkan dasar diskon',
+          explanation: 'Bandingkan diskon atas subtotal dengan diskon atas subtotal ditambah kemasan dan uji regresinya.',
+          programs: ['kasir_belanja'],
+        },
+        {
+          title: 'Tantangan 5 · Nilai akhir berbobot',
+          explanation: 'Validasi nilai 0–100, hitung bobot 30/30/40, lalu bandingkan perubahan bobot 25/25/50 pada input yang sama.',
+          programs: ['nilai_berbobot'],
+        },
+        {
+          title: 'Tantangan 6 · Biaya kirim dan batas berat',
+          explanation: 'Bulatkan berat gram ke atas per kilogram, tambahkan kemasan sekali, dan uji 1.000/1.001 gram.',
+          programs: ['biaya_pengiriman'],
+        },
+        {
+          title: 'Studi kasus mandiri · Kasir belanja',
+          explanation: 'Lengkapi kontrak IPO, pseudocode, dry run, tiga titik ambang, penolakan, perubahan kebijakan, dan regresi.',
+          programs: ['kasir_belanja'],
         },
       ],
     },

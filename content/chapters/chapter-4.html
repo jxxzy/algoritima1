@@ -1,0 +1,141 @@
+<section class="chapter-section" id="bab-4" aria-labelledby="bab-4-title">
+          <div class="chapter-heading">
+            <div class="chapter-title-group"><span class="chapter-badge badge-green">BAB 04</span><div><h2 id="bab-4-title">Operator, ekspresi, dan aplikasi mini</h2><p>Susun aturan hitung yang tepat, lalu buktikan dengan kasus uji.</p></div></div>
+            <button class="mark-chapter" data-chapter="4" type="button"><span>✓</span> Tandai bab selesai</button>
+          </div>
+          <div class="chapter-intro">
+            <div><span class="section-kicker">TUJUAN BELAJAR</span><p>Gunakan operator aritmetika, perbandingan, dan logika; terapkan prioritas dengan tanda kurung; hitung diskon, nilai berbobot, serta ongkos kirim; dan uji batas sebelum hasil dipercaya.</p></div>
+            <div class="goal-icon goal-amber" aria-hidden="true">±</div>
+          </div>
+
+          <article class="lesson-card" id="b4-operator" data-topic="b4-operator" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number amber-text">01</span><div><h3>Operator menghasilkan nilai atau keputusan</h3><p>Kenali operasi aritmetika, perbandingan, dan logika.</p></div></div>
+            <div class="lesson-body">
+              <p>Operator <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>//</code>, <code>%</code>, dan <code>**</code> menghitung angka. <code>/</code> membagi biasa; <code>//</code> membulatkan hasil ke bawah; <code>%</code> mengambil sisa; dan <code>**</code> memangkatkan. Khusus bilangan negatif, <code>-7 // 3</code> bernilai <code>-3</code> karena pembulatan menuju negatif tak hingga, bukan menuju nol.</p>
+              <div class="operator-grid"><div><code>/</code><strong>Bagi biasa</strong><span>7 / 3 → 2.333…</span></div><div><code>//</code><strong>Bagi bulat</strong><span>7 // 3 → 2</span></div><div><code>%</code><strong>Sisa</strong><span>7 % 3 → 1</span></div></div>
+              <p>Operator <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, dan <code>&gt;=</code> membandingkan nilai dan menghasilkan <code>True</code> atau <code>False</code>. Simbol <code>=</code> berbeda: ia menetapkan nilai, bukan membandingkan.</p>
+              <div class="formula-card"><span>AND · KEDUANYA HARUS BENAR</span><code>anggota and subtotal &gt;= 50000</code><span>OR · MINIMAL SATU BENAR</span><code>bukan_anggota or subtotal &lt; 50000</code><span>NOT · KEBALIKAN</span><code>not layak_diskon</code></div>
+              <div class="callout callout-blue"><span>↪</span><p><strong>Short-circuit:</strong> Python berhenti mengevaluasi <code>and</code> setelah bagian kiri salah, dan <code>or</code> setelah bagian kiri benar. Karena itu <code>jumlah != 0 and total / jumlah &gt; 80</code> tidak membagi dengan nol.</p></div>
+              <h4>Periksa pembagian dan sisa</h4>
+              <div class="code-card"><div class="code-card-header"><span>Python · operasi dasar</span><button class="copy-code" type="button">Salin kode</button></div><pre><code>print(7 // 3)  # 2
+print(7 % 3)   # 1
+print(2 + 3 * 4)  # 14
+print((2 + 3) * 4)  # 20</code></pre></div>
+              <p>Pasangan <code>7 // 3</code> dan <code>7 % 3</code> dapat diperiksa dengan identitas <code>7 == (7 // 3) * 3 + (7 % 3)</code>. Membagi atau mengambil modulo dengan nol tetap tidak sah.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b4-operator"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b4-ekspresi" data-topic="b4-ekspresi" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number amber-text">02</span><div><h3>Prioritas, nilai Boolean, dan uji ambang</h3><p>Kurung memperjelas maksud; uji nilai tepat di sekitar batas.</p></div></div>
+            <div class="lesson-body">
+              <p>Perkalian dan pembagian didahulukan daripada penjumlahan: <code>2 + 3 * 4</code> adalah <code>14</code>, sedangkan <code>(2 + 3) * 4</code> adalah <code>20</code>. Dalam nilai berbobot, kalikan setiap nilai dengan bobotnya, lalu jumlahkan. Bobot <code>0.30 + 0.30 + 0.40</code> berjumlah satu.</p>
+              <div class="formula-card"><span>SUBTOTAL</span><code>harga * jumlah</code><span>DISKON 5% MULAI Rp50.000</span><code>subtotal &gt;= 50000</code><span>TAGIHAN</span><code>subtotal - diskon + kemasan</code></div>
+              <p>Pilih operator pembanding sesuai kata pada aturan: “minimal Rp50.000” berarti <code>&gt;=</code>, sedangkan “lebih dari Rp50.000” berarti <code>&gt;</code>. Tiga titik yang paling menjelaskan perilaku ambang adalah <code>49.999</code>, <code>50.000</code>, dan <code>50.001</code>.</p>
+              <div class="callout callout-amber"><span>!</span><p>Kasus tepat di batas membedakan <code>&gt;</code> dari <code>&gt;=</code>. Jangan membulatkan setiap komponen nilai berbobot sebelum dijumlahkan; pemformatan <code>:.2f</code> hanya mengatur tampilan.</p></div>
+              <h4>Latihan interaktif · kalkulator belanja</h4>
+              <form class="discount-calculator" id="discount-calculator">
+                <label>Harga satuan (Rp)<input name="harga" type="number" min="1" step="1" value="25000" required></label>
+                <label>Jumlah barang<input name="jumlah" type="number" min="1" step="1" value="2" required></label>
+                <button class="button button-primary" type="submit">Hitung tagihan</button>
+                <p id="discount-result" class="quiz-feedback" role="status" aria-live="polite">Masukkan bilangan bulat positif untuk menghitung diskon, kemasan, dan total.</p>
+              </form>
+              <h4>Jelajahi operator logika</h4>
+              <p>Atur status anggota dan kelayakan subtotal. Lihat bagaimana <code>and</code>, <code>or</code>, dan <code>not</code> menggabungkan nilai Boolean.</p>
+              <form id="logic-explorer-form" class="chapter-tool-form logic-tool">
+                <label>Status anggota<select name="anggota"><option value="true">Anggota</option><option value="false">Bukan anggota</option></select></label>
+                <label>Subtotal (Rp)<input name="subtotal" type="number" min="0" step="1" value="60000"></label>
+                <label>Operator<select name="operator"><option value="and">and · keduanya benar</option><option value="or">or · minimal satu benar</option><option value="not">not · membalik kondisi</option></select></label>
+                <button class="button button-quiet" type="submit">Evaluasi ekspresi</button>
+                <p class="chapter-tool-result" id="logic-explorer-result" role="status" aria-live="polite">Kondisi kedua: subtotal minimal Rp50.000.</p>
+              </form>
+              <p>Widget menerapkan aturan latihan: diskon 5% jika subtotal minimal Rp50.000, pembulatan diskon ke bawah ke rupiah utuh, lalu biaya kemasan Rp2.000. Ubah subtotal ke Rp49.999, Rp50.000, dan Rp50.001 untuk menguji cabang di batas.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b4-ekspresi"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card" id="b4-aplikasi" data-topic="b4-aplikasi" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number amber-text">03</span><div><h3>Tiga aplikasi: kasir, nilai akhir, dan biaya kirim</h3><p>Ubah aturan menjadi rumus eksplisit dan validasi sebelum menghitung.</p></div></div>
+            <div class="lesson-body">
+              <h4>A. Kasir dengan diskon dan biaya kemasan</h4>
+              <p>Harga dan jumlah harus berupa bilangan bulat positif. Hitung subtotal lebih dulu; diskon 5% hanya berlaku bila subtotal minimal Rp50.000. Setelah diskon, tambahkan biaya kemasan Rp2.000. Rupiah latihan disimpan sebagai <code>int</code>, sehingga diskon pecahan rupiah dibulatkan ke bawah.</p>
+              <div class="code-card"><div class="code-card-header"><span>Dry run · harga Rp25.000 × 2</span><button class="copy-code" type="button">Salin kode</button></div><pre><code>subtotal = 25000 * 2       # 50000
+diskon = subtotal * 5 // 100  # 2500
+setelah_diskon = subtotal - diskon  # 47500
+total = setelah_diskon + 2000  # 49500</code></pre></div>
+              <p>Hasilnya: subtotal Rp50.000, diskon Rp2.500, total Rp49.500. Contoh inti dengan ambang Rp100.000 dan diskon 10% juga tersedia di kode tugas: Rp25.000 × 4 menghasilkan diskon Rp10.000 dan bayar Rp90.000.</p>
+              <h4>B. Rata-rata berbobot</h4>
+              <p>Nilai tugas, UTS, dan UAS harus masing-masing berada pada rentang 0–100. Rumus contoh adalah <code>tugas * 0.30 + uts * 0.30 + uas * 0.40</code>. Untuk nilai 80, 70, 90, kontribusinya 24, 21, 36; nilai akhir 81. Nilai mentah dijumlahkan tanpa pembulatan tiap komponen.</p>
+              <h4>C. Ongkos kirim per kilogram atau bagiannya</h4>
+              <p>Berat adalah gram bulat positif. Setiap kilogram tertagih berbiaya Rp8.000 dan ada biaya kemasan Rp2.000 per paket. Rumus <code>(berat_gram + 999) // 1000</code> membulatkan ke atas tanpa bilangan pecahan: 999 dan 1.000 gram ditagih satu kilogram, sementara 1.001 gram ditagih dua kilogram. Kemasan hanya dihitung satu kali.</p>
+              <div class="callout callout-blue"><span>✓</span><p>Pisahkan nilai antara—<code>subtotal</code>, <code>diskon</code>, <code>setelah_diskon</code>, dan <code>total</code>—agar setiap tahap dapat ditelusuri. Validasi harus terjadi sebelum hasil sukses ditampilkan.</p></div>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b4-aplikasi"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+
+          <article class="lesson-card assignment-card" id="b4-praktikum" data-topic="b4-praktikum" data-searchable>
+            <div class="lesson-heading"><span class="lesson-number amber-text">↗</span><div><h3>Praktikum, enam tantangan, studi kasus, dan evaluasi</h3><p>Semua tugas Bab 4 disertai implementasi, hasil uji, dan pembahasan.</p></div></div>
+            <div class="lesson-body">
+              <p><a class="solution-jump" href="#kode-tugas">Buka kode Python, penjelasan variabel, dan peta tugas →</a></p>
+              <h4>Praktikum terbimbing · kalkulator belanja</h4>
+              <p><strong>Kontrak:</strong> harga bulat dan jumlah positif; diskon 5% mulai subtotal Rp50.000; biaya kemasan Rp2.000 ditambahkan setelah diskon. Implementasi dan tes ada di <code>Bab 4/kasir_belanja.py</code>.</p>
+              <ol>
+                <li>Rumusnya: <code>subtotal = harga * jumlah</code>; <code>diskon = subtotal * 5 // 100</code> jika <code>subtotal &gt;= 50000</code>, selain itu nol; <code>total = subtotal - diskon + 2000</code>.</li>
+                <li>Tiga uji ambang memakai subtotal Rp49.999, Rp50.000, dan Rp50.001.</li>
+                <li>Rp49.999 menghasilkan diskon Rp0 dan total Rp51.999; Rp50.000 menghasilkan diskon Rp2.500 dan total Rp49.500; Rp50.001 menghasilkan diskon Rp2.500 dan total Rp49.501.</li>
+                <li>Versi pengembangan menambah ongkir tetap. Implementasi menetapkan ambang gratis ongkir memakai <em>subtotal</em>; aturan ini harus dinyatakan agar tidak tertukar dengan total setelah diskon.</li>
+                <li>Uji nilai tidak sah, keadaan batas, satu kasus normal, dan regresi setelah fitur baru. Jalur penolakan tidak menghasilkan tagihan.</li>
+              </ol>
+              <h4>Tantangan bertingkat · jawaban ringkas dan bukti</h4>
+              <ol>
+                <li><strong>Biaya kemasan Rp2.000:</strong> diterapkan sekali setelah diskon; semua hasil kasir di atas sudah memasukkannya.</li>
+                <li><strong>Diskon khusus anggota:</strong> fungsi <code>hitung_belanja_anggota</code> memakai <code>anggota and subtotal &gt;= 100000</code>. Anggota dengan Rp100.000 mendapat Rp10.000; nonanggota pada nilai sama atau anggota dengan Rp99.999 tidak mendapat diskon.</li>
+                <li><strong>Diskon bertingkat:</strong> gunakan cabang <code>if/elif</code>, 10% mulai Rp100.000, atau 5% mulai Rp50.000, atau nol. Rp100.000 mendapat Rp10.000, bukan gabungan 15%.</li>
+                <li><strong>Dasar diskon berbeda:</strong> pada subtotal Rp50.000, diskon atas subtotal memberi total Rp49.500. Bila kemasan dimasukkan ke dasar diskon, 5% × Rp52.000 = Rp2.600 dan tagihan menjadi Rp49.400. Aturan harus memilih satu kebijakan dengan sengaja.</li>
+                <li><strong>Adaptasi nilai berbobot:</strong> kontrak awal <code>30/30/40</code> memberi <code>80 * .30 + 70 * .30 + 90 * .40 = 81</code>. Ubah hanya bobot menjadi <code>25/25/50</code>; dengan input yang sama hasilnya <code>20 + 17,5 + 45 = 82,5</code>. Implementasi kedua ada di <code>hitung_nilai_akhir_pengembangan</code>. Kedua versi menerima nilai 0–100; bobot latihan ini bukan bobot penilaian mata kuliah.</li>
+                <li><strong>Buktikan ongkir:</strong> untuk 1.001 gram, <code>(1001 + 999) // 1000 = 2</code> kg, ongkir Rp16.000, kemasan Rp2.000, total Rp18.000. Uji 0 gram harus ditolak sebelum keluaran tagihan.</li>
+              </ol>
+              <details class="trace-details"><summary>Studi kasus mandiri · spesifikasi, pseudocode, trace, dan pengujian</summary><div class="lesson-body nested-body">
+                <p><strong>Tujuan/pengguna:</strong> membantu kasir menghitung tagihan konsisten. Input harga satuan rupiah dan jumlah barang berupa integer positif; output menampilkan subtotal, diskon, biaya kemasan, dan total rupiah.</p>
+                <p><strong>Pseudocode:</strong></p>
+                <pre><code>MULAI
+BACA harga, jumlah
+JIKA harga atau jumlah bukan integer positif: TOLAK dan SELESAI
+subtotal = harga * jumlah
+JIKA subtotal &gt;= 50000: diskon = subtotal * 5 // 100
+SELAIN ITU: diskon = 0
+total = subtotal - diskon + 2000
+TAMPILKAN subtotal, diskon, total
+SELESAI</code></pre>
+                <p><strong>Trace normal:</strong> harga Rp25.000, jumlah 2 → subtotal Rp50.000 → memenuhi ambang → diskon Rp2.500 → setelah diskon Rp47.500 → kemasan Rp2.000 → tagihan Rp49.500.</p>
+                <p><strong>Variabel:</strong> <code>harga</code> dan <code>jumlah</code> adalah input; <code>subtotal</code>, <code>diskon</code>, <code>setelah_diskon</code>, dan <code>total</code> menyimpan tahapan hitung. Fungsi murni hanya mengembalikan rincian setelah seluruh validasi lolos; input invalid tidak meninggalkan tagihan parsial.</p>
+                <p><strong>Batas dan pengembangan:</strong> jumlah minimal yang sah adalah satu, tidak ada batas maksimum bisnis yang ditentukan. Ambang diskon tepat Rp50.000 termasuk layak. Perubahan kebijakan diskon pada subtotal plus kemasan mengubah hasil di sekitar ambang; implementasi utama tetap memakai subtotal sebagai dasar. Produk tunggal ini tidak menyimpan daftar barang atau transaksi.</p>
+                <div class="table-scroll"><table><thead><tr><th>Jenis uji</th><th>Input / subtotal</th><th>Ekspektasi</th></tr></thead><tbody>
+                  <tr><td>Normal</td><td>Rp25.000 × 2</td><td>Subtotal 50.000; diskon 2.500; total 49.500</td></tr>
+                  <tr><td>Batas bawah diskon</td><td>Subtotal 49.999</td><td>Diskon 0; total 51.999</td></tr>
+                  <tr><td>Tepat ambang</td><td>Subtotal 50.000</td><td>Diskon 2.500; total 49.500</td></tr>
+                  <tr><td>Di atas ambang</td><td>Subtotal 50.001</td><td>Diskon 2.500; total 49.501</td></tr>
+                  <tr><td>Penolakan</td><td>Harga 0 atau jumlah 0</td><td>Pesan validasi; tidak ada total</td></tr>
+                  <tr><td>Regresi</td><td>Subtotal 50.000 sebelum/sesudah ongkir</td><td>Aturan diskon dan kemasan tetap; ongkir hanya menambah biaya sesuai kontrak</td></tr>
+                </tbody></table></div>
+                <p>Nilai subtotal tersebut dapat dibentuk langsung dari harga dan jumlah bulat positif, misalnya Rp49.999 × 1, Rp25.000 × 2, serta Rp50.001 × 1.</p>
+              </div></details>
+              <details class="trace-details"><summary>Jawaban evaluasi formatif dan refleksi (1–9)</summary><div class="lesson-body nested-body">
+                <ol>
+                  <li>Perbandingan menghasilkan Boolean. Contoh <code>50000 &gt;= 50000</code> adalah <code>True</code>, sedangkan <code>49999 &gt;= 50000</code> adalah <code>False</code>.</li>
+                  <li>Tanda kurung menyatakan urutan yang diinginkan. <code>2 + 3 * 4 = 14</code>, sementara <code>(2 + 3) * 4 = 20</code>.</li>
+                  <li>Uji tepat batas menemukan beda <code>&gt;</code> dan <code>&gt;=</code>; sertakan juga nilai tepat di bawah dan di atas.</li>
+                  <li>Contoh uang menggunakan <code>int</code> agar satuan rupiah utuh tidak membawa pecahan biner; kebijakan pembulatan diskon ditetapkan eksplisit dengan <code>//</code>.</li>
+                  <li>Uji batas kasir Rp50.000 mendapat diskon Rp2.500; ekspresi <code>subtotal &gt;= AMBANG_DISKON</code> memilih cabangnya.</li>
+                  <li>Harga nol ditolak sebelum hitung; fungsi melempar kesalahan dan tidak mengembalikan rincian sukses. Tes memeriksa tidak ada total pada keluaran CLI.</li>
+                  <li>Kasir dan pengiriman sama-sama memakai aritmetika, integer rupiah, dan validasi. Kasir memilih diskon dengan perbandingan; pengiriman membulatkan unit berat ke atas dengan <code>//</code> dan biaya kemasan per paket.</li>
+                  <li>Kesalahan umum ialah menggunakan <code>&gt;</code> untuk syarat “minimal”, atau menghitung diskon dua kali. Uji Rp50.000 dan Rp100.000 membedakan kesalahan tersebut.</li>
+                  <li>Contoh refleksi: pahami bahwa <code>and</code> mensyaratkan dua kondisi sekaligus; hal yang dapat dipelajari lagi ialah kebijakan pembulatan uang, dengan contoh diskon 5% pada subtotal yang tidak habis dibagi 20.</li>
+                </ol>
+                <p><strong>Hubungan materi:</strong> Bab 1 memberi pola input-proses-output, Bab 2 membantu merancang urutan dan cabang, Bab 3 memilih tipe untuk data, lalu Bab 4 membentuk ekspresi yang menggabungkan semuanya. Contoh menganggap rupiah integer, satu tarif kemasan, dan tidak menyimpan keranjang banyak barang; bantuan untuk kode pada situs ini didokumentasikan di materi dan setiap program diuji lokal.</p>
+              </div></details>
+              <p class="callout callout-blue"><strong>Bukti capaian:</strong> siapkan spesifikasi dan urutan proses, kode yang dapat dijelaskan, tabel uji normal/batas/penolakan/regresi, serta catatan satu keputusan atau bug yang diverifikasi.</p>
+            </div>
+            <label class="topic-complete"><input type="checkbox" data-progress="b4-praktikum"><span class="checkmark"></span> Saya memahami topik ini</label>
+          </article>
+        </section>

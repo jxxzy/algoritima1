@@ -100,6 +100,25 @@ print(f"Sesudah: A={a}, B={b}")</code></pre>
             <div class="lesson-heading"><span class="lesson-number violet-text">↗</span><div><h3>Praktikum, tantangan, dan tugas Bab 2</h3><p>Samakan narasi, pseudocode, diagram, kode, dan hasil dry run.</p></div></div>
             <div class="lesson-body">
               <p><a class="solution-jump" href="#kode-tugas">Buka kode lengkap dan penjelasan variabel untuk semua tugas →</a></p>
+              <section class="chapter-feature" aria-labelledby="b2-feature-title">
+                <h4 id="b2-feature-title">Fitur Bab 2 · jalankan alur parkir dan geometri</h4>
+                <p>Masukkan contoh, lihat keputusan/rumus yang dipakai, lalu bandingkan hasil dengan pseudocode di atas.</p>
+                <div class="chapter-tool-grid">
+                  <form id="parking-calculator-form" class="chapter-tool-form">
+                    <strong>Kalkulator tarif parkir</strong>
+                    <label>Durasi parkir (jam bulat)<input name="jam" type="number" min="1" step="1" value="8"></label>
+                    <button class="button button-primary" type="submit">Hitung tarif</button>
+                    <p class="chapter-tool-result" id="parking-calculator-result" role="status" aria-live="polite">Tarif: Rp3.000 untuk jam pertama, Rp2.000 per jam tambahan, maksimum Rp15.000.</p>
+                  </form>
+                  <form id="geometry-calculator-form" class="chapter-tool-form">
+                    <strong>Kalkulator luas &amp; keliling</strong>
+                    <label>Panjang (m)<input name="panjang" type="number" min="0" step="any" value="5"></label>
+                    <label>Lebar (m)<input name="lebar" type="number" min="0" step="any" value="3"></label>
+                    <button class="button button-primary" type="submit">Hitung geometri</button>
+                    <p class="chapter-tool-result" id="geometry-calculator-result" role="status" aria-live="polite">Kedua sisi harus bernilai positif dan menggunakan satuan yang sama.</p>
+                  </form>
+                </div>
+              </section>
               <h4>Praktikum terbimbing: rancangan tarif parkir</h4>
               <ol>
                 <li>Tulis narasi yang menyebut satuan durasi.</li>

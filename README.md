@@ -1,11 +1,11 @@
 # Belajar Algoritma — Algoritma dan Struktur Data I
 
-Situs pembelajaran statis berbahasa Indonesia untuk materi Bab 1–3. Sumber materi, halaman, gaya, dan logika situs dipisahkan; `scripts/build.mjs` menghasilkan situs multi-page siap deploy ke GitHub Pages.
+Situs pembelajaran statis berbahasa Indonesia untuk materi Bab 1–4. Sumber materi, halaman, gaya, dan logika situs dipisahkan; `scripts/build.mjs` menghasilkan situs multi-page siap deploy ke GitHub Pages.
 
 ## Halaman dan fitur
 
 - Beranda dengan peta belajar, progres, timer fokus, dan materi tersimpan.
-- Materi Bab 1, Bab 2, dan Bab 3 pada halaman masing-masing.
+- Materi Bab 1–4 pada halaman masing-masing, termasuk operator, ekspresi Boolean, diskon, nilai berbobot, dan pembulatan ongkir.
 - Kode Python lengkap untuk tugas-tugas buku, disertai panduan variabel, parameter, dan fungsi.
 - Laboratorium interaktif, visualizer algoritma, evaluasi tiap bab, dan referensi cepat.
 - Pencarian lintas bab (`Ctrl+K` atau `/`), mode fokus, mode gelap mengikuti sistem, dan bookmark persisten.
@@ -17,7 +17,7 @@ Situs pembelajaran statis berbahasa Indonesia untuk materi Bab 1–3. Sumber mat
 
 ```text
 content/
-  chapters/       Materi terpisah Bab 1–3
+  chapters/       Materi terpisah Bab 1–4
   home/           Fragmen dashboard
   lab/            Konten laboratorium
   reference/      Konten referensi
@@ -26,12 +26,12 @@ scripts/
   build.mjs       Membuat halaman multi-page, aset minifikasi/hash, indeks cari, dan PWA
 app.js            Interaksi lintas halaman
 styles.css        Gaya situs
-Bab 1/, Bab 2/, Bab 3/
+Bab 1/, Bab 2/, Bab 3/, Bab 4/
                   Program Python dan tes tugas
 dist/             Hasil build (dibuat otomatis, tidak disimpan di Git)
 ```
 
-`index.html` di root hanya menjadi pintu masuk dokumentasi sumber. Situs yang dihasilkan mempunyai halaman terpisah di `dist/index.html`, `dist/bab-1/`, `dist/bab-2/`, `dist/bab-3/`, `dist/lab/`, dan `dist/referensi/`.
+`index.html` di root hanya menjadi pintu masuk dokumentasi sumber. Situs yang dihasilkan mempunyai halaman terpisah di `dist/index.html`, `dist/bab-1/` hingga `dist/bab-4/`, `dist/lab/`, dan `dist/referensi/`.
 
 ## Build dan uji lokal
 
@@ -49,6 +49,7 @@ Buka `http://localhost:8000`. Jalankan tes program per bab:
 python -B -m unittest discover -s 'Bab 1' -v
 python -B -m unittest discover -s 'Bab 2' -v
 python -B -m unittest discover -s 'Bab 3' -v
+python -B -m unittest discover -s 'Bab 4' -v
 ```
 
 ## Deploy ke GitHub Pages
