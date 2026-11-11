@@ -1047,6 +1047,19 @@ body.has-reveal-motion .hero.is-visible .hero-copy > :nth-child(5) { animation-d
 @keyframes timer-pulse { 50% { transform: scale(1.035); } }
 @keyframes orbit-spin { to { transform: rotate(360deg); } }
 @keyframes phase-change { 50% { transform: scale(1.012); box-shadow: 0 23px 60px rgba(63, 86, 210, .16); } }
+.brand-mark { animation: brand-arrive .65s cubic-bezier(.2, .7, .2, 1) both; }
+.status-dot, .eyebrow-dot { animation: status-pulse 2.4s ease-in-out infinite; }
+.quiz-art { animation: quiz-float 4s ease-in-out infinite; }
+.progress-track span { position: relative; overflow: hidden; }
+.progress-track span::after { position: absolute; inset: 0; background: linear-gradient(100deg, transparent 20%, #ffffff80 50%, transparent 80%); content: ''; animation: progress-shimmer 2.8s ease-in-out infinite; }
+.quiz-feedback.correct, .quiz-feedback.incorrect, .chapter-tool-result:not(:empty) { animation: feedback-arrive .36s cubic-bezier(.2, .7, .2, 1) both; }
+.lesson-card.is-complete .checkmark { animation: completion-pop .32s cubic-bezier(.2, .8, .3, 1.3); }
+@keyframes brand-arrive { from { opacity: 0; transform: rotate(-12deg) scale(.72); } to { opacity: 1; transform: rotate(0) scale(1); } }
+@keyframes status-pulse { 50% { box-shadow: 0 0 0 6px #48bd8a12, 0 0 12px #48bd8a66; } }
+@keyframes quiz-float { 0%, 100% { transform: rotate(6deg) translateY(0); } 50% { transform: rotate(0) translateY(-5px); } }
+@keyframes progress-shimmer { from { transform: translateX(-110%); } to { transform: translateX(110%); } }
+@keyframes feedback-arrive { from { opacity: 0; transform: translateY(6px) scale(.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes completion-pop { 50% { transform: scale(1.35) rotate(-8deg); } }
 @media (max-width: 760px) {
   .focus-timer-card { grid-template-columns: 1fr; gap: 14px; padding: 23px; }
   .timer-dial { grid-row: 1; width: min(210px, 62vw); justify-self: center; }
@@ -1071,5 +1084,14 @@ body.dark .timer-skip:hover { background: var(--surface); }
   .focus-timer-card[data-running="true"] .timer-display,
   .focus-timer-card[data-running="true"] .timer-orbit,
   .focus-timer-card.is-phase-change,
-  body.has-reveal-motion .hero.is-visible .hero-copy > * { animation: none; }
+  body.has-reveal-motion .hero.is-visible .hero-copy > *,
+  .brand-mark,
+  .status-dot,
+  .eyebrow-dot,
+  .quiz-art,
+  .progress-track span::after,
+  .quiz-feedback.correct,
+  .quiz-feedback.incorrect,
+  .chapter-tool-result:not(:empty),
+  .lesson-card.is-complete .checkmark { animation: none; }
 }
