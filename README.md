@@ -10,7 +10,7 @@ Situs pembelajaran statis berbahasa Indonesia untuk materi Bab 1–4. Sumber mat
 - Laboratorium interaktif, visualizer algoritma, evaluasi tiap bab, dan referensi cepat.
 - Pencarian lintas bab (`Ctrl+K` atau `/`), mode fokus, panduan pintasan (`?`), mode gelap, dan bookmark persisten.
 - Kontrol ukuran teks tersimpan, tombol kembali ke atas, layout responsif, navigasi keyboard, dan indikator fokus.
-- Animasi antarmuka pada halaman dan interaksi yang menghormati preferensi reduced motion.
+- Lebih dari lima animasi gerak berulang pada logo, navigasi, indikator, visual belajar, progres, dan kuis; semuanya menghormati preferensi reduced motion.
 - PWA untuk akses offline setelah halaman pertama dimuat, termasuk kode Python.
 - Penulis situs: **Mr.4Nony Alias Josua**.
 
