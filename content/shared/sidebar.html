@@ -73,6 +73,16 @@
 
         <div class="sidebar-footer">
           <div class="footer-note"><span class="status-dot"></span><span>Belajar mandiri, selangkah demi selangkah.</span></div>
+          <div class="reading-controls" role="group" aria-label="Ukuran teks materi">
+            <span class="reading-controls-label">Ukuran teks</span>
+            <div class="reading-control-buttons">
+              <button type="button" data-reading-step="-1" aria-label="Perkecil teks">A−</button>
+              <button type="button" data-reading-reset aria-label="Atur ulang ukuran teks">A</button>
+              <button type="button" data-reading-step="1" aria-label="Perbesar teks">A+</button>
+            </div>
+            <small id="reading-size-status" aria-live="polite">Ukuran teks standar</small>
+          </div>
+          <button class="shortcut-help" id="shortcut-help" type="button"><kbd>?</kbd> Pintasan keyboard</button>
           <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Aktifkan mode gelap"><span aria-hidden="true">☾</span><span>Ganti tampilan</span><kbd>⌘ J</kbd></button>
         </div>
       </aside>

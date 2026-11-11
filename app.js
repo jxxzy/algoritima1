@@ -3,6 +3,7 @@
   const themeKey = 'belajar-algoritma-theme-v1';
   const bookmarksKey = 'belajar-algoritma-bookmarks-v1';
   const quizKey = 'belajar-algoritma-quizzes-v1';
+  const readingSizeKey = 'belajar-algoritma-reading-size-v1';
   const progressIds = [
     'b1-ipo', 'b1-kartu', 'b1-biaya',
     'b2-representasi', 'b2-geometri', 'b2-parkir', 'b2-tukar',
@@ -27,8 +28,45 @@
   const mobileMenu = document.getElementById('mobile-menu');
   const sidebarBackdrop = document.getElementById('sidebar-backdrop');
   const themeToggle = document.getElementById('theme-toggle');
+  const readingSizeStatus = document.getElementById('reading-size-status');
   const focusToggle = document.getElementById('focus-toggle');
   const timerCard = document.querySelector('.focus-timer-card');
+
+  const readingSizes = [
+    { value: 'normal', label: 'Ukuran teks standar', scale: '1' },
+    { value: 'large', label: 'Ukuran teks besar', scale: '1.12' },
+    { value: 'larger', label: 'Ukuran teks sangat besar', scale: '1.25' },
+  ];
+  function applyReadingSize(value, persist = false) {
+    const selected = readingSizes.find((size) => size.value === value) || readingSizes[0];
+    document.body.dataset.readingSize = selected.value;
+    document.documentElement.style.setProperty('--reading-scale', selected.scale);
+    if (readingSizeStatus) readingSizeStatus.textContent = selected.label;
+    if (persist) {
+      try {
+        localStorage.setItem(readingSizeKey, selected.value);
+      } catch {
+        if (searchStatus) searchStatus.textContent = 'Preferensi ukuran teks tidak dapat disimpan di browser ini.';
+      }
+    }
+  }
+  let savedReadingSize = 'normal';
+  try {
+    savedReadingSize = localStorage.getItem(readingSizeKey) || 'normal';
+  } catch {
+    if (searchStatus) searchStatus.textContent = 'Preferensi ukuran teks tidak dapat dibaca di browser ini.';
+  }
+  applyReadingSize(savedReadingSize);
+  document.querySelectorAll('[data-reading-step]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const currentIndex = readingSizes.findIndex((size) => size.value === document.body.dataset.readingSize);
+      const nextIndex = Math.max(0, Math.min(readingSizes.length - 1, currentIndex + Number(button.dataset.readingStep)));
+      applyReadingSize(readingSizes[nextIndex].value, true);
+    });
+  });
+  document.querySelector('[data-reading-reset]')?.addEventListener('click', () => {
+    applyReadingSize('normal', true);
+  });
 
   function readProgress() {
     try {
@@ -571,10 +609,64 @@
     if (section) setCurrentNavigation(section);
   }
 
+  const shortcutDialog = document.createElement('dialog');
+  shortcutDialog.className = 'shortcut-dialog';
+  shortcutDialog.setAttribute('aria-labelledby', 'shortcut-dialog-title');
+  shortcutDialog.innerHTML = `
+    <div class="shortcut-dialog-heading">
+      <div><span class="section-kicker">NAVIGASI CEPAT</span><h2 id="shortcut-dialog-title">Pintasan keyboard</h2></div>
+      <button class="shortcut-dialog-close" type="button" aria-label="Tutup pintasan">×</button>
+    </div>
+    <dl class="shortcut-list">
+      <div><dt>Cari materi</dt><dd><kbd>/</kbd> atau <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>K</kbd></dd></div>
+      <div><dt>Ganti tampilan</dt><dd><kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>J</kbd></dd></div>
+      <div><dt>Mode fokus</dt><dd><kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd></dd></div>
+      <div><dt>Tampilkan bantuan ini</dt><dd><kbd>?</kbd></dd></div>
+      <div><dt>Tutup pencarian atau dialog</dt><dd><kbd>Esc</kbd></dd></div>
+    </dl>
+    <p class="shortcut-dialog-note">Pintasan tidak aktif saat kamu sedang mengetik di kolom isian.</p>`;
+  document.body.append(shortcutDialog);
+  const shortcutHelp = document.getElementById('shortcut-help');
+  const openShortcutDialog = () => shortcutDialog.showModal();
+  shortcutHelp?.addEventListener('click', openShortcutDialog);
+  shortcutDialog.querySelector('.shortcut-dialog-close').addEventListener('click', () => shortcutDialog.close());
+  shortcutDialog.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      shortcutDialog.close();
+    }
+  });
+  shortcutDialog.addEventListener('click', (event) => {
+    if (event.target === shortcutDialog) shortcutDialog.close();
+  });
+
+  const backToTop = document.createElement('button');
+  backToTop.className = 'back-to-top';
+  backToTop.type = 'button';
+  backToTop.setAttribute('aria-label', 'Kembali ke atas');
+  backToTop.innerHTML = '<span aria-hidden="true">↑</span><span class="visually-hidden">Kembali ke atas</span>';
+  backToTop.hidden = true;
+  document.body.append(backToTop);
+  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  let scrollUpdatePending = false;
+  window.addEventListener('scroll', () => {
+    if (scrollUpdatePending) return;
+    scrollUpdatePending = true;
+    window.requestAnimationFrame(() => {
+      backToTop.hidden = window.scrollY < 480;
+      backToTop.classList.toggle('is-visible', !backToTop.hidden);
+      scrollUpdatePending = false;
+    });
+  }, { passive: true });
+
   document.addEventListener('keydown', (event) => {
     const target = event.target;
     const typing = target instanceof HTMLElement
       && (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName));
+    if (event.key === '?' && !typing && !shortcutDialog.open) {
+      event.preventDefault();
+      openShortcutDialog();
+    }
     if (event.key === '/' && !typing) {
       event.preventDefault();
       searchInput.focus();
@@ -1056,6 +1148,7 @@
       savedTheme = event.newValue;
       applyTheme(savedTheme || (systemPrefersDark.matches ? 'dark' : 'light'));
     }
+    if (event.key === readingSizeKey) applyReadingSize(event.newValue || 'normal');
   });
 
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches
