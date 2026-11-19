@@ -23,3 +23,5 @@ See [quality guide](QUALITY.md) and [80-feature registry](feature-registry.json)
 
 ## Additional hardening
 Focusable code/table regions, valid ARIA regions, transactional backup schema validation and rollback, multi-file modules, error inspector, editable pseudocode, session history and searchable help; latest acceptance requires new CI evidence. Real runtime test at c55e0a5 passed before these additions. Extended Chromium found serious accessibility groups; this patch specifically addresses those targets.
+
+Runtime at c55e0a5 passed real Python checks. Prior Chromium axe findings were addressed in f5ddf92. Academic extraction originally blocked by apt mirror failures; pypdf replacement added. Public HTTP hash check added after Pages deployment. These new gates are not yet evidence of a successful run.

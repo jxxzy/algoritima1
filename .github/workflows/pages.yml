@@ -64,3 +64,5 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+      - name: Verify public deployment against local build
+        run: python scripts/live-check.py https://jxxzy.github.io/algoritima1/
