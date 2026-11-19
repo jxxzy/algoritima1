@@ -7,3 +7,5 @@
 - Add flowchart/pseudocode builder, command palette, achievement recap, multi-case coding challenges.
 - Shared Python–JavaScript arithmetic checks, browser smoke tests and mandatory deployment gates.
 - Stable release remains gated by verified academic source rights, browser/runtime tests and live validation.
+
+- Add syntax compilation, saved projects, local Python file import, whitespace formatting, daily challenge, bank review, concept lab, learning calendar and offline manager.

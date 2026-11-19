@@ -188,3 +188,5 @@ body.sidebar-open .academy-bottom{visibility:hidden}
 @keyframes toc-in{from{opacity:.5;transform:translateY(-5px)}to{opacity:1;transform:none}}
 @media(max-width:767px){.command-launch{font-size:11px!important;padding:4px 8px!important;min-height:44px!important;white-space:normal!important}.topbar{flex-wrap:wrap}.academy-toast{bottom:calc(85px + env(safe-area-inset-bottom))}}
 @media(prefers-reduced-motion:reduce){.academy-command,.academy-toast,.flow-preview svg,#ac-achievements li,.academy-actions button,.academy-bottom a,.workspace-toc-open nav{animation:none!important}}
+
+.cx-calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}.cx-calendar>div{aspect-ratio:1;display:grid;place-items:center;border:1px solid var(--line);border-radius:8px;font-size:12px;background:var(--surface)}.cx-calendar>div.active{background:var(--blue-soft);color:var(--blue);font-weight:800}.academy-card #exam-bank{max-height:360px;overflow:auto;padding:12px}.academy-card #exam-bank li{margin:8px 0}.academy-card #exam-bank summary{cursor:pointer}.academy-card input[type=file]{height:auto;max-width:100%;overflow:hidden}

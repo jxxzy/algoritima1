@@ -14,3 +14,6 @@
 - Runtime end-to-end test with actual Pyodide CDN, cross-browser Firefox/Edge/WebKit/Safari and physical Android/iOS, keyboard flows, low-end performance and Lighthouse.
 - Review versioned storage and import validation, multi-tab conflicts, security isolation and error boundaries. Existing code runs trusted Python only.
 - Verify latest successful live deployment and then publish stable tag/release; never bypass a failed quality gate.
+
+## Latest evidence
+Commit 70822e1 deployed successfully in [Actions run 44520297773](https://github.com/jxxzy/algoritima1/actions/runs/44520297773). Unit tests, parity, dependency audit, browser smoke and deployment passed. 36 CSS keyframe definitions counted; visual behavior is not certified by the count. Newer changes require their own CI evidence.

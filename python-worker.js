@@ -17,6 +17,7 @@ self.onmessage = async ({data}) => {
       return {captured,stderr};
     };
     send('ready');
+    if(data.syntaxOnly){py.globals.set('__academy_source',data.code);try{py.runPython("compile(__academy_source, '<editor>', 'exec')");send('done');}finally{py.globals.delete('__academy_source');}return;}
     if(Array.isArray(data.cases)){
       let passes=0;for(let j=0;j<data.cases.length;j++){const c=data.cases[j];try{const result=await execute(c.stdin,true);const ok=!result.stderr&&result.captured.trim()===c.expected;passes+=Number(ok);send('case','Test '+(j+1)+': '+(ok?'LULUS':'GAGAL')+' | expected '+c.expected+' | actual '+result.captured.trim().slice(0,200));}catch(e){send('case','Test '+(j+1)+': GAGAL — '+String(e.message).slice(0,300));}}send('done',passes+'/'+data.cases.length+' test case lulus');
     }else{await execute(data.stdin);send('done');}
