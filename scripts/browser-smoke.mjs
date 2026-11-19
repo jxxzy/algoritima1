@@ -21,6 +21,7 @@ try{
  await page.locator('#flow-label').fill('Hitung nilai');await page.locator('#flow-add').click();assert.match(await page.locator('#flow-pseudo').innerText(),/Hitung nilai/);
  await page.locator('#cx-search-target').fill('9');await page.locator('#cx-search').click();assert.match(await page.locator('#cx-search-out').innerText(),/indeks 4/);
  await page.locator('#ac-project-name').fill('Browser smoke');await page.locator('#ac-project-save').click();assert.equal(await page.locator('#ac-projects option').count(),2);
+ await page.locator('#mx-name').fill('helper.py');await page.locator('#mx-code').fill('x = 42');await page.locator('#mx-save').click();assert.match(await page.locator('#mx-status').innerText(),/tersimpan/);
  await page.goto(base);await page.keyboard.press('Control+k');assert.equal(await page.locator('.academy-command').isVisible(),true);await page.keyboard.press('Escape');await page.locator('#ac-note').fill('Smoke test note');await page.reload();assert.equal(await page.locator('#ac-note').inputValue(),'Smoke test note');
  await page.locator('#exam-start').click();assert.match(await page.locator('#exam-status').innerText(),/Soal 1 \/ 10/);
  await page.locator('#exam-answer').fill('0');await page.locator('#exam-form button[type=submit]').click();assert.ok((await page.locator('#exam-feedback').innerText()).length>0);

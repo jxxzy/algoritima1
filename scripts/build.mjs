@@ -318,10 +318,12 @@ function renderPage({ kind, title, description, canonical, navHtml = rewriteLink
     <script type="application/json" id="curriculum-registry">${JSON.stringify(curriculum).replace(/</g, "\\u003c")}</script>
     <script src="${hashedAssets.math}" defer></script>
     <script src="${hashedAssets.js}" defer></script>
+    <script src="${hashedAssets.storage}" defer></script>
     <script src="${hashedAssets.academy}" defer></script>
     <script src="${hashedAssets.assessment}" defer></script>
     <script src="${hashedAssets.tools}" defer></script>
     <script src="${hashedAssets.experiments}" defer></script>
+    <script src="${hashedAssets.extras}" defer></script>
     <link rel="stylesheet" href="${hashedAssets.workspace}">
   </head>
   <body ${pageKind}>
@@ -330,7 +332,7 @@ function renderPage({ kind, title, description, canonical, navHtml = rewriteLink
     <div class="site-shell">
       <button class="sidebar-backdrop" id="sidebar-backdrop" type="button" aria-label="Tutup navigasi" tabindex="-1" hidden></button>
       ${navHtml}
-      <main class="main-content" id="konten">${main}</main>
+      <main class="main-content" id="konten">${main.replace(/<pre\b([^>]*)>/gi, (_tag, attrs)=>`<pre${attrs}${/\btabindex\s*=/.test(attrs)?'':' tabindex="0"'}${/\brole\s*=/.test(attrs)?'':' role="region"'}${/\baria-label\s*=/.test(attrs)?'':' aria-label="Kode atau hasil program"'}>`).replace(/<div\b([^>]*class="[^"]*\b(?:table-scroll|academy-table|flow-preview)\b[^"]*"[^>]*)>/gi,(_tag,attrs)=>`<div${attrs}${/\btabindex\s*=/.test(attrs)?'':' tabindex="0"'}${/\brole\s*=/.test(attrs)?'':' role="region"'}${/\baria-label\s*=/.test(attrs)?'':' aria-label="Area diagram atau tabel yang dapat digulir"'}>`)}</main>
     </div>
   </body>
 </html>`;
@@ -339,7 +341,7 @@ function renderPage({ kind, title, description, canonical, navHtml = rewriteLink
 await rm(outputDirectory, { recursive: true, force: true });
 await mkdir(path.join(outputDirectory, 'assets'), { recursive: true });
 const assets = await build({
-  entryPoints: [path.join(root, 'app.js'), path.join(root, 'styles.css'), path.join(root, 'academy.js'), path.join(root, 'assessment.js'), path.join(root, 'math.js'), path.join(root, 'tools.js'), path.join(root, 'workspace.css'), path.join(root, 'experiments.js')],
+  entryPoints: [path.join(root, 'app.js'), path.join(root, 'styles.css'), path.join(root, 'academy.js'), path.join(root, 'assessment.js'), path.join(root, 'math.js'), path.join(root, 'tools.js'), path.join(root, 'workspace.css'), path.join(root, 'experiments.js'), path.join(root, 'storage.js'), path.join(root, 'extras.js')],
   outdir: path.join(outputDirectory, 'assets'),
   entryNames: '[name]-[hash]',
   minify: true,
@@ -352,7 +354,7 @@ for (const file of assets.outputFiles) {
   await writeFile(file.path, file.contents);
   assetNames[relative.startsWith('assets/') ? relative.slice('assets/'.length).split('-')[0] : relative] = relative;
 }
-renderPage.assets = { css: assetNames['styles'], js: assetNames['app'], academy: assetNames['academy'], assessment: assetNames['assessment'], math: assetNames['math'], tools: assetNames['tools'], workspace: assetNames['workspace'], experiments: assetNames['experiments'] };
+renderPage.assets = { css: assetNames['styles'], js: assetNames['app'], academy: assetNames['academy'], assessment: assetNames['assessment'], math: assetNames['math'], tools: assetNames['tools'], workspace: assetNames['workspace'], experiments: assetNames['experiments'], storage: assetNames['storage'], extras: assetNames['extras'] };
 renderPage.criticalCss = `
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:92px}body{margin:0;background:#f5f7fb;color:#17213a;font:14px/1.7 "Segoe UI",Arial,sans-serif}
 .site-shell{min-height:100vh}.sidebar{position:fixed;z-index:16;inset:0 auto 0 0;display:flex;width:min(320px,calc(100vw - 42px));height:100vh;flex-direction:column;padding:18px 15px 14px;overflow-y:auto;background:#fff;transform:translateX(-105%)}

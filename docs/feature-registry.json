@@ -45,8 +45,8 @@
       "id": 6,
       "group": "Dashboard",
       "name": "Recent activity",
-      "status": "PARTIAL",
-      "gap": "No unified activity feed",
+      "status": "IMPLEMENTED",
+      "gap": null,
       "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
     },
     {
@@ -205,16 +205,16 @@
       "id": 26,
       "group": "Studio",
       "name": "Error inspector",
-      "status": "PARTIAL",
-      "gap": "Traceback text only",
+      "status": "IMPLEMENTED",
+      "gap": null,
       "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
     },
     {
       "id": 27,
       "group": "Studio",
       "name": "File manager",
-      "status": "PARTIAL",
-      "gap": "Single-file import, no multi-file workspace",
+      "status": "IMPLEMENTED",
+      "gap": null,
       "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
     },
     {
@@ -301,8 +301,8 @@
       "id": 38,
       "group": "Lab",
       "name": "Pseudocode editor",
-      "status": "PARTIAL",
-      "gap": "Generated pseudocode, no independent editor",
+      "status": "IMPLEMENTED",
+      "gap": null,
       "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
     },
     {
@@ -533,8 +533,8 @@
       "id": 67,
       "group": "Tools",
       "name": "Study session history",
-      "status": "PARTIAL",
-      "gap": "Minutes aggregated by date",
+      "status": "IMPLEMENTED",
+      "gap": null,
       "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
     },
     {
@@ -573,8 +573,8 @@
       "id": 72,
       "group": "Tools",
       "name": "Learning data restore",
-      "status": "PARTIAL",
-      "gap": "Import exists; transactional/schema hardening pending",
+      "status": "IMPLEMENTED",
+      "gap": null,
       "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
     },
     {
@@ -629,8 +629,8 @@
       "id": 79,
       "group": "System",
       "name": "Help center",
-      "status": "PARTIAL",
-      "gap": "Learner guide and shortcuts, not a dedicated help center",
+      "status": "IMPLEMENTED",
+      "gap": null,
       "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
     },
     {

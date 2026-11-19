@@ -190,3 +190,5 @@ body.sidebar-open .academy-bottom{visibility:hidden}
 @media(prefers-reduced-motion:reduce){.academy-command,.academy-toast,.flow-preview svg,#ac-achievements li,.academy-actions button,.academy-bottom a,.workspace-toc-open nav{animation:none!important}}
 
 .cx-calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}.cx-calendar>div{aspect-ratio:1;display:grid;place-items:center;border:1px solid var(--line);border-radius:8px;font-size:12px;background:var(--surface)}.cx-calendar>div.active{background:var(--blue-soft);color:var(--blue);font-weight:800}.academy-card #exam-bank{max-height:360px;overflow:auto;padding:12px}.academy-card #exam-bank li{margin:8px 0}.academy-card #exam-bank summary{cursor:pointer}.academy-card input[type=file]{height:auto;max-width:100%;overflow:hidden}
+
+#mx-help details{padding:8px;border-bottom:1px solid var(--line)}#mx-help summary{font-weight:700;cursor:pointer}#mx-code,#mx-pseudo{font-family:ui-monospace,Consolas,monospace}pre[tabindex]:focus-visible,.table-scroll:focus-visible,.academy-table:focus-visible,.flow-preview:focus-visible{outline:2px solid var(--blue);outline-offset:2px}

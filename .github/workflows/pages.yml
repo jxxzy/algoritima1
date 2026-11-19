@@ -38,9 +38,9 @@ jobs:
         run: |
           for n in {1..7}; do python -B -m unittest discover -s "Bab $n" -v || exit 1; done
       - name: Validate JavaScript syntax
-        run: node --check app.js && node --check academy.js && node --check python-worker.js && node --check assessment.js && node --check math.js && node --check tools.js && node --check experiments.js
+        run: node --check app.js && node --check academy.js && node --check python-worker.js && node --check assessment.js && node --check math.js && node --check tools.js && node --check experiments.js && node --check storage.js && node --check extras.js
       - name: JavaScript and Python parity tests
-        run: node scripts/parity-test.mjs
+        run: node scripts/parity-test.mjs && node scripts/storage-test.mjs
       - name: Dependency security audit
         run: npm audit --audit-level=high
       - name: Build minified multipage site

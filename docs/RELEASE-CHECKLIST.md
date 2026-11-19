@@ -20,3 +20,6 @@ Commit 70822e1 deployed successfully in [Actions run 44520297773](https://github
 
 ## Extended gates
 See [quality guide](QUALITY.md) and [80-feature registry](feature-registry.json). Public deployment cd67115 passed run 44520889160. Stable tagging remains blocked until all requirements are evidenced.
+
+## Additional hardening
+Focusable code/table regions, valid ARIA regions, transactional backup schema validation and rollback, multi-file modules, error inspector, editable pseudocode, session history and searchable help; latest acceptance requires new CI evidence. Real runtime test at c55e0a5 passed before these additions. Extended Chromium found serious accessibility groups; this patch specifically addresses those targets.

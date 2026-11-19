@@ -14,6 +14,7 @@ try{
  await code.fill('def broken(');await p.locator('#ac-syntax').click();await completed();assert.match(await output.innerText(),/SyntaxError/);
  await code.fill('print(1)');await p.locator('#ac-syntax').click();await completed();assert.match(await status.innerText(),/Sintaks valid/);
  await p.locator('#ac-template').selectOption('double');await code.fill('print(int(input()) * 2)');await p.locator('#ac-run').click();await completed();assert.match(await status.innerText(),/3\/3 test case lulus/);
- await p.locator('#ac-template').selectOption('starter');await code.fill('while True:\n    pass');await p.locator('#ac-run').click();await p.waitForFunction(()=>document.querySelector('#ac-runtime-status').textContent.includes('Kode berjalan'));await p.locator('#ac-stop').click();assert.match(await status.innerText(),/dihentikan/);
+ await p.locator('#ac-template').selectOption('starter');await p.locator('#mx-name').fill('helper.py');await p.locator('#mx-code').fill('answer = 42');await p.locator('#mx-save').click();await code.fill('from helper import answer\nprint(answer)');await p.locator('#ac-run').click();await completed();assert.match(await output.innerText(),/^42\s*$/);
+ await code.fill('while True:\n    pass');await p.locator('#ac-run').click();await p.waitForFunction(()=>document.querySelector('#ac-runtime-status').textContent.includes('Kode berjalan'));await p.locator('#ac-stop').click();assert.match(await status.innerText(),/dihentikan/);
  console.log('Real Python runtime checks passed: arithmetic, stdin, syntax, 3 test cases, stop.');
 }finally{await browser?.close();server.kill();}
