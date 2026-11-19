@@ -24,6 +24,19 @@ try{
  await page.locator('#exam-next').click();assert.match(await page.locator('#exam-status').innerText(),/Soal 2 \/ 10/);
  // Wait for service worker installation and verify canonical chapter route and index offline.
  await page.evaluate(async()=>{await navigator.serviceWorker.ready;});await context.setOffline(true);await page.goto(base+'bab-3/');assert.match(await page.title(),/Bab 3/);const cached=await page.evaluate(async()=>Array.isArray(await (await fetch('search-index.json',{cache:'no-store'})).json()));assert.equal(cached,true);await context.setOffline(false);
- const mobile=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});await mobile.goto(base+'lab/');assert.equal(await mobile.locator('.academy-bottom').isVisible(),true);assert.equal(await mobile.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),true);
+ for(const width of [320,360,390,430,768,1024,1280,1440,1920]){
+  const screen=await browser.newPage({viewport:{width,height:900},hasTouch:width<1100});
+  for(const route of ['', 'bab-1/','lab/','referensi/']){
+   await screen.goto(base+route);await screen.locator('main').waitFor();
+   await screen.evaluate(()=>document.fonts.ready);
+   const overflow=await screen.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2);
+   assert.equal(overflow,false,'Horizontal overflow: '+width+' '+route);
+   if(width<768)assert.equal(await screen.locator('.academy-bottom').isVisible(),true);
+   else assert.equal(await screen.locator('.academy-bottom').isVisible(),false);
+   if(width>=1100){assert.equal(await screen.locator('.sidebar').isVisible(),true);assert.ok(await screen.locator('.sidebar').evaluate(el=>el.getBoundingClientRect().left>=0));}
+  }
+  if(width===390){await screen.goto(base);await screen.locator('#mobile-menu').click();assert.equal(await screen.locator('#sidebar').evaluate(el=>el.inert),false);await screen.keyboard.press('Escape');assert.equal(await screen.locator('#sidebar').evaluate(el=>el.inert),true);}
+  await screen.close();
+ }
  assert.deepEqual(errors,[]);console.log('Browser smoke: 10 routes, code mapping, visualizers, persistence, assessment, offline and mobile passed.');
 }finally{await browser?.close();server.kill();}

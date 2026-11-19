@@ -159,7 +159,7 @@
   });
 
   if (focusToggle) {
-    try { if(sessionStorage.getItem('academy-focus') === 'true') { document.body.classList.add('focus-mode'); focusToggle.setAttribute('aria-pressed','true'); focusToggle.textContent='× Keluar dari fokus'; } } catch {}
+    try { if(sessionStorage.getItem('academy-focus') === 'true') { document.body.classList.add('focus-mode'); focusToggle.setAttribute('aria-pressed','true'); focusToggle.innerHTML='<span aria-hidden="true">×</span> Keluar dari fokus'; } } catch {}
     focusToggle.addEventListener('click', () => {
       const isFocused = document.body.classList.toggle('focus-mode');
       try { sessionStorage.setItem('academy-focus',String(isFocused)); } catch {}
@@ -598,7 +598,7 @@
       if (link.hash === `#${section.id}`) {
         link.setAttribute('aria-current', 'location');
         const group = link.closest('[data-nav-group]');
-        if (group && window.matchMedia('(max-width: 1700px)').matches) group.open = true;
+        if (group && window.matchMedia('(max-width: 1099px)').matches) group.open = true;
       } else {
         link.removeAttribute('aria-current');
       }
@@ -705,6 +705,7 @@
 
   function closeSidebar() {
     sidebar.classList.remove('is-open');
+    if (window.matchMedia('(max-width: 1099px)').matches) sidebar.inert = true;
     document.body.classList.remove('sidebar-open');
     sidebarBackdrop.hidden = true;
     mobileMenu.setAttribute('aria-expanded', 'false');
@@ -719,9 +720,15 @@
     sidebarBackdrop.hidden = !isOpen;
     mobileMenu.setAttribute('aria-expanded', String(isOpen));
     mobileMenu.setAttribute('aria-label', isOpen ? 'Tutup navigasi' : 'Buka navigasi');
+    sidebar.inert = !isOpen;
     if (isOpen) sidebar.querySelector('.nav-link:not(.nav-search-hidden)')?.focus();
     else mobileMenu.focus();
   });
+  const desktopNav = window.matchMedia('(min-width: 1100px)');
+  const syncSidebar = () => { if(desktopNav.matches && sidebar.classList.contains('is-open')) { sidebar.classList.remove('is-open'); document.body.classList.remove('sidebar-open'); sidebarBackdrop.hidden=true; mobileMenu.setAttribute('aria-expanded','false'); } sidebar.inert = !desktopNav.matches && !sidebar.classList.contains('is-open'); };
+  desktopNav.addEventListener('change',syncSidebar); syncSidebar();
+  mobileMenu.addEventListener('click',syncSidebar);
+  new MutationObserver(syncSidebar).observe(sidebar,{attributes:true,attributeFilter:['class']});
   sidebarBackdrop.addEventListener('click', closeSidebar);
   document.addEventListener('keydown', (event) => {
     if(event.key === 'Tab' && sidebar.classList.contains('is-open')) { const nodes=[...sidebar.querySelectorAll('a[href],button,input,summary')].filter(el=>el.getClientRects().length&&!el.disabled); if(nodes.length) { if(event.shiftKey && document.activeElement===nodes[0]) { event.preventDefault(); nodes.at(-1).focus(); } else if(!event.shiftKey && document.activeElement===nodes.at(-1)) { event.preventDefault(); nodes[0].focus(); } } }
@@ -732,10 +739,10 @@
   });
   sidebar.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
-      if (window.matchMedia('(max-width: 1700px)').matches) closeSidebar();
+      if (window.matchMedia('(max-width: 1099px)').matches) closeSidebar();
       else {
         const group = link.closest('[data-nav-group]');
-        if (group && window.matchMedia('(min-width: 1701px)').matches) group.open = false;
+        if (group && window.matchMedia('(min-width: 1100px)').matches) group.open = false;
       }
     });
   });

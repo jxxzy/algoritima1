@@ -11,7 +11,12 @@ const day=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1)
 const applyMotion=()=>document.body.classList.toggle('academy-reduce-motion',state.motion===true);
 applyMotion();
 const nav=document.createElement('nav');nav.className='academy-bottom';nav.setAttribute('aria-label','Akses cepat');
-for(const [url,title] of [['index.html','Beranda'],['bab-1/index.html','Materi'],['lab/index.html#python-studio','Studio'],['index.html#study-tools','Tools']]){const a=document.createElement('a');a.href=url;a.textContent=title;nav.append(a);}document.body.append(nav);
+const navIcons=['M3 11 12 3l9 8v10h-6v-7H9v7H3z','M4 4h7a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4z M20 4h-3a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h2z','M3 5h18v14H3z M7 9l3 3-3 3 M13 15h4','M4 4h6v6H4z M14 4h6v6h-6z M4 14h6v6H4z M14 14h6v6h-6z'];
+const navItems=[['index.html','Beranda'],['bab-1/index.html','Materi'],['lab/index.html#python-studio','Studio'],['index.html#study-tools','Tools']];
+navItems.forEach(([url,title],i)=>{const a=document.createElement('a');a.href=url;const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('aria-hidden','true');const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',navIcons[i]);svg.append(p);a.append(svg,document.createTextNode(title));nav.append(a);});
+function activeNav(){const kind=document.body.dataset.page;const index=kind==='chapter'?1:kind==='lab'?2:kind==='reference'||['#study-tools','#assessment-center','#timer','#tersimpan'].includes(location.hash)?3:0;[...nav.children].forEach((a,i)=>i===index?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));}
+activeNav();addEventListener('hashchange',activeNav);document.body.append(nav);
+const toc=document.querySelector('.on-this-page');if(toc){const toggle=document.createElement('button');toggle.type='button';toggle.className='workspace-toc-toggle';toggle.setAttribute('aria-expanded','false');toggle.textContent='☰ Daftar isi & referensi bab';toggle.onclick=()=>{const open=toc.classList.toggle('workspace-toc-open');toggle.setAttribute('aria-expanded',String(open));toggle.textContent=open?'− Tutup daftar isi':'☰ Daftar isi & referensi bab';};toc.prepend(toggle);}
 if($('ac-note')){
   $('ac-note').value=typeof state.note==='string'?state.note:'';
   $('ac-note').addEventListener('input',()=>{state.note=$('ac-note').value;set('ac-note-status',save()?'Catatan tersimpan.':'Penyimpanan gagal.');});

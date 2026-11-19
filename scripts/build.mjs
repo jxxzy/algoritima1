@@ -302,7 +302,7 @@ function renderPage({ kind, title, description, canonical, navHtml = rewriteLink
   return `<!doctype html>
 <html lang="id">
   <head>
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#f5f7fb"><meta name="description" content="${escapeHtml(description)}">
     <meta name="author" content="Mr.4Nony Alias Josua"><meta name="color-scheme" content="light dark">
     <title>${escapeHtml(title)}</title><link rel="canonical" href="${canonical}">
@@ -351,7 +351,7 @@ renderPage.criticalCss = `
 .main-content{margin:0;padding:0 28px}.topbar{position:sticky;z-index:10;top:0;display:flex;height:65px;align-items:center;gap:9px;border-bottom:1px solid #e8ebf2;background:#f5f7fb}
 .mobile-menu{display:inline-grid;width:32px;height:32px;place-items:center;border:0;background:transparent}.topbar-link{margin-left:auto}.hero{display:grid;min-height:360px;grid-template-columns:1fr .9fr;align-items:center;gap:25px;padding:43px 0 37px}
 h1{font-size:clamp(36px,4vw,52px);line-height:1.13}.skip-link{position:fixed;z-index:20;top:10px;left:10px;transform:translateY(-160%)}.skip-link:focus{transform:translateY(0)}
-@media(min-width:1701px){.main-content{margin:0 auto;max-width:1480px;padding:76px 5vw 0}.sidebar{inset:0 0 auto;width:100%;height:76px;flex-direction:row;align-items:center;transform:none}.sidebar-footer{display:flex;align-items:center;gap:4px}.reading-controls{display:flex;gap:3px;margin:0}.shortcut-help{width:34px;min-height:36px;justify-content:center;margin:0;padding:0}.mobile-menu{display:none}}
+@media(min-width:1100px){.main-content{margin-left:270px;padding:0 32px}.sidebar{inset:0 auto 0 0;width:270px;height:100vh;flex-direction:column;align-items:stretch;transform:none}.mobile-menu{display:none}}
 `;
 
 const homePage = renderPage({
