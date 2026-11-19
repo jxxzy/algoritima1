@@ -16,7 +16,17 @@ def main():
     percobaan = 0
     menang = False
     while percobaan < batas:
-        tebakan = int(input("Tebak angka 1-10: "))
+        try:
+            tebakan = int(input("Tebak angka 1-10: "))
+        except EOFError:
+            print("Input berakhir.")
+            return
+        except ValueError:
+            print("Masukkan angka bulat 1-10.")
+            continue
+        if not 1 <= tebakan <= 10:
+            print("Angka harus 1-10.")
+            continue
         percobaan += 1
         if tebakan == rahasia:
             menang = True

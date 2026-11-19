@@ -112,7 +112,7 @@ const chapterDetails = {
     title: 'Bab 4 · Operator, ekspresi, dan aplikasi mini',
     description: 'Gunakan operator aritmetika dan logika untuk menghitung diskon, nilai berbobot, dan ongkos kirim dengan uji batas yang jelas.',
     previous: 3,
-    next: null,
+    next: 5,
     glossary: [['Ekspresi', 'Kombinasi nilai, variabel, dan operator yang menghasilkan sebuah nilai.'], ['Prioritas operator', 'Urutan operasi yang menentukan bagaimana ekspresi dievaluasi.'], ['Boolean', 'Nilai True atau False yang dihasilkan perbandingan dan dipakai dalam logika.'], ['Short-circuit', 'Evaluasi logika berhenti saat hasil and/or sudah dapat ditentukan.'], ['Uji batas', 'Pengujian nilai tepat di bawah, pada, dan di atas ambang aturan.']],
   },
   5: {
@@ -173,7 +173,7 @@ function chapterQuizzes(number) {
   }).join('');
   return `
         <section class="quiz-section chapter-quiz" id="latihan" aria-labelledby="quiz-title">
-          <div class="quiz-top"><div><span class="section-kicker">EVALUASI BAB ${number}</span><h2 id="quiz-title">Cek pemahamanmu</h2><p>Jawab tiga soal. Skor sempurna akan membuka lencana bab ini.</p></div><div class="quiz-art" aria-hidden="true">?</div></div>
+          <div class="quiz-top"><div><span class="section-kicker">EVALUASI BAB ${number}</span><h2 id="quiz-title">Cek pemahamanmu</h2><p>Jawab tiga soal. Selesaikan seluruh topik dan raih skor sempurna untuk membuka lencana.</p></div><div class="quiz-art" aria-hidden="true">?</div></div>
           <form id="quiz-form-${number}" class="quiz-form" data-quiz="${number}">${questions}
             <div class="quiz-actions"><button class="button button-primary" type="submit">Periksa jawaban <span aria-hidden="true">→</span></button><span class="quiz-result" id="quiz-result-${number}" aria-live="polite"></span></div>
           </form>
@@ -217,7 +217,7 @@ function createSearchIndex() {
     return [...html.matchAll(/<article\b[^>]*\bid="([^"]+)"[^>]*>([\s\S]*?)<\/article>/gi)]
       .map(([, id, article]) => {
         const title = plainText(article.match(/<h3\b[^>]*>([\s\S]*?)<\/h3>/i)?.[1] || id);
-        const text = plainText(article).slice(0, 1000);
+        const text = plainText(article);
         return { chapter, id, title, text, href: `bab-${chapter}/index.html#${id}` };
       });
   });
@@ -229,6 +229,8 @@ const chapterCards = [1, 2, 3, 4, 5, 6, 7].map((number) => {
   return `<a class="dashboard-chapter path-card" href="bab-${number}/index.html"><span class="path-index index-${['blue', 'violet', 'amber', 'green', 'blue', 'violet', 'green'][number - 1]}">0${number}</span><span class="path-card-copy"><strong>${escapeHtml(details.title.split(' · ')[1])}</strong><small>${escapeHtml(details.description)}</small><span class="dashboard-chapter-progress" id="chapter-progress-${number}">0 dari ${topicCounts[number - 1]} topik · 0%</span><span class="course-badge" id="chapter-badge-${number}" hidden>Lencana Bab ${number} terkunci</span></span><span class="path-arrow">↗</span></a>`;
 }).join('');
 
+const studyTools = await readContent('home/study-tools.html');
+const studio = await readContent('lab/studio.html');
 const dashboard = `
         <header class="topbar"><button class="mobile-menu" id="mobile-menu" type="button" aria-expanded="false" aria-controls="sidebar" aria-label="Buka navigasi">☰</button><div class="breadcrumb"><span>Kursus</span><span aria-hidden="true">/</span><strong>Beranda</strong></div><button class="focus-toggle" id="focus-toggle" type="button" aria-pressed="false"><span aria-hidden="true">◎</span> Mode fokus</button><a class="topbar-link" href="bab-1/index.html">Mulai belajar <span aria-hidden="true">↗</span></a></header>
         ${rewriteLinks(fragments.hero, 'home')}
@@ -240,6 +242,7 @@ const dashboard = `
         </section>
         ${fragments.timer}
         ${fragments.bookmarks}
+        ${studyTools}
         <section class="dashboard-tools" aria-label="Fitur belajar">
           <a class="path-card" href="bab-1/index.html#kode-tugas"><strong>Kode lengkap dan penjelasan tugas</strong><span class="path-arrow">↗</span></a>
           <a class="path-card" href="lab/index.html#visualizer"><strong>Visualizer algoritma</strong><span class="path-arrow">↗</span></a>
@@ -304,9 +307,10 @@ function renderPage({ kind, title, description, canonical, navHtml = rewriteLink
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%234b65e8'/%3E%3Cpath d='M22 18 10 32l12 14M42 18l12 14-12 14M37 14 27 50' fill='none' stroke='white' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
     <base href="${base}"><link rel="manifest" href="manifest.webmanifest">
     <style>${renderPage.criticalCss}</style>
-    <link rel="preload" href="${hashedAssets.css}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="${hashedAssets.css}"></noscript>
+    <link rel="stylesheet" href="${hashedAssets.css}">
+    <meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(description)}"><meta property="og:url" content="${canonical}"><meta property="og:type" content="website">
     <script src="${hashedAssets.js}" defer></script>
+    <script src="${hashedAssets.academy}" defer></script>
   </head>
   <body ${pageKind}>
     <a class="skip-link" href="${skipTarget}">Lewati ke materi</a>
@@ -323,7 +327,7 @@ function renderPage({ kind, title, description, canonical, navHtml = rewriteLink
 await rm(outputDirectory, { recursive: true, force: true });
 await mkdir(path.join(outputDirectory, 'assets'), { recursive: true });
 const assets = await build({
-  entryPoints: [path.join(root, 'app.js'), path.join(root, 'styles.css')],
+  entryPoints: [path.join(root, 'app.js'), path.join(root, 'styles.css'), path.join(root, 'academy.js')],
   outdir: path.join(outputDirectory, 'assets'),
   entryNames: '[name]-[hash]',
   minify: true,
@@ -336,7 +340,7 @@ for (const file of assets.outputFiles) {
   await writeFile(file.path, file.contents);
   assetNames[relative.startsWith('assets/') ? relative.slice('assets/'.length).split('-')[0] : relative] = relative;
 }
-renderPage.assets = { css: assetNames['styles'], js: assetNames['app'] };
+renderPage.assets = { css: assetNames['styles'], js: assetNames['app'], academy: assetNames['academy'] };
 renderPage.criticalCss = `
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:92px}body{margin:0;background:#f5f7fb;color:#17213a;font:14px/1.7 "Segoe UI",Arial,sans-serif}
 .site-shell{min-height:100vh}.sidebar{position:fixed;z-index:16;inset:0 auto 0 0;display:flex;width:min(320px,calc(100vw - 42px));height:100vh;flex-direction:column;padding:18px 15px 14px;overflow-y:auto;background:#fff;transform:translateX(-105%)}
@@ -370,7 +374,7 @@ const labPage = renderPage({
   description: 'Coba algoritma durasi, parkir, dan geometri, lalu jalankan visualizer langkah demi langkah.',
   canonical: 'https://jxxzy.github.io/algoritima1/lab/',
   navHtml: rewriteLinks(nav, 'chapter', 1),
-  main: `<header class="topbar"><button class="mobile-menu" id="mobile-menu" type="button" aria-expanded="false" aria-controls="sidebar" aria-label="Buka navigasi">☰</button><div class="breadcrumb"><a href="index.html">Beranda</a><span aria-hidden="true">/</span><strong>Laboratorium</strong></div><button class="focus-toggle" id="focus-toggle" type="button" aria-pressed="false"><span aria-hidden="true">◎</span> Mode fokus</button></header>${fragments.lab}${visualizer()}${rewriteLinks(footer, 'chapter', 1)}`,
+  main: `<header class="topbar"><button class="mobile-menu" id="mobile-menu" type="button" aria-expanded="false" aria-controls="sidebar" aria-label="Buka navigasi">☰</button><div class="breadcrumb"><a href="index.html">Beranda</a><span aria-hidden="true">/</span><strong>Laboratorium</strong></div><button class="focus-toggle" id="focus-toggle" type="button" aria-pressed="false"><span aria-hidden="true">◎</span> Mode fokus</button></header>${studio}${fragments.lab}${visualizer()}${rewriteLinks(footer, 'chapter', 1)}`,
 });
 await writeFile(path.join(labDirectory, 'index.html'), labPage);
 
@@ -420,7 +424,10 @@ await writeFile(path.join(outputDirectory, 'assets', 'icon.svg'), `<svg xmlns="h
 
 const assetFiles = await readdir(path.join(outputDirectory, 'assets'));
 const pages = ['index.html', 'bab-1/index.html', 'bab-2/index.html', 'bab-3/index.html', 'bab-4/index.html', 'bab-5/index.html', 'bab-6/index.html', 'bab-7/index.html', 'lab/index.html', 'referensi/index.html'];
-const offlineFiles = [...pages, 'manifest.webmanifest', 'search-index.json', ...pythonFiles, ...assetFiles.map((name) => `assets/${name}`)];
+await writeFile(path.join(outputDirectory,'python-worker.js'), await readFile(path.join(root,'python-worker.js')));
+await writeFile(path.join(outputDirectory,'robots.txt'), 'User-agent: *\nAllow: /\nSitemap: https://jxxzy.github.io/algoritima1/sitemap.xml\n');
+await writeFile(path.join(outputDirectory,'sitemap.xml'), '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+pages.map(p=>'<url><loc>https://jxxzy.github.io/algoritima1/'+p.replace('index.html','')+'</loc></url>').join('')+'</urlset>');
+const offlineFiles = [...pages, 'manifest.webmanifest', 'search-index.json', 'python-worker.js', ...pythonFiles, ...assetFiles.map((name) => `assets/${name}`)];
 const cacheFingerprint = createHash('sha256');
 for (const file of [...offlineFiles].sort()) {
   cacheFingerprint.update(file);
@@ -436,14 +443,15 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   if (request.method !== 'GET' || url.origin !== self.location.origin) return;
   if (request.mode === 'navigate') {
-    event.respondWith(fetch(request).then(response => { if (!response.ok) throw new Error('Halaman tidak tersedia.'); const copy = response.clone(); caches.open(CACHE_NAME).then(cache => cache.put(request, copy)); return response; }).catch(async () => (await caches.match(request, { ignoreSearch: true })) || caches.match(new URL('index.html', self.registration.scope).href)));
+    const canonical = new URL(url); canonical.search = ''; if(canonical.pathname.endsWith('/')) canonical.pathname += 'index.html';
+    event.respondWith(fetch(request).then(response => { if(response.ok) { const copy = response.clone(); caches.open(CACHE_NAME).then(cache => cache.put(canonical.href, copy)); } return response; }).catch(async () => (await caches.match(canonical.href)) || new Response('Halaman ini tidak tersedia secara offline.', {status:503,headers:{'Content-Type':'text/plain; charset=utf-8'}})));
     return;
   }
   if (url.pathname.includes('/assets/')) {
     event.respondWith(caches.match(request).then(cached => cached || fetch(request).then(response => { if (response.ok) caches.open(CACHE_NAME).then(cache => cache.put(request, response.clone())); return response; })));
     return;
   }
-  if (url.pathname.endsWith('.py')) {
+  if (url.pathname.endsWith('.py') || url.pathname.endsWith('/search-index.json') || url.pathname.endsWith('/python-worker.js')) {
     event.respondWith(caches.match(request).then(cached => cached || fetch(request).then(response => { if (response.ok) caches.open(CACHE_NAME).then(cache => cache.put(request, response.clone())); return response; })));
   }
 });`;

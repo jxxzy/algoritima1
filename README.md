@@ -66,3 +66,7 @@ Workflow [`.github/workflows/pages.yml`](./.github/workflows/pages.yml) memasang
 4. URL aktif ditampilkan pada hasil workflow atau **Settings → Pages**. Untuk repository ini biasanya `https://jxxzy.github.io/algoritima1/`.
 
 GitHub Pages mengelola header cache server. Build memberi nama hash pada CSS/JavaScript dan menggunakan service worker untuk cache versi aset serta materi offline; konfigurasi ini tidak mengubah TTL header yang ditetapkan GitHub Pages.
+
+## Upgrade Algorithm Academy
+
+Python Studio menjalankan Python melalui Pyodide 0.27.7 di Web Worker disposable, dengan input per baris, stop, batas 10 detik eksekusi setelah runtime tersedia, serta batas output. Runtime CDN membutuhkan koneksi internet; ini bukan sandbox keamanan untuk kode tidak tepercaya. Study Tools menyimpan catatan, target, sesi, streak, flashcard, dan backup di browser. Lab dinamis memiliki bubble sort, trace table, percabangan, dan faktorial. ZIP praktikum dibuat oleh `python scripts/package-practicals.py` setelah build. Jalankan `python scripts/check-site.py` untuk validasi hasil build. GitHub Actions menjalankan tes Python dan validasi build sebelum deploy. Versi upgrade belum merupakan sertifikasi Stable sampai pengujian browser lengkap selesai.

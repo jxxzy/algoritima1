@@ -77,7 +77,7 @@
   function readProgress() {
     try {
       const saved = JSON.parse(localStorage.getItem(progressKey) || '{}');
-      return saved && typeof saved === 'object' ? saved : {};
+      return saved && typeof saved === 'object' && !Array.isArray(saved) ? Object.fromEntries(progressIds.filter(id => saved[id] === true).map(id => [id,true])) : {};
     } catch {
       return {};
     }
@@ -123,7 +123,7 @@
       const chapterPercent = Math.round((count / ids.length) * 100);
       const summary = document.getElementById(`chapter-progress-${chapterId}`);
       const badge = document.getElementById(`chapter-badge-${chapterId}`);
-      const badgeEarned = count === ids.length || Boolean(quizzes[chapterId]);
+      const badgeEarned = count === ids.length && quizzes[chapterId] === true;
       if (summary) summary.textContent = `${count} dari ${ids.length} topik · ${chapterPercent}%`;
       if (badge) {
         badge.hidden = !badgeEarned;
@@ -134,7 +134,7 @@
     const dashboardBadges = document.getElementById('dashboard-badges');
     if (dashboardProgress) dashboardProgress.textContent = `${percent}%`;
     const chapterIds = Object.keys(chapterProgressIds);
-    if (dashboardBadges) dashboardBadges.textContent = `${chapterIds.filter((id) => chapterProgressIds[id].every((topic) => progress[topic]) || quizzes[id]).length} / ${chapterIds.length}`;
+    if (dashboardBadges) dashboardBadges.textContent = `${chapterIds.filter((id) => chapterProgressIds[id].every((topic) => progress[topic]) && quizzes[id] === true).length} / ${chapterIds.length}`;
     const continueLink = document.getElementById('continue-learning');
     const continueCopy = document.getElementById('continue-learning-copy');
     if (continueLink) {
@@ -188,6 +188,8 @@
   let timerInterval = null;
   let completedFocusSessions = 0;
   let phaseAnimationTimeout = null;
+  const timerKey = 'academy-timer-v2';
+  try { const s = JSON.parse(localStorage.getItem(timerKey)); if(s && [s.focusDuration,s.breakDuration,s.timerRemaining,s.completedFocusSessions].every(Number.isFinite) && s.focusDuration > 0 && s.breakDuration > 0 && ['focus','break'].includes(s.timerPhaseValue)) { ({focusDuration,breakDuration,timerPhaseValue,timerRemaining,timerDeadline,completedFocusSessions} = s); if(!Number.isFinite(timerDeadline)) timerDeadline = null; } } catch {}
 
   function formatTimer(milliseconds) {
     const totalSeconds = Math.ceil(milliseconds / 1000);
@@ -201,6 +203,7 @@
   }
 
   function renderTimer() {
+    try { localStorage.setItem(timerKey, JSON.stringify({focusDuration,breakDuration,timerPhaseValue,timerRemaining,timerDeadline,completedFocusSessions})); } catch {}
     const duration = timerDuration();
     const elapsedRatio = duration > 0 ? Math.min(1, Math.max(0, 1 - timerRemaining / duration)) : 0;
     const totalSeconds = Math.ceil(timerRemaining / 1000);
@@ -251,7 +254,7 @@
     window.requestAnimationFrame(() => timerCard.classList.add('is-phase-change'));
     window.clearTimeout(phaseAnimationTimeout);
     phaseAnimationTimeout = window.setTimeout(() => timerCard.classList.remove('is-phase-change'), 650);
-    renderTimer();
+    if(timerDeadline !== null) { timerInterval = window.setInterval(tickTimer,250); tickTimer(); } else renderTimer();
   }
 
   function tickTimer() {
@@ -456,7 +459,7 @@
     }
     const luas = nilaiA * nilaiB;
     const keliling = 2 * (nilaiA + nilaiB);
-    if (!Number.isFinite(luas) || !Number.isFinite(keliling)) {
+    if (!Number.isFinite(luas) || !Number.isFinite(keliling) || luas === 0) {
       showLabResult('Angka terlalu besar', 'Hasil luas atau keliling berada di luar rentang angka yang dapat ditampilkan.', true);
       return;
     }
@@ -483,7 +486,7 @@
         .then((entries) => {
           if (!Array.isArray(entries)) throw new Error('Format indeks pencarian tidak valid.');
           return entries;
-        });
+        }).catch(error => { searchIndexPromise = undefined; throw error; });
     }
     return searchIndexPromise;
   }
@@ -497,8 +500,8 @@
     loadSearchIndex().then((entries) => {
       if (normalize(searchInput.value.trim()) !== query) return;
       const matches = entries
-        .filter((entry) => normalize(`${entry.title} ${entry.text}`).includes(query))
-        .slice(0, 6);
+        .filter((entry) => query.split(/\s+/).every(word => normalize(`${entry.title} ${entry.text}`).includes(word)))
+        .sort((a,b) => Number(normalize(b.title).includes(query)) - Number(normalize(a.title).includes(query)));
       searchResults.replaceChildren();
       matches.forEach((entry) => {
         const item = document.createElement('li');
@@ -675,10 +678,12 @@
     }
     if (event.key === '/' && !typing) {
       event.preventDefault();
+      if (mobileMenu.getClientRects().length && !sidebar.classList.contains('is-open')) mobileMenu.click();
       searchInput.focus();
     }
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
       event.preventDefault();
+      if (mobileMenu.getClientRects().length && !sidebar.classList.contains('is-open')) mobileMenu.click();
       searchInput.focus();
     }
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'j') {
@@ -888,7 +893,7 @@
       }
       const luas = panjang * lebar;
       const keliling = 2 * (panjang + lebar);
-      if (![luas, keliling].every(Number.isFinite)) {
+      if (![luas, keliling].every(Number.isFinite) || luas === 0) {
         result.textContent = 'Hasil berada di luar rentang angka yang aman untuk ditampilkan.';
         result.classList.add('has-error');
         return;
@@ -942,6 +947,7 @@
           result.classList.add('has-error');
           return;
         }
+        if (![a * 9 / 5 + 32, a + 273.15].every(Number.isFinite)) { result.textContent = 'Hasil di luar rentang angka.'; result.classList.add('has-error'); return; }
         result.textContent = `${format(a)} °C × 9 / 5 + 32 = ${format(a * 9 / 5 + 32)} °F; ${format(a)} + 273,15 = ${format(a + 273.15)} K.`;
       } else if (kind.value === 'durasi') {
         if (!Number.isSafeInteger(a) || a < 0) {
@@ -1037,7 +1043,7 @@
           quizzes[chapter] = true;
           localStorage.setItem(quizKey, JSON.stringify(quizzes));
           updateProgress();
-          if (badge) badge.textContent = `Lencana Bab ${chapter} terbuka · kuis sempurna ✓`;
+          if (badge && !badge.hidden) badge.textContent = `Lencana Bab ${chapter} terbuka · kuis sempurna ✓`;
         } catch {
           searchStatus.textContent = 'Hasil kuis tidak dapat disimpan di browser ini.';
         }
@@ -1509,11 +1515,11 @@
     solutionDownload.download = solution.file;
     solutionStatus.textContent = 'Memuat kode tugas…';
     solutionCode.textContent = 'Memuat kode lengkap…';
-    const experiment = solutionSelect.value === 'tarif_parkir' || solutionSelect.value === 'biaya_kegiatan'
-      ? 'parking'
-      : solutionSelect.value === 'luas_dan_keliling' ? 'geometry' : 'duration';
     const labLink = solutionCode.closest('.code-card')?.querySelector('.lab-code-link');
-    if (labLink) labLink.href = `lab/index.html?experiment=${experiment}#lab`;
+    if (labLink) labLink.href = `lab/index.html?source=${encodeURIComponent(filePath)}#python-studio`;
+    document.getElementById('copy-solution').disabled = true;
+    const pack = document.getElementById('solution-pack');
+    if (pack) pack.href = `downloads/bab-${solution.chapter.slice(-1)}.zip`;
     solutionVariables.replaceChildren();
     solution.variables.forEach(([name, explanation]) => {
       const item = document.createElement('li');
@@ -1531,6 +1537,7 @@
       const code = await response.text();
       if (request !== solutionRequest) return;
       solutionCode.textContent = code;
+      document.getElementById('copy-solution').disabled = false;
       solutionStatus.textContent = `Kode lengkap ${solution.file} berhasil dimuat.`;
     } catch (error) {
       if (request !== solutionRequest) return;
@@ -1540,8 +1547,6 @@
   }
 
   solutionSelect.addEventListener('change', loadSolution);
-  loadSolution();
-
   const assignmentCoverage = [
     {
       chapter: 'Bab 1 · Algoritma dan program pertama',
@@ -1762,6 +1767,7 @@
     if (firstOption) solutionSelect.value = firstOption.value;
   }
 
+  loadSolution();
   function renderTaskCoverage() {
     taskCoverage.replaceChildren();
     assignmentCoverage
@@ -1829,14 +1835,15 @@
       header.append(copyButton);
     }
     if (!header.querySelector('.lab-code-link')) {
-      const sample = code.textContent.toLowerCase();
-      const experiment = sample.includes('parkir') || sample.includes('biaya')
-        ? 'parking'
-        : sample.includes('luas') || sample.includes('keliling') ? 'geometry' : 'duration';
       const tryLink = document.createElement('a');
       tryLink.className = 'lab-code-link';
-      tryLink.href = `lab/index.html?experiment=${experiment}#lab`;
-      tryLink.textContent = 'Coba di Lab';
+      const selected = document.getElementById('solution-select');
+      const isSolution = code.id === 'solution-code';
+      tryLink.href = 'lab/index.html#python-studio';
+      tryLink.textContent = 'Buka Python Studio';
+      if (!isSolution) tryLink.addEventListener('click', () => { try { sessionStorage.setItem('academy-transfer', code.textContent); } catch {} });
+      else selected?.addEventListener('change', () => { const path = document.getElementById('solution-download').getAttribute('href'); tryLink.href = `lab/index.html?source=${encodeURIComponent(decodeURIComponent(path))}#python-studio`; });
+      if (isSolution) tryLink.href = `lab/index.html?source=${encodeURIComponent(decodeURIComponent(document.getElementById('solution-download').getAttribute('href')))}#python-studio`;
       header.append(tryLink);
     }
   });
