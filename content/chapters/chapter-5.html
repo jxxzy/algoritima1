@@ -1,0 +1,83 @@
+<section class="chapter-section" id="bab-5" aria-labelledby="bab-5-title">
+  <div class="chapter-heading">
+    <div class="chapter-title-group"><span class="chapter-badge">BAB 05</span><div><h2 id="bab-5-title">Percabangan dan game pilihan</h2><p>Pilih satu cabang yang tepat, normalisasi masukan, dan uji setiap jalur.</p></div></div>
+    <button class="mark-chapter" data-chapter="5" type="button"><span>✓</span> Tandai bab selesai</button>
+  </div>
+  <div class="chapter-intro"><div><span class="section-kicker">TUJUAN BELAJAR</span><p>Rancang if, elif, dan else; urutkan ambang; bedakan validasi dari keputusan; dan buat game dua tahap yang dapat diuji.</p></div><div class="goal-icon" aria-hidden="true">?</div></div>
+
+  <article class="lesson-card" id="b5-keputusan" data-topic="b5-keputusan" data-searchable>
+    <div class="lesson-heading"><span class="lesson-number">01</span><div><h3>if, elif, dan else memilih jalur</h3><p>Cabang saling eksklusif diperiksa berurutan.</p></div></div>
+    <div class="lesson-body">
+      <p><code>if</code> menjalankan tindakan saat kondisi benar. <code>if-else</code> memberi dua alternatif. Rangkaian <code>if-elif-else</code> memilih cabang pertama yang benar lalu menghentikan pemeriksaan sisanya. Gunakan beberapa <code>if</code> terpisah hanya bila lebih dari satu tindakan boleh terjadi.</p>
+      <div class="formula-card"><span>PREDIKAT</span><code>A &gt;= 80; B &gt;= 70; C &gt;= 60; selainnya D</code><span>VALIDASI TERLEBIH DAHULU</span><code>if not 0 &lt;= nilai &lt;= 100: tolak</code></div>
+      <p>Urutan ambang harus dari tertinggi ke terendah untuk predikat berbasis batas. Nilai 85 yang diuji <code>&gt;= 60</code> lebih dahulu tidak pernah masuk kategori A. Uji 79,99; 80; 69,99; dan 70 untuk membuktikan batas.</p>
+      <div class="code-card"><div class="code-card-header"><span>Python · klasifikasi nilai</span><button class="copy-code" type="button">Salin kode</button></div><pre><code>nilai = 75
+if not 0 &lt;= nilai &lt;= 100:
+    print("Nilai tidak valid")
+elif nilai &gt;= 80:
+    print("A")
+elif nilai &gt;= 70:
+    print("B")
+elif nilai &gt;= 60:
+    print("C")
+else:
+    print("D")</code></pre></div>
+      <div class="callout callout-amber"><span>!</span><p>Indentasi menentukan cabang tempat <code>else</code> atau <code>elif</code> berada. Ambang yang tumpang tindih juga perlu dirancang agar hasil tidak ambigu.</p></div>
+    </div>
+    <label class="topic-complete"><input type="checkbox" data-progress="b5-keputusan"><span class="checkmark"></span> Saya memahami topik ini</label>
+  </article>
+
+  <article class="lesson-card" id="b5-game" data-topic="b5-game" data-searchable>
+    <div class="lesson-heading"><span class="lesson-number">02</span><div><h3>Validasi teks dan game pilihan</h3><p>Seragamkan teks lalu tentukan apakah pilihan itu sah.</p></div></div>
+    <div class="lesson-body">
+      <p><code>strip()</code> membuang spasi tepi dan <code>lower()</code> menyeragamkan huruf. Normalisasi membuat <code>" YA "</code> dan <code>"ya"</code> sama, tetapi tidak mengubah pilihan tidak dikenal menjadi pilihan sah.</p>
+      <p>Peminjaman perpustakaan membutuhkan anggota aktif, tidak ada keterlambatan, dan jumlah buku kurang dari tiga. Gunakan <code>and</code> untuk kelayakan. Jika penolakan boleh mempunyai beberapa alasan, tulis <code>if</code> terpisah untuk setiap alasan.</p>
+      <div class="code-card"><div class="code-card-header"><span>Python · normalisasi pilihan</span><button class="copy-code" type="button">Salin kode</button></div><pre><code>aktif = input("Anggota aktif (ya/tidak): ").strip().lower()
+terlambat = input("Ada keterlambatan (ya/tidak): ").strip().lower()
+if aktif not in ("ya", "tidak") or terlambat not in ("ya", "tidak"):
+    print("Jawaban harus ya atau tidak.")
+else:
+    boleh = aktif == "ya" and terlambat == "tidak"
+    print("Diizinkan" if boleh else "Ditolak")</code></pre></div>
+      <p>Percabangan bersarang membuat keputusan tahap kedua bergantung pada tahap pertama. Di perpustakaan pilihan baca/diskusi tersedia; di laboratorium pilihan kode/uji tersedia. Pilihan satu jalur tidak boleh dibaca sebagai pilihan jalur lain.</p>
+    </div>
+    <label class="topic-complete"><input type="checkbox" data-progress="b5-game"><span class="checkmark"></span> Saya memahami topik ini</label>
+  </article>
+
+  <article class="lesson-card assignment-card" id="b5-praktikum" data-topic="b5-praktikum" data-searchable>
+    <div class="lesson-heading"><span class="lesson-number">↗</span><div><h3>Praktikum, tantangan, dan evaluasi</h3><p>Uji normal, batas, penolakan, regresi, dan semua akhir game.</p></div></div>
+    <div class="lesson-body">
+      <p>Praktik kasus <strong>peminjaman perpustakaan</strong>: anggota aktif, tidak terlambat, dan jumlah buku kurang dari tiga. Jawaban teks dinormalisasi dan harus sah. Kasus pengembangan menambahkan status buku tersedia.</p>
+      <h4>Enam tantangan</h4>
+      <ol>
+        <li>Pesan lulus untuk skor minimal 10.</li>
+        <li>Predikat A ≥ 80, B ≥ 70, C ≥ 60, D di bawah 60.</li>
+        <li>Susun game dua tahap dengan empat akhir dan satu jalur tidak valid.</li>
+        <li>Tambahkan status buku tersedia sambil menjaga semua uji lama.</li>
+        <li>Ubah satu aturan peminjaman, lalu bandingkan versi lama dan baru pada input yang sama.</li>
+        <li>Telusuri satu batas pada game perpustakaan/laboratorium dan tambahkan uji penolakan baru.</li>
+      </ol>
+      <details class="trace-details"><summary>Studi kasus dan rancangan pengujian</summary><div class="lesson-body nested-body">
+        <p><strong>Tujuan:</strong> menentukan kelayakan peminjaman dan menjelaskan alasan penolakan secara tepat.</p>
+        <div class="table-scroll"><table><thead><tr><th>Masukan</th><th>Ekspektasi</th></tr></thead><tbody>
+          <tr><td>ya; tidak; 2</td><td>Peminjaman diizinkan</td></tr>
+          <tr><td>ya; tidak; 3</td><td>Batas pinjaman tercapai</td></tr>
+          <tr><td>tidak; ya; 3</td><td>Tiga alasan penolakan dapat ditampilkan</td></tr>
+          <tr><td>mungkin; tidak; 0</td><td>Jawaban tidak valid</td></tr>
+        </tbody></table></div>
+        <p>Kumpulkan pseudocode atau flowchart, kode, tabel uji, dan bukti eksekusi. Tambahkan status buku tersedia pada pengembangan; kasus ini wajib mengubah hasil hanya bila aturan baru benar-benar dipenuhi atau dilanggar.</p>
+      </div></details>
+      <details class="trace-details"><summary>Evaluasi formatif dan refleksi</summary><div class="lesson-body nested-body">
+        <ol>
+          <li><code>elif</code> memeriksa kondisi berikutnya hanya jika kondisi sebelumnya salah.</li>
+          <li>Urutan ambang wajib menghitung kategori tertinggi lebih dahulu agar tidak tertangkap batas rendah.</li>
+          <li>Validasi memeriksa bentuk/domain; keputusan menerapkan aturan layanan.</li>
+          <li>Indentasi menentukan kedalaman dan kepemilikan pernyataan terhadap cabang.</li>
+          <li>Jawaban tidak dikenal tidak boleh ditafsirkan sebagai jawaban “tidak”.</li>
+          <li>Uji penolakan harus memeriksa bahwa skor atau data tidak berubah.</li>
+        </ol>
+      </div></details>
+    </div>
+    <label class="topic-complete"><input type="checkbox" data-progress="b5-praktikum"><span class="checkmark"></span> Saya memahami topik ini</label>
+  </article>
+</section>

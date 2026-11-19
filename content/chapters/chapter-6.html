@@ -1,0 +1,77 @@
+<section class="chapter-section" id="bab-6" aria-labelledby="bab-6-title">
+  <div class="chapter-heading">
+    <div class="chapter-title-group"><span class="chapter-badge badge-violet">BAB 06</span><div><h2 id="bab-6-title">Perulangan dan game tebak angka</h2><p>Pilih for atau while, jaga keadaan loop, dan pastikan pengulangan dapat berhenti.</p></div></div>
+    <button class="mark-chapter" data-chapter="6" type="button"><span>✓</span> Tandai bab selesai</button>
+  </div>
+  <div class="chapter-intro"><div><span class="section-kicker">TUJUAN BELAJAR</span><p>Telusuri iterasi, akumulator, sentinel, break, continue, dan loop bersarang; bedakan jumlah iterasi dari nilai data.</p></div><div class="goal-icon" aria-hidden="true">↻</div></div>
+
+  <article class="lesson-card" id="b6-for-while" data-topic="b6-for-while" data-searchable>
+    <div class="lesson-heading"><span class="lesson-number violet-text">01</span><div><h3>for untuk rentang, while untuk kondisi</h3><p>Inisialisasi, kondisi lanjut, pembaruan, dan akumulator harus terlihat.</p></div></div>
+    <div class="lesson-body">
+      <p><code>for</code> cocok untuk rentang atau kumpulan yang diketahui. <code>range(1, 6)</code> menghasilkan 1 sampai 5 karena batas akhir tidak disertakan. Inisialisasi total sebelum loop; jika total dibuat di dalam loop, hasil iterasi sebelumnya hilang.</p>
+      <p><code>while</code> mengevaluasi kondisi sebelum badan loop. Tiga unsur diperlukan: keadaan awal, kondisi melanjutkan, dan perubahan keadaan. Tanpa kemajuan menuju berhenti, loop dapat berjalan selamanya.</p>
+      <div class="formula-card"><span>WHILE</span><code>sisa = 3; while sisa &gt; 0: print(sisa); sisa -= 1</code><span>FOR</span><code>for i in range(1, 6): print(i)</code></div>
+      <div class="callout callout-blue"><span>↪</span><p><code>break</code> menghentikan loop terdekat; <code>continue</code> melewati sisa iterasi lalu kembali mengevaluasi kondisi. Keduanya tetap membutuhkan alur yang mudah dilacak.</p></div>
+      <p>Sentinel adalah nilai khusus untuk berhenti. Nilai <code>-1</code> diperiksa sebelum rentang data, sehingga tidak masuk total atau pencacah. Nilai 0 tetap sah; percabangan <code>if skor</code> saja akan salah mengenainya.</p>
+    </div>
+    <label class="topic-complete"><input type="checkbox" data-progress="b6-for-while"><span class="checkmark"></span> Saya memahami topik ini</label>
+  </article>
+
+  <article class="lesson-card" id="b6-game" data-topic="b6-game" data-searchable>
+    <div class="lesson-heading"><span class="lesson-number violet-text">02</span><div><h3>Game tebak angka dan loop bersarang</h3><p>Penghitung, status menang, dan batas percobaan harus konsisten.</p></div></div>
+    <div class="lesson-body">
+      <p>Contoh rahasia 7 dengan tiga percobaan. Setiap tebakan yang berhasil dikonversi menambah penghitung sekali, termasuk tebakan di luar rentang pada versi dasar. Setelah tebakan benar, set status <code>menang</code> lalu gunakan <code>break</code> agar tidak meminta tebakan berikutnya.</p>
+      <div class="code-card"><div class="code-card-header"><span>Python · game tebak angka</span><button class="copy-code" type="button">Salin kode</button></div><pre><code>rahasia = 7
+batas = 3
+percobaan = 0
+menang = False
+while percobaan &lt; batas:
+    tebakan = int(input("Tebak 1-10: "))
+    percobaan += 1
+    if tebakan == rahasia:
+        menang = True
+        break
+print(f"Percobaan: {percobaan}")
+if not menang:
+    print(f"Jawaban: {rahasia}")</code></pre></div>
+      <p>Loop bersarang menjalankan loop dalam untuk setiap iterasi loop luar. Segitiga setinggi empat memiliki panjang baris 1, 2, 3, dan 4, total 10 angka. Gunakan batas <code>baris + 1</code> pada loop dalam agar angka baris ikut dicetak.</p>
+      <div class="callout callout-amber"><span>!</span><p>Untuk akumulasi skor, <code>total</code> dan <code>jumlah</code> diperbarui hanya untuk data valid. Sentinel <code>-1</code> tidak ditambahkan dan tidak menambah pencacah.</p></div>
+    </div>
+    <label class="topic-complete"><input type="checkbox" data-progress="b6-game"><span class="checkmark"></span> Saya memahami topik ini</label>
+  </article>
+
+  <article class="lesson-card assignment-card" id="b6-praktikum" data-topic="b6-praktikum" data-searchable>
+    <div class="lesson-heading"><span class="lesson-number violet-text">↗</span><div><h3>Praktikum, tantangan, dan evaluasi</h3><p>Catat keadaan setelah setiap iterasi, lalu buktikan loop berhenti.</p></div></div>
+    <div class="lesson-body">
+      <p>Praktikum membangun pencatat nilai hingga sentinel <code>-1</code>. Tolak skor di luar 0–100; hitung jumlah valid, total, dan rata-rata. Sentinel dan data ditolak harus tetap terpisah.</p>
+      <h4>Enam tantangan</h4>
+      <ol>
+        <li>Gunakan <code>for</code> untuk menjumlahkan 1 sampai 10.</li>
+        <li>Buat segitiga bintang setinggi n positif.</li>
+        <li>Pastikan tebakan di luar 1–10 tidak menghabiskan kesempatan.</li>
+        <li>Tambahkan jumlah nilai lulus tanpa mengubah sentinel atau validasi.</li>
+        <li>Ubah satu aturan pencatat nilai lalu bandingkan versi lama dan baru.</li>
+        <li>Trace satu uji batas segitiga dan tambahkan uji penolakan baru.</li>
+      </ol>
+      <details class="trace-details"><summary>Studi kasus: pencatat nilai dengan sentinel</summary><div class="lesson-body nested-body">
+        <div class="table-scroll"><table><thead><tr><th>Masukan</th><th>Ekspektasi</th></tr></thead><tbody>
+          <tr><td>80; 120; 60; -1</td><td>Jumlah 2; total 140; rata-rata 70</td></tr>
+          <tr><td>-1</td><td>Belum ada skor valid</td></tr>
+          <tr><td>0; -1</td><td>Jumlah 1; rata-rata 0</td></tr>
+          <tr><td>-2; 100; -1</td><td>Nilai -2 ditolak; rata-rata 100</td></tr>
+        </tbody></table></div>
+        <p>Pengembangan menambahkan jumlah nilai lulus dengan batas lulus 60 tanpa mengubah urutan sentinel dan validasi. Uji normal, batas, penolakan, dan regresi harus dijalankan lagi.</p>
+      </div></details>
+      <details class="trace-details"><summary>Evaluasi formatif</summary><div class="lesson-body nested-body">
+        <ol>
+          <li><code>for</code> digunakan untuk iterasi batas/kumpulan diketahui; <code>while</code> untuk kondisi yang dapat berubah.</li>
+          <li>Sentinel adalah sinyal berhenti dan bukan data.</li>
+          <li>Invariant akumulasi memastikan total dan jumlah selalu berasal dari himpunan data valid yang sama.</li>
+          <li>Program perlu cabang data kosong agar pembagian rata-rata tidak dilakukan dengan nol.</li>
+          <li>Dalam loop, <code>break</code> menang atau <code>continue</code> menolak secara terkontrol.</li>
+        </ol>
+      </div></details>
+    </div>
+    <label class="topic-complete"><input type="checkbox" data-progress="b6-praktikum"><span class="checkmark"></span> Saya memahami topik ini</label>
+  </article>
+</section>

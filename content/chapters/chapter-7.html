@@ -1,0 +1,77 @@
+<section class="chapter-section" id="bab-7" aria-labelledby="bab-7-title">
+  <div class="chapter-heading">
+    <div class="chapter-title-group"><span class="chapter-badge badge-green">BAB 07</span><div><h2 id="bab-7-title">Fungsi, parameter, dan modularisasi</h2><p>Pecah program menjadi bagian berkontrak yang dapat dipakai ulang dan diuji.</p></div></div>
+    <button class="mark-chapter" data-chapter="7" type="button"><span>✓</span> Tandai bab selesai</button>
+  </div>
+  <div class="chapter-intro"><div><span class="section-kicker">TUJUAN BELAJAR</span><p>Bedakan parameter dan argumen, gunakan return, pisahkan input/output dari rumus, dan lakukan refactoring aman dengan uji regresi.</p></div><div class="goal-icon" aria-hidden="true">{ }</div></div>
+
+  <article class="lesson-card" id="b7-kontrak" data-topic="b7-kontrak" data-searchable>
+    <div class="lesson-heading"><span class="lesson-number green-text">01</span><div><h3>Kontrak fungsi: parameter dan argumen</h3><p>Definisi menyatakan syarat dan hasil; pemanggilan memberikan data.</p></div></div>
+    <div class="lesson-body">
+      <p>Parameter adalah nama pada definisi <code>def hitung_bayar(subtotal)</code>. Argumen adalah nilai saat pemanggilan, misalnya <code>hitung_bayar(100000)</code>. Variabel lokal hanya ada selama pemanggilan. Hindari variabel global yang diam-diam mengubah hasil.</p>
+      <div class="formula-card"><span>DEFINISI</span><code>def hitung_diskon(subtotal):</code><span>PARAMETER</span><code>subtotal</code><span>ARGUMEN</span><code>hitung_diskon(100000)</code></div>
+      <p>Kontrak menyebut makna parameter, prasyarat, satuan, dan hasil. Fungsi hitung diskon menerima subtotal rupiah tidak negatif dan mengembalikan diskon rupiah. Validasi pada <code>main</code> tidak secara otomatis membuat fungsi aman bagi semua pemanggil; kontrak perlu dipatuhi atau fungsi perlu menegakkannya.</p>
+      <div class="code-card"><div class="code-card-header"><span>Python · fungsi diskon</span><button class="copy-code" type="button">Salin kode</button></div><pre><code>def hitung_diskon(subtotal):
+    if subtotal &lt; 0:
+        raise ValueError("Subtotal tidak boleh negatif")
+    if subtotal &gt;= 100000:
+        return subtotal * 10 // 100
+    return 0
+
+def hitung_bayar(subtotal):
+    return subtotal - hitung_diskon(subtotal)</code></pre></div>
+    </div>
+    <label class="topic-complete"><input type="checkbox" data-progress="b7-kontrak"><span class="checkmark"></span> Saya memahami topik ini</label>
+  </article>
+
+  <article class="lesson-card" id="b7-modular" data-topic="b7-modular" data-searchable>
+    <div class="lesson-heading"><span class="lesson-number green-text">02</span><div><h3>return, fungsi murni, dan refactoring aman</h3><p>Pisahkan komputasi dari input dan output untuk pengujian yang terarah.</p></div></div>
+    <div class="lesson-body">
+      <p><code>return</code> mengirim nilai ke pemanggil dan mengakhiri jalur fungsi itu. <code>print</code> hanya menampilkan; fungsi tanpa <code>return</code> eksplisit menghasilkan <code>None</code>. Simpan nilai dengan <code>hasil = fungsi(...)</code>, lalu tampilkan atau pakai kembali.</p>
+      <p>Fungsi murni menghasilkan hasil yang sama untuk argumen yang sama dan tidak mengubah keadaan luar. Kode <code>skor_jawaban(jawaban, kunci)</code> dapat diuji langsung dengan normalisasi tanpa menjalankan interaksi pengguna.</p>
+      <div class="code-card"><div class="code-card-header"><span>Python · fungsi kuis murni</span><button class="copy-code" type="button">Salin kode</button></div><pre><code>def skor_jawaban(jawaban, kunci):
+    cocok = jawaban.strip().lower() == kunci.strip().lower()
+    return 10 if cocok else 0
+
+assert skor_jawaban(" DEF ", "def") == 10</code></pre></div>
+      <p><strong>Refactoring aman:</strong> simpan test case; pindahkan rumus ke fungsi; jalankan uji yang sama; bandingkan keluaran. Hindari mengubah rumus sekaligus mengubah susunan kode karena bug baru sulit dibedakan dari perubahan kebijakan.</p>
+      <div class="callout callout-blue"><span>✓</span><p><code>if __name__ == "__main__": main()</code> memungkinkan berkas diimpor untuk pengujian tanpa langsung meminta input dari pengguna.</p></div>
+    </div>
+    <label class="topic-complete"><input type="checkbox" data-progress="b7-modular"><span class="checkmark"></span> Saya memahami topik ini</label>
+  </article>
+
+  <article class="lesson-card assignment-card" id="b7-praktikum" data-topic="b7-praktikum" data-searchable>
+    <div class="lesson-heading"><span class="lesson-number green-text">↗</span><div><h3>Praktikum, tantangan, dan evaluasi</h3><p>Refactor kalkulator dengan fungsi murni, main, kontrak, dan uji regresi.</p></div></div>
+    <div class="lesson-body">
+      <p>Praktikum kasus: refactor kalkulator parkir menjadi <code>biaya_parkir(jam)</code> dan <code>main()</code>. Fungsi hanya menerima jam bulat minimal satu; antarmuka menolak jam tidak sah sebelum pemanggilan.</p>
+      <h4>Enam tantangan</h4>
+      <ol>
+        <li>Buat <code>luas_persegi(sisi)</code>.</li>
+        <li>Buat <code>rata_dua(a, b)</code> lalu gunakan hasilnya dalam klasifikasi.</li>
+        <li>Buat <code>skor_jawaban(jawaban, kunci)</code> tanpa input atau print dan uji huruf kapital.</li>
+        <li>Tambah fungsi diskon terpisah dan gunakan return-nya dalam total tagihan.</li>
+        <li>Refactor kuis menjadi <code>tanya()</code> yang mengembalikan skor pertanyaan.</li>
+        <li>Refactor tarif parkir, tulis docstring, uji 1/2/3 jam, dan tolak durasi 0.</li>
+      </ol>
+      <details class="trace-details"><summary>Studi kasus mandiri: kalkulator parkir modular</summary><div class="lesson-body nested-body">
+        <p><strong>Rancangan:</strong> <code>biaya_parkir(jam)</code> menghitung Rp3.000 untuk jam pertama dan Rp2.000 untuk setiap jam berikutnya. <code>main()</code> membaca input, memvalidasi minimal satu jam, memanggil fungsi, dan mencetak hasil.</p>
+        <div class="table-scroll"><table><thead><tr><th>Jam</th><th>Ekspektasi</th></tr></thead><tbody>
+          <tr><td>1</td><td>Biaya Rp3.000; tambah satu jam Rp5.000</td></tr>
+          <tr><td>2</td><td>Biaya Rp5.000; tambah satu jam Rp7.000</td></tr>
+          <tr><td>0</td><td>Durasi tidak valid; tidak ada tagihan</td></tr>
+        </tbody></table></div>
+        <p>Pengembangan menambahkan fungsi diskon terpisah. Kasus lama harus tetap menghasilkan tarif yang sama; kasus baru harus mengubah total hanya berdasarkan kontrak diskon.</p>
+      </div></details>
+      <details class="trace-details"><summary>Evaluasi formatif</summary><div class="lesson-body nested-body">
+        <ol>
+          <li>Parameter adalah nama pada definisi; argumen adalah nilai pada pemanggilan.</li>
+          <li><code>return</code> mengirim nilai dan mengakhiri jalur fungsi.</li>
+          <li>Fungsi murni mudah diuji dan tidak bergantung pada keadaan luar.</li>
+          <li>Refactoring memerlukan uji regresi agar susunan baru mempertahankan perilaku lama.</li>
+          <li>Kontrak membantu menjelaskan prasyarat dan mencegah pemanggilan pada data tidak sah.</li>
+        </ol>
+      </div></details>
+    </div>
+    <label class="topic-complete"><input type="checkbox" data-progress="b7-praktikum"><span class="checkmark"></span> Saya memahami topik ini</label>
+  </article>
+</section>

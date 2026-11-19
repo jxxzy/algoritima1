@@ -9,12 +9,18 @@
     'b2-representasi', 'b2-geometri', 'b2-parkir', 'b2-tukar',
     'b3-tipe', 'b3-suhu', 'b3-durasi', 'b3-kecepatan',
     'b4-operator', 'b4-ekspresi', 'b4-aplikasi', 'b4-praktikum',
+    'b5-keputusan', 'b5-game', 'b5-praktikum',
+    'b6-for-while', 'b6-game', 'b6-praktikum',
+    'b7-kontrak', 'b7-modular', 'b7-praktikum',
   ];
   const chapterProgressIds = {
     1: progressIds.filter((id) => id.startsWith('b1-')),
     2: progressIds.filter((id) => id.startsWith('b2-')),
     3: progressIds.filter((id) => id.startsWith('b3-')),
     4: progressIds.filter((id) => id.startsWith('b4-')),
+    5: progressIds.filter((id) => id.startsWith('b5-')),
+    6: progressIds.filter((id) => id.startsWith('b6-')),
+    7: progressIds.filter((id) => id.startsWith('b7-')),
   };
   const progressInputs = [...document.querySelectorAll('[data-progress]')];
   const chapterButtons = [...document.querySelectorAll('button[data-chapter]')];
@@ -1062,6 +1068,15 @@
     'b4-ekspresi': ['Prioritas, nilai Boolean, dan uji ambang', 4],
     'b4-aplikasi': ['Kasir, nilai akhir, dan biaya kirim', 4],
     'b4-praktikum': ['Praktikum, tantangan, dan evaluasi Bab 4', 4],
+    'b5-keputusan': ['if, elif, else, dan urutan kondisi', 5],
+    'b5-game': ['Validasi teks dan game pilihan', 5],
+    'b5-praktikum': ['Praktikum, tantangan, dan evaluasi Bab 5', 5],
+    'b6-for-while': ['for, while, sentinel, dan break', 6],
+    'b6-game': ['Game tebak angka dan loop bersarang', 6],
+    'b6-praktikum': ['Praktikum, tantangan, dan evaluasi Bab 6', 6],
+    'b7-kontrak': ['Kontrak fungsi, parameter, dan argumen', 7],
+    'b7-modular': ['return, fungsi murni, dan refactoring', 7],
+    'b7-praktikum': ['Praktikum, tantangan, dan evaluasi Bab 7', 7],
   };
   let bookmarks = [];
   try {
@@ -1380,6 +1395,104 @@
         ['ongkir, total', 'Biaya berbasis berat dan jumlah akhir setelah kemasan.'],
       ],
     },
+    bab05: {
+      chapter: 'Bab 5',
+      file: 'bab05.py',
+      description: 'Kuis dua pilihan, normalisasi jawaban, skor, dan klasifikasi predikat nilai.',
+      variables: [
+        ['skor', 'Akumulator yang bertambah 10 hanya pada jawaban benar.'],
+        ['jawab', 'Jawaban teks yang dinormalisasi dengan strip() dan lower().'],
+        ['nilai', 'Parameter predikat yang harus berada 0 sampai 100.'],
+        ['predikat_nilai()', 'Mengembalikan A, B, C, atau D dengan urutan ambang tertinggi.'],
+      ],
+    },
+    bab05_perpustakaan: {
+      chapter: 'Bab 5',
+      file: 'bab05_perpustakaan.py',
+      description: 'Memvalidasi pilihan teks dan memeriksa kelayakan peminjaman beserta semua alasan penolakan.',
+      variables: [
+        ['aktif, terlambat', 'Jawaban teks ya/tidak yang dinormalisasi.'],
+        ['jumlah', 'Jumlah buku yang sedang dipinjam; harus integer tidak negatif.'],
+        ['boleh', 'Boolean gabungan seluruh syarat peminjaman.'],
+        ['alasan', 'Daftar pelanggaran yang dapat muncul bersamaan.'],
+      ],
+    },
+    bab05_petualangan: {
+      chapter: 'Bab 5',
+      file: 'bab05_petualangan.py',
+      description: 'Game dua tahap dengan empat akhir sah dan pesan untuk pilihan tidak valid.',
+      variables: [
+        ['tempat', 'Pilihan tahap pertama: perpustakaan atau laboratorium.'],
+        ['aksi', 'Pilihan tahap kedua yang sah bergantung pada tempat.'],
+        ['jalur_petualangan()', 'Fungsi murni yang mengembalikan teks hasil akhir.'],
+      ],
+    },
+    bab06: {
+      chapter: 'Bab 6',
+      file: 'bab06.py',
+      description: 'Game tebak angka dengan while, penghitung percobaan, status menang, dan break.',
+      variables: [
+        ['rahasia', 'Nilai target yang tidak berubah selama permainan.'],
+        ['batas', 'Jumlah maksimum percobaan.'],
+        ['percobaan', 'Penghitung input yang berhasil dikonversi.'],
+        ['menang', 'Status keluar loop karena tebakan benar atau batas habis.'],
+      ],
+    },
+    bab06_skor: {
+      chapter: 'Bab 6',
+      file: 'bab06_skor.py',
+      description: 'Akumulasi skor valid dengan sentinel -1, continue, dan penanganan data kosong.',
+      variables: [
+        ['total, jumlah', 'Pembilang dan penyebut yang diperbarui hanya untuk data valid.'],
+        ['skor', 'Masukan skor yang diperiksa sebelum ditambahkan.'],
+        ['-1', 'Sentinel berhenti; tidak masuk total maupun jumlah.'],
+        ['rata', 'Total dibagi jumlah hanya bila jumlah lebih besar dari nol.'],
+      ],
+    },
+    bab06_segiti: {
+      chapter: 'Bab 6',
+      file: 'bab06_segiti.py',
+      description: 'Membentuk segitiga angka menggunakan loop luar dan loop dalam.',
+      variables: [
+        ['n', 'Tinggi segitiga yang wajib integer 1 sampai 6.'],
+        ['baris', 'Loop luar yang menentukan panjang setiap baris.'],
+        ['kolom', 'Loop dalam yang mencetak angka satu sampai baris.'],
+        ['cetak', 'Akumulator jumlah angka yang berhasil ditampilkan.'],
+      ],
+    },
+    bab07: {
+      chapter: 'Bab 7',
+      file: 'bab07.py',
+      description: 'Memisahkan rumus diskon dan hitung bayar menjadi fungsi, lalu memanggilnya dari main.',
+      variables: [
+        ['subtotal', 'Parameter rupiah tidak negatif pada fungsi hitung diskon dan bayar.'],
+        ['hitung_diskon()', 'Mengembalikan diskon murni berdasarkan ambang.'],
+        ['hitung_bayar()', 'Memanggil fungsi diskon lalu mengembalikan total setelah diskon.'],
+        ['main()', 'Lapisan input/output yang memvalidasi subtotal lalu mencetak hasil.'],
+      ],
+    },
+    bab07_kuis: {
+      chapter: 'Bab 7',
+      file: 'bab07_kuis.py',
+      description: 'Memisahkan penentuan skor kuis dari interaksi tanya dan akumulasi main.',
+      variables: [
+        ['jawaban, kunci', 'Parameter teks yang dinormalisasi sebelum dibandingkan.'],
+        ['skor_jawaban()', 'Mengembalikan 10 atau 0 tanpa input atau print.'],
+        ['tanya()', 'Menampilkan soal, membaca jawaban, lalu mengembalikan skor pertanyaan.'],
+        ['total', 'Akumulator skor yang dikelola main.'],
+      ],
+    },
+    bab07_parkir: {
+      chapter: 'Bab 7',
+      file: 'bab07_parkir.py',
+      description: 'Fungsi murni tarif parkir dan lapisan main yang menegakkan prasyarat jam.',
+      variables: [
+        ['jam', 'Parameter integer minimal satu.'],
+        ['biaya_parkir()', 'Mengembalikan Rp3.000 + jam tambahan × Rp2.000.'],
+        ['main()', 'Memvalidasi input sebelum pemanggilan fungsi murni.'],
+        ['__name__', 'Menjalankan main hanya saat berkas dieksekusi langsung.'],
+      ],
+    },
   };
   let solutionRequest = 0;
 
@@ -1610,6 +1723,34 @@
         },
       ],
     },
+    {
+      chapter: 'Bab 5 · Percabangan dan game pilihan',
+      tasks: [
+        { title: 'Praktikum · Peminjaman perpustakaan', explanation: 'Validasi ya/tidak, batas jumlah buku, dan tampilkan semua alasan penolakan.', programs: ['bab05_perpustakaan'] },
+        { title: 'Tantangan 1–2 · Lulus dan predikat', explanation: 'Uji ambang skor serta urutan predikat A sampai D.', programs: ['bab05'] },
+        { title: 'Tantangan 3 · Game dua tahap', explanation: 'Buat empat akhir sah dan satu jalur tidak valid.', programs: ['bab05_petualangan'] },
+        { title: 'Tantangan 4–6 · Pengembangan dan pembuktian', explanation: 'Tambahkan status buku, bandingkan dua kontrak, dan trace satu batas beserta penolakan baru.', programs: ['bab05_perpustakaan', 'bab05_petualangan'] },
+        { title: 'Studi kasus · Peminjaman dan buku tersedia', explanation: 'Gabungkan spesifikasi, flowchart, kode, normal, batas, penolakan, dan regresi.', programs: ['bab05_perpustakaan'] },
+      ],
+    },
+    {
+      chapter: 'Bab 6 · Perulangan dan game tebak angka',
+      tasks: [
+        { title: 'Praktikum · Pencatat skor dengan sentinel', explanation: 'Tolak skor di luar 0–100, akumulasi data valid, dan tangani keadaan kosong.', programs: ['bab06_skor'] },
+        { title: 'Tantangan 1–3 · for, bintang, dan percobaan', explanation: 'Jumlahkan rentang, cetak pola, dan cegah tebakan luar rentang menghabiskan kesempatan.', programs: ['bab06', 'bab06_segiti'] },
+        { title: 'Tantangan 4–6 · Pengembangan dan tracing', explanation: 'Tambah jumlah lulus, bandingkan kontrak lama/baru, dan trace segitiga serta penolakan.', programs: ['bab06_skor', 'bab06_segiti'] },
+        { title: 'Studi kasus · Nilai, sentinel, dan rata-rata', explanation: 'Tambahkan jumlah lulus sambil mempertahankan sentinel, batas, dan data kosong.', programs: ['bab06_skor'] },
+      ],
+    },
+    {
+      chapter: 'Bab 7 · Fungsi, parameter, dan modularisasi',
+      tasks: [
+        { title: 'Praktikum · Refactor kalkulator parkir', explanation: 'Pisahkan biaya_parkir(jam), main, validasi, dan uji fungsi langsung.', programs: ['bab07_parkir'] },
+        { title: 'Tantangan 1–3 · Luas, rata-rata, dan kuis', explanation: 'Buat fungsi sederhana dan skor murni yang menerima parameter serta mengembalikan nilai.', programs: ['bab07', 'bab07_kuis'] },
+        { title: 'Tantangan 4–6 · Diskon, kuis, dan parkir', explanation: 'Tambah fungsi diskon, return skor pertanyaan, dan refactor tarif parkir dengan docstring.', programs: ['bab07', 'bab07_kuis', 'bab07_parkir'] },
+        { title: 'Studi kasus · Kalkulator modular', explanation: 'Tambahkan fungsi diskon, buktikan regresi parkir lama, dan tetapkan perilaku jam tidak sah.', programs: ['bab07', 'bab07_parkir'] },
+      ],
+    },
   ];
 
   const chapterFilter = document.querySelector('.solutions-section')?.dataset.chapterFilter;
@@ -1740,6 +1881,33 @@
           'Validasi: kedua sisi lebih besar dari nol.',
           'luas = 5 × 3 → 15 m².',
           'keliling = 2 × (5 + 3) → 16 m.',
+        ],
+      },
+      branch: {
+        title: 'Predikat nilai 79,99 dan 80',
+        steps: [
+          'Awal: nilai = 79,99; validasi rentang lolos.',
+          'nilai >= 80 salah, lanjut ke nilai >= 70.',
+          'nilai >= 70 benar → pilih kategori B.',
+          'Ubah nilai menjadi 80 → kategori pertama yang benar adalah A.',
+        ],
+      },
+      loop: {
+        title: 'Akumulasi skor sampai sentinel',
+        steps: [
+          'Awal: total = 0, jumlah = 0.',
+          'Input 80 valid → total = 80, jumlah = 1.',
+          'Input 120 ditolak → total dan jumlah tidak berubah.',
+          'Input -1 adalah sentinel → berhenti; rata-rata 80 / 1 = 80.',
+        ],
+      },
+      function: {
+        title: 'Pemanggilan fungsi hitung diskon',
+        steps: [
+          'Definisi hitung_diskon(subtotal) menyatakan parameter dan prasyarat.',
+          'Pemanggilan hitung_diskon(100000) memberikan argumen 100000.',
+          'Subtotal memenuhi ambang → fungsi menghitung 100000 × 10 // 100.',
+          'return mengirim 10000; main menampilkan atau memakai hasil.',
         ],
       },
     };

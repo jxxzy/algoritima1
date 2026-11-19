@@ -26,6 +26,9 @@ const [nav, footer, fragments] = await Promise.all([
     readContent('chapters/chapter-2.html'),
     readContent('chapters/chapter-3.html'),
     readContent('chapters/chapter-4.html'),
+    readContent('chapters/chapter-5.html'),
+    readContent('chapters/chapter-6.html'),
+    readContent('chapters/chapter-7.html'),
     readContent('shared/solutions.html'),
     readContent('reference/references.html'),
     readContent('home/bookmarks.html'),
@@ -38,10 +41,10 @@ const [nav, footer, fragments] = await Promise.all([
     path: entries[1],
     timer: entries[2],
     lab: entries[3],
-    chapters: entries.slice(4, 8),
-    solutions: entries[8],
-    reference: entries[9],
-    bookmarks: entries[10],
+    chapters: entries.slice(4, 11),
+    solutions: entries[11],
+    reference: entries[12],
+    bookmarks: entries[13],
   },
 ]);
 
@@ -65,6 +68,21 @@ const quizzes = {
     { prompt: 'Apa hasil 2 + 3 * 4 dan (2 + 3) * 4?', answer: 'priority', options: [['priority', '14 dan 20 karena tanda kurung mengubah urutan'], ['same', 'Keduanya 20'], ['reverse', '20 dan 14']] },
     { prompt: 'Syarat diskon berbunyi subtotal minimal Rp50.000. Operator mana tepat?', answer: 'inclusive', options: [['inclusive', '>= agar nilai tepat di ambang termasuk'], ['strict', '> karena sama dengan tidak termasuk'], ['assign', '= untuk menguji']] },
     { prompt: 'Berat paket 1.001 gram ditagih per kilogram atau bagiannya. Berapa total termasuk kemasan Rp2.000?', answer: 'shipping', options: [['shipping', '2 kg; total Rp18.000'], ['one', '1 kg; total Rp10.000'], ['three', '3 kg; total Rp26.000']] },
+  ],
+  5: [
+    { prompt: 'Kondisi nilai >= 60 diuji sebelum nilai >= 80. Nilai 85 masuk kategori mana?', answer: 'wrong', options: [['a', 'A'], ['wrong', 'C karena cabang rendah menang lebih dahulu'], ['d', 'D']] },
+    { prompt: 'Apa bedanya validasi dan keputusan?', answer: 'separate', options: [['separate', 'Validasi memeriksa bentuk/domain; keputusan menerapkan aturan layanan'], ['same', 'Keduanya hanya mencetak teks'], ['never', 'Validasi selalu sesudah keputusan']] },
+    { prompt: 'Apa hasil normalisasi "  YA " dan apa syarat jawaban yang sah?', answer: 'normalize', options: [['normalize', 'Menjadi "ya"; jawaban tetap harus ya atau tidak'], ['yes', 'Menjadi True secara otomatis'], ['invalid', 'Harus ditolak meski tanpa salah ketik']] },
+  ],
+  6: [
+    { prompt: 'Berapa kali range(5) berjalan?', answer: 'five', options: [['five', '5 kali untuk nilai 0–4'], ['six', '6 kali'], ['four', '4 kali']] },
+    { prompt: 'Apakah sentinel -1 dihitung sebagai skor?', answer: 'no', options: [['no', 'Tidak; diperiksa sebelum akumulasi'], ['yes', 'Ya sebagai skor valid'], ['zero', 'Menjadi skor nol tetapi menambah jumlah']] },
+    { prompt: 'Segitiga setinggi 4 dicetak dengan loop bersarang. Berapa angka tercetak?', answer: 'ten', options: [['ten', '10'], ['four', '4'], ['16', '16']] },
+  ],
+  7: [
+    { prompt: 'Apa beda parameter dan argumen?', answer: 'paramarg', options: [['paramarg', 'Parameter adalah nama pada definisi; argumen adalah nilai saat pemanggilan'], ['same', 'Keduanya hanya variabel global'], ['print', 'Parameter selalu dicetak']] },
+    { prompt: 'Apa keuntungan fungsi murni?', answer: 'pure', options: [['pure', 'Argumen sama menghasilkan hasil sama dan mudah diuji'], ['side', 'Selalu membaca input pengguna'], ['none', 'Tidak boleh dipanggil berkali-kali']] },
+    { prompt: 'Fungsi hanya memakai print, tanpa return. Apa hasilnya saat disimpan ke variabel?', answer: 'none', options: [['none', 'None'], ['text', 'Teks hasil print'], ['number', 'Angka terakhir otomatis']] },
   ],
 };
 
@@ -97,6 +115,27 @@ const chapterDetails = {
     next: null,
     glossary: [['Ekspresi', 'Kombinasi nilai, variabel, dan operator yang menghasilkan sebuah nilai.'], ['Prioritas operator', 'Urutan operasi yang menentukan bagaimana ekspresi dievaluasi.'], ['Boolean', 'Nilai True atau False yang dihasilkan perbandingan dan dipakai dalam logika.'], ['Short-circuit', 'Evaluasi logika berhenti saat hasil and/or sudah dapat ditentukan.'], ['Uji batas', 'Pengujian nilai tepat di bawah, pada, dan di atas ambang aturan.']],
   },
+  5: {
+    title: 'Bab 5 · Percabangan dan game pilihan',
+    description: 'Rancang if, elif, else, normalisasi teks, percabangan bersarang, dan pengujian setiap jalur.',
+    previous: 4,
+    next: 6,
+    glossary: [['if', 'Memilih satu tindakan jika kondisinya benar.'], ['elif', 'Memeriksa kondisi alternatif setelah if atau elif sebelumnya salah.'], ['else', 'Jalur akhir ketika tidak ada kondisi sebelumnya yang benar.'], ['Normalisasi', 'Pembersihan huruf besar dan spasi tepi agar pilihan dapat dibandingkan.'], ['Validasi', 'Pemeriksaan bahwa masukan berada pada bentuk atau domain yang ditentukan.']],
+  },
+  6: {
+    title: 'Bab 6 · Perulangan dan game tebak angka',
+    description: 'Gunakan for dan while, jaga akumulator, sentinel, break, continue, serta loop bersarang.',
+    previous: 5,
+    next: 7,
+    glossary: [['for', 'Perulangan untuk rentang atau kumpulan yang diketahui.'], ['while', 'Perulangan selama kondisi masih benar.'], ['Sentinel', 'Nilai khusus yang menandai akhir input, bukan data biasa.'], ['Invariant', 'Hubungan nilai yang tetap benar pada akumulasi.'], ['break', 'Menghentikan loop terdekat; continue melewati sisa iterasi saat itu.']],
+  },
+  7: {
+    title: 'Bab 7 · Fungsi, parameter, dan modularisasi',
+    description: 'Buat kontrak fungsi, bedakan parameter dan argumen, gunakan return, serta lakukan refactoring dengan uji regresi.',
+    previous: 6,
+    next: null,
+    glossary: [['Parameter', 'Nama formal pada definisi fungsi.'], ['Argumen', 'Nilai nyata yang diberikan saat fungsi dipanggil.'], ['return', 'Mengirim hasil fungsi kembali ke pemanggil.'], ['Fungsi murni', 'Fungsi tanpa perubahan keadaan luar dan hasilnya ditentukan argumennya.'], ['Refactoring', 'Mengubah susunan kode tanpa mengubah perilaku yang disepakati.']],
+  },
 };
 
 function escapeHtml(value) {
@@ -106,7 +145,7 @@ function escapeHtml(value) {
 }
 
 function routeFor(id, pageKind, currentChapter) {
-  const chapterId = id.match(/^bab-([1234])$/)?.[1] || id.match(/^b([1234])-/)?.[1];
+  const chapterId = id.match(/^bab-([1-7])$/)?.[1] || id.match(/^b([1-7])-/)?.[1];
   if (chapterId) return `bab-${chapterId}/index.html#${id}`;
   if (id === 'kode-tugas') return pageKind === 'chapter' ? `bab-${currentChapter}/index.html#kode-tugas` : 'bab-1/index.html#kode-tugas';
   if (id === 'latihan') return pageKind === 'chapter' ? `bab-${currentChapter}/index.html#latihan` : 'bab-1/index.html#latihan';
@@ -184,9 +223,10 @@ function createSearchIndex() {
   });
 }
 
-const chapterCards = [1, 2, 3, 4].map((number) => {
+const chapterCards = [1, 2, 3, 4, 5, 6, 7].map((number) => {
   const details = chapterDetails[number];
-  return `<a class="dashboard-chapter path-card" href="bab-${number}/index.html"><span class="path-index index-${['blue', 'violet', 'amber', 'green'][number - 1]}">0${number}</span><span class="path-card-copy"><strong>${escapeHtml(details.title.split(' · ')[1])}</strong><small>${escapeHtml(details.description)}</small><span class="dashboard-chapter-progress" id="chapter-progress-${number}">0 dari ${[3, 4, 4, 4][number - 1]} topik · 0%</span><span class="course-badge" id="chapter-badge-${number}" hidden>Lencana Bab ${number} terkunci</span></span><span class="path-arrow">↗</span></a>`;
+  const topicCounts = [3, 4, 4, 4, 3, 3, 3];
+  return `<a class="dashboard-chapter path-card" href="bab-${number}/index.html"><span class="path-index index-${['blue', 'violet', 'amber', 'green', 'blue', 'violet', 'green'][number - 1]}">0${number}</span><span class="path-card-copy"><strong>${escapeHtml(details.title.split(' · ')[1])}</strong><small>${escapeHtml(details.description)}</small><span class="dashboard-chapter-progress" id="chapter-progress-${number}">0 dari ${topicCounts[number - 1]} topik · 0%</span><span class="course-badge" id="chapter-badge-${number}" hidden>Lencana Bab ${number} terkunci</span></span><span class="path-arrow">↗</span></a>`;
 }).join('');
 
 const dashboard = `
@@ -196,7 +236,7 @@ const dashboard = `
         <section class="dashboard-overview" aria-labelledby="dashboard-title">
           <div class="chapter-heading"><div><span class="section-kicker">DASHBOARD BELAJAR</span><h2 id="dashboard-title">Lanjutkan perjalananmu</h2><p id="continue-learning-copy">Progres tersimpan otomatis di browser ini.</p></div><a class="button button-primary" id="continue-learning" href="bab-1/index.html">Mulai Bab 1 →</a></div>
           <div class="path-cards dashboard-chapters">${chapterCards}</div>
-          <div class="dashboard-summary"><span><strong id="dashboard-progress">0%</strong> materi selesai</span><span><strong id="dashboard-badges">0 / 4</strong> lencana bab</span><a class="button button-quiet" href="lab/index.html#lab">Buka laboratorium interaktif</a><a class="button button-quiet" href="referensi/index.html#referensi">Buka referensi cepat</a></div>
+          <div class="dashboard-summary"><span><strong id="dashboard-progress">0%</strong> materi selesai</span><span><strong id="dashboard-badges">0 / 7</strong> lencana bab</span><a class="button button-quiet" href="lab/index.html#lab">Buka laboratorium interaktif</a><a class="button button-quiet" href="referensi/index.html#referensi">Buka referensi cepat</a></div>
         </section>
         ${fragments.timer}
         ${fragments.bookmarks}
@@ -213,7 +253,7 @@ function visualizer() {
           <div><span class="section-kicker">LIHAT NILAI BERGERAK</span><h2 id="visualizer-title">Visualizer algoritma</h2><p>Pilih contoh dan jalankan setiap langkah untuk mengamati perubahan nilai variabel.</p></div>
           <label for="visualizer-algorithm">Pilih algoritma
             <select id="visualizer-algorithm">
-              <option value="swap">Menukar dua nilai</option><option value="duration">Memecah durasi</option><option value="parking">Menghitung tarif parkir</option><option value="geometry">Menghitung luas dan keliling</option>
+              <option value="swap">Menukar dua nilai</option><option value="duration">Memecah durasi</option><option value="parking">Menghitung tarif parkir</option><option value="geometry">Menghitung luas dan keliling</option><option value="branch">Predikat percabangan</option><option value="loop">Akumulasi dengan sentinel</option><option value="function">Pemanggilan fungsi</option>
             </select>
           </label>
           <div class="visualizer-state" id="visualizer-state" aria-live="polite"><strong>Keadaan awal</strong><p>Pilih “Langkah berikutnya” untuk memulai.</p></div>
@@ -310,13 +350,13 @@ h1{font-size:clamp(36px,4vw,52px);line-height:1.13}.skip-link{position:fixed;z-i
 const homePage = renderPage({
   kind: 'home',
   title: 'Belajar Algoritma — Algoritma dan Struktur Data I',
-  description: 'Dashboard pembelajaran interaktif Algoritma dan Struktur Data I dengan materi Bab 1–4, progres, lab, visualizer, dan kode Python.',
+  description: 'Dashboard pembelajaran interaktif Algoritma dan Struktur Data I dengan materi Bab 1–7, progres, lab, visualizer, dan kode Python.',
   canonical: 'https://jxxzy.github.io/algoritima1/',
   main: dashboard,
 });
 await writeFile(path.join(outputDirectory, 'index.html'), homePage);
 
-for (let number = 1; number <= 4; number += 1) {
+for (let number = 1; number <= 7; number += 1) {
   const directory = path.join(outputDirectory, `bab-${number}`);
   await mkdir(directory, { recursive: true });
   await writeFile(path.join(directory, 'index.html'), chapterPage(number));
@@ -347,7 +387,7 @@ const referencePage = renderPage({
 await writeFile(path.join(referenceDirectory, 'index.html'), referencePage);
 await writeFile(path.join(outputDirectory, 'search-index.json'), JSON.stringify(createSearchIndex()));
 
-const pythonDirectories = ['Bab 1', 'Bab 2', 'Bab 3', 'Bab 4'];
+const pythonDirectories = ['Bab 1', 'Bab 2', 'Bab 3', 'Bab 4', 'Bab 5', 'Bab 6', 'Bab 7'];
 const pythonFiles = [];
 async function copyPythonFiles(directory) {
   const destination = path.join(outputDirectory, directory);
@@ -365,7 +405,7 @@ await Promise.all(pythonDirectories.map(copyPythonFiles));
 const manifest = {
   name: 'Belajar Algoritma — Algoritma dan Struktur Data I',
   short_name: 'Belajar Algoritma',
-  description: 'Materi algoritma interaktif Bab 1–4.',
+  description: 'Materi algoritma interaktif Bab 1–7.',
   lang: 'id',
   start_url: './',
   scope: './',
@@ -379,7 +419,7 @@ await mkdir(path.join(outputDirectory, 'assets'), { recursive: true });
 await writeFile(path.join(outputDirectory, 'assets', 'icon.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="18" fill="#3f56d2"/><path d="M22 18 10 32l12 14M42 18l12 14-12 14M37 14 27 50" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
 
 const assetFiles = await readdir(path.join(outputDirectory, 'assets'));
-const pages = ['index.html', 'bab-1/index.html', 'bab-2/index.html', 'bab-3/index.html', 'bab-4/index.html', 'lab/index.html', 'referensi/index.html'];
+const pages = ['index.html', 'bab-1/index.html', 'bab-2/index.html', 'bab-3/index.html', 'bab-4/index.html', 'bab-5/index.html', 'bab-6/index.html', 'bab-7/index.html', 'lab/index.html', 'referensi/index.html'];
 const offlineFiles = [...pages, 'manifest.webmanifest', 'search-index.json', ...pythonFiles, ...assetFiles.map((name) => `assets/${name}`)];
 const cacheFingerprint = createHash('sha256');
 for (const file of [...offlineFiles].sort()) {
