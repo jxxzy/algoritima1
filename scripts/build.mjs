@@ -225,12 +225,13 @@ function createSearchIndex() {
 
 const chapterCards = [1, 2, 3, 4, 5, 6, 7].map((number) => {
   const details = chapterDetails[number];
-  const topicCounts = [3, 4, 4, 4, 3, 3, 3];
+  const topicCounts = [4, 5, 5, 4, 3, 3, 3];
   return `<a class="dashboard-chapter path-card" href="bab-${number}/index.html"><span class="path-index index-${['blue', 'violet', 'amber', 'green', 'blue', 'violet', 'green'][number - 1]}">0${number}</span><span class="path-card-copy"><strong>${escapeHtml(details.title.split(' · ')[1])}</strong><small>${escapeHtml(details.description)}</small><span class="dashboard-chapter-progress" id="chapter-progress-${number}">0 dari ${topicCounts[number - 1]} topik · 0%</span><span class="course-badge" id="chapter-badge-${number}" hidden>Lencana Bab ${number} terkunci</span></span><span class="path-arrow">↗</span></a>`;
 }).join('');
 
 const studyTools = await readContent('home/study-tools.html');
 const studio = await readContent('lab/studio.html');
+const assessment = await readContent('home/assessment.html');
 const dashboard = `
         <header class="topbar"><button class="mobile-menu" id="mobile-menu" type="button" aria-expanded="false" aria-controls="sidebar" aria-label="Buka navigasi">☰</button><div class="breadcrumb"><span>Kursus</span><span aria-hidden="true">/</span><strong>Beranda</strong></div><button class="focus-toggle" id="focus-toggle" type="button" aria-pressed="false"><span aria-hidden="true">◎</span> Mode fokus</button><a class="topbar-link" href="bab-1/index.html">Mulai belajar <span aria-hidden="true">↗</span></a></header>
         ${rewriteLinks(fragments.hero, 'home')}
@@ -243,6 +244,7 @@ const dashboard = `
         ${fragments.timer}
         ${fragments.bookmarks}
         ${studyTools}
+        ${assessment}
         <section class="dashboard-tools" aria-label="Fitur belajar">
           <a class="path-card" href="bab-1/index.html#kode-tugas"><strong>Kode lengkap dan penjelasan tugas</strong><span class="path-arrow">↗</span></a>
           <a class="path-card" href="lab/index.html#visualizer"><strong>Visualizer algoritma</strong><span class="path-arrow">↗</span></a>
@@ -311,6 +313,7 @@ function renderPage({ kind, title, description, canonical, navHtml = rewriteLink
     <meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(description)}"><meta property="og:url" content="${canonical}"><meta property="og:type" content="website">
     <script src="${hashedAssets.js}" defer></script>
     <script src="${hashedAssets.academy}" defer></script>
+    <script src="${hashedAssets.assessment}" defer></script>
   </head>
   <body ${pageKind}>
     <a class="skip-link" href="${skipTarget}">Lewati ke materi</a>
@@ -327,7 +330,7 @@ function renderPage({ kind, title, description, canonical, navHtml = rewriteLink
 await rm(outputDirectory, { recursive: true, force: true });
 await mkdir(path.join(outputDirectory, 'assets'), { recursive: true });
 const assets = await build({
-  entryPoints: [path.join(root, 'app.js'), path.join(root, 'styles.css'), path.join(root, 'academy.js')],
+  entryPoints: [path.join(root, 'app.js'), path.join(root, 'styles.css'), path.join(root, 'academy.js'), path.join(root, 'assessment.js')],
   outdir: path.join(outputDirectory, 'assets'),
   entryNames: '[name]-[hash]',
   minify: true,
@@ -340,7 +343,7 @@ for (const file of assets.outputFiles) {
   await writeFile(file.path, file.contents);
   assetNames[relative.startsWith('assets/') ? relative.slice('assets/'.length).split('-')[0] : relative] = relative;
 }
-renderPage.assets = { css: assetNames['styles'], js: assetNames['app'], academy: assetNames['academy'] };
+renderPage.assets = { css: assetNames['styles'], js: assetNames['app'], academy: assetNames['academy'], assessment: assetNames['assessment'] };
 renderPage.criticalCss = `
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:92px}body{margin:0;background:#f5f7fb;color:#17213a;font:14px/1.7 "Segoe UI",Arial,sans-serif}
 .site-shell{min-height:100vh}.sidebar{position:fixed;z-index:16;inset:0 auto 0 0;display:flex;width:min(320px,calc(100vw - 42px));height:100vh;flex-direction:column;padding:18px 15px 14px;overflow-y:auto;background:#fff;transform:translateX(-105%)}

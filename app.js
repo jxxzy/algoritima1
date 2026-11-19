@@ -5,9 +5,9 @@
   const quizKey = 'belajar-algoritma-quizzes-v1';
   const readingSizeKey = 'belajar-algoritma-reading-size-v1';
   const progressIds = [
-    'b1-ipo', 'b1-kartu', 'b1-biaya',
-    'b2-representasi', 'b2-geometri', 'b2-parkir', 'b2-tukar',
-    'b3-tipe', 'b3-suhu', 'b3-durasi', 'b3-kecepatan',
+    'b1-ipo', 'b1-kartu', 'b1-biaya', 'b1-praktikum',
+    'b2-representasi', 'b2-geometri', 'b2-parkir', 'b2-tukar', 'b2-praktikum',
+    'b3-tipe', 'b3-suhu', 'b3-durasi', 'b3-kecepatan', 'b3-praktikum',
     'b4-operator', 'b4-ekspresi', 'b4-aplikasi', 'b4-praktikum',
     'b5-keputusan', 'b5-game', 'b5-praktikum',
     'b6-for-while', 'b6-game', 'b6-praktikum',
@@ -159,8 +159,10 @@
   });
 
   if (focusToggle) {
+    try { if(sessionStorage.getItem('academy-focus') === 'true') { document.body.classList.add('focus-mode'); focusToggle.setAttribute('aria-pressed','true'); focusToggle.textContent='× Keluar dari fokus'; } } catch {}
     focusToggle.addEventListener('click', () => {
       const isFocused = document.body.classList.toggle('focus-mode');
+      try { sessionStorage.setItem('academy-focus',String(isFocused)); } catch {}
       if (isFocused && sidebar.classList.contains('is-open')) closeSidebar();
       focusToggle.setAttribute('aria-pressed', String(isFocused));
       focusToggle.innerHTML = isFocused
@@ -254,7 +256,7 @@
     window.requestAnimationFrame(() => timerCard.classList.add('is-phase-change'));
     window.clearTimeout(phaseAnimationTimeout);
     phaseAnimationTimeout = window.setTimeout(() => timerCard.classList.remove('is-phase-change'), 650);
-    if(timerDeadline !== null) { timerInterval = window.setInterval(tickTimer,250); tickTimer(); } else renderTimer();
+    renderTimer();
   }
 
   function tickTimer() {
@@ -318,7 +320,7 @@
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden && timerDeadline !== null) tickTimer();
   });
-  renderTimer();
+  if(timerDeadline !== null) { timerInterval = window.setInterval(tickTimer,250); tickTimer(); } else renderTimer();
   }
 
   chapterButtons.forEach((button) => {
@@ -707,6 +709,7 @@
     sidebarBackdrop.hidden = true;
     mobileMenu.setAttribute('aria-expanded', 'false');
     mobileMenu.setAttribute('aria-label', 'Buka navigasi');
+    if (mobileMenu.getClientRects().length) mobileMenu.focus();
   }
 
   mobileMenu.addEventListener('click', () => {
@@ -721,6 +724,7 @@
   });
   sidebarBackdrop.addEventListener('click', closeSidebar);
   document.addEventListener('keydown', (event) => {
+    if(event.key === 'Tab' && sidebar.classList.contains('is-open')) { const nodes=[...sidebar.querySelectorAll('a[href],button,input,summary')].filter(el=>el.getClientRects().length&&!el.disabled); if(nodes.length) { if(event.shiftKey && document.activeElement===nodes[0]) { event.preventDefault(); nodes.at(-1).focus(); } else if(!event.shiftKey && document.activeElement===nodes.at(-1)) { event.preventDefault(); nodes[0].focus(); } } }
     if (event.key === 'Escape' && sidebar.classList.contains('is-open')) {
       closeSidebar();
       mobileMenu.focus();
