@@ -1,0 +1,2 @@
+# Extended verification
+Pages CI is a mandatory smoke gate. Extended quality runs actual Chrome, Playwright Firefox/WebKit (not physical Safari or Edge), WCAG axe analysis, screenshots and prior-run comparisons, real Pyodide tests, and a seven-PDF inventory. A new screenshot baseline is not a regression pass. Topic signals do not establish semantic equivalence or rights. Severe findings remain blockers. Physical device, accessibility usability, academic, and license signoffs are still required. See feature-registry.json for 80 requirements and partial/open gaps.

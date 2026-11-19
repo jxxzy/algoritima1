@@ -1,0 +1,93 @@
+name: Extended quality verification
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: extended-quality
+  cancel-in-progress: true
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: npm run build && python scripts/package-practicals.py
+      - run: npm install --no-save --package-lock=false playwright@1.56.1 axe-core@4.10.3 pngjs@7.0.0 pixelmatch@7.1.0
+      - name: Install browser
+        env:
+          ENGINE: ${{ matrix.engine }}
+        run: |
+          if [ "$ENGINE" = chromium ] && command -v google-chrome >/dev/null; then
+            echo "PLAYWRIGHT_CHROME=$(command -v google-chrome)" >> "$GITHUB_ENV"
+          else
+            npx playwright install --with-deps "$ENGINE"
+          fi
+      - name: Retrieve previous screenshot reference
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ENGINE: ${{ matrix.engine }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          mkdir -p visual-baseline
+          previous=$(gh api "repos/$REPO/actions/workflows/quality.yml/runs?per_page=20&branch=main&status=completed" --jq ".workflow_runs[] | select(.id != $RUN_ID) | .id" | head -n 1)
+          if [ -n "$previous" ]; then
+            gh run download "$previous" --repo "$REPO" --name "visual-$ENGINE" --dir visual-baseline || echo "No previous matching artifact"
+          fi
+      - name: Browser, accessibility and visual comparison
+        env:
+          ENGINE: ${{ matrix.engine }}
+        run: node scripts/extended-browser.mjs
+      - name: Upload verification evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-${{ matrix.engine }}
+          path: quality-output/
+          if-no-files-found: warn
+          retention-days: 30
+  runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - run: npm ci && npm run build
+      - run: npm install --no-save --package-lock=false playwright@1.56.1
+      - run: |
+          if command -v google-chrome >/dev/null; then echo "PLAYWRIGHT_CHROME=$(command -v google-chrome)" >> "$GITHUB_ENV"; else npx playwright install chromium; fi
+      - name: Real Pyodide runtime checks
+        run: node scripts/runtime-test.mjs
+  academic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: command -v pdftotext >/dev/null || (sudo apt-get update && sudo apt-get install -y poppler-utils)
+      - run: python scripts/academic-check.py
+      - uses: actions/upload-artifact@v7
+        with:
+          name: academic-inventory
+          path: academic-inventory.json
+          retention-days: 30

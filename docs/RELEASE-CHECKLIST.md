@@ -17,3 +17,6 @@
 
 ## Latest evidence
 Commit 70822e1 deployed successfully in [Actions run 44520297773](https://github.com/jxxzy/algoritima1/actions/runs/44520297773). Unit tests, parity, dependency audit, browser smoke and deployment passed. 36 CSS keyframe definitions counted; visual behavior is not certified by the count. Newer changes require their own CI evidence.
+
+## Extended gates
+See [quality guide](QUALITY.md) and [80-feature registry](feature-registry.json). Public deployment cd67115 passed run 44520889160. Stable tagging remains blocked until all requirements are evidenced.

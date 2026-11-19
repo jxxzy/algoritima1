@@ -1,0 +1,645 @@
+{
+  "note": "Do not count implementation as verified acceptance. No Stable until open/partial requirements AND all acceptance gates are resolved.",
+  "features": [
+    {
+      "id": 1,
+      "group": "Dashboard",
+      "name": "Overview",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 2,
+      "group": "Dashboard",
+      "name": "Continue learning",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 3,
+      "group": "Dashboard",
+      "name": "Learning statistics",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 4,
+      "group": "Dashboard",
+      "name": "Daily goals",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 5,
+      "group": "Dashboard",
+      "name": "Study calendar",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 6,
+      "group": "Dashboard",
+      "name": "Recent activity",
+      "status": "PARTIAL",
+      "gap": "No unified activity feed",
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 7,
+      "group": "Dashboard",
+      "name": "Learning streak",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 8,
+      "group": "Dashboard",
+      "name": "Progress tracker",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 9,
+      "group": "Learning",
+      "name": "Learning roadmap",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 10,
+      "group": "Learning",
+      "name": "Bab 1",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 11,
+      "group": "Learning",
+      "name": "Bab 2",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 12,
+      "group": "Learning",
+      "name": "Bab 3",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 13,
+      "group": "Learning",
+      "name": "Bab 4",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 14,
+      "group": "Learning",
+      "name": "Bab 5",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 15,
+      "group": "Learning",
+      "name": "Bab 6",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 16,
+      "group": "Learning",
+      "name": "Bab 7",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 17,
+      "group": "Learning",
+      "name": "Materi pengayaan",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 18,
+      "group": "Learning",
+      "name": "Glossary",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 19,
+      "group": "Learning",
+      "name": "PDF library",
+      "status": "PARTIAL",
+      "gap": "Source rights unverified; inventory only",
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 20,
+      "group": "Learning",
+      "name": "References",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 21,
+      "group": "Studio",
+      "name": "Python runtime",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 22,
+      "group": "Studio",
+      "name": "Code editor",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 23,
+      "group": "Studio",
+      "name": "Terminal",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 24,
+      "group": "Studio",
+      "name": "STDIN manager",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 25,
+      "group": "Studio",
+      "name": "Syntax checker",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 26,
+      "group": "Studio",
+      "name": "Error inspector",
+      "status": "PARTIAL",
+      "gap": "Traceback text only",
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 27,
+      "group": "Studio",
+      "name": "File manager",
+      "status": "PARTIAL",
+      "gap": "Single-file import, no multi-file workspace",
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 28,
+      "group": "Studio",
+      "name": "Code templates",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 29,
+      "group": "Studio",
+      "name": "Task ZIP",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 30,
+      "group": "Studio",
+      "name": "Code formatter",
+      "status": "PARTIAL",
+      "gap": "Trailing whitespace only",
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 31,
+      "group": "Studio",
+      "name": "Execution history",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 32,
+      "group": "Studio",
+      "name": "Test case runner",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 33,
+      "group": "Studio",
+      "name": "Code export",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 34,
+      "group": "Studio",
+      "name": "Stop execution",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 35,
+      "group": "Studio",
+      "name": "Saved projects",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 36,
+      "group": "Lab",
+      "name": "IPO simulator",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 37,
+      "group": "Lab",
+      "name": "Flowchart builder",
+      "status": "PARTIAL",
+      "gap": "Sequential flowchart with branch labels",
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 38,
+      "group": "Lab",
+      "name": "Pseudocode editor",
+      "status": "PARTIAL",
+      "gap": "Generated pseudocode, no independent editor",
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 39,
+      "group": "Lab",
+      "name": "Variable inspector",
+      "status": "PARTIAL",
+      "gap": "Concept/function inspector, not arbitrary live variables",
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 40,
+      "group": "Lab",
+      "name": "Data type visualizer",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 41,
+      "group": "Lab",
+      "name": "Operator explorer",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 42,
+      "group": "Lab",
+      "name": "Boolean logic",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 43,
+      "group": "Lab",
+      "name": "Decision tree",
+      "status": "PARTIAL",
+      "gap": "Grade/flowchart models, not arbitrary tree",
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 44,
+      "group": "Lab",
+      "name": "Branching simulator",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 45,
+      "group": "Lab",
+      "name": "Loop visualizer",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 46,
+      "group": "Lab",
+      "name": "Nested loop",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 47,
+      "group": "Lab",
+      "name": "Function call visualizer",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 48,
+      "group": "Lab",
+      "name": "Recursion visualizer",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 49,
+      "group": "Lab",
+      "name": "Sorting visualizer",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 50,
+      "group": "Lab",
+      "name": "Trace table",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 51,
+      "group": "Assessment",
+      "name": "Question bank",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 52,
+      "group": "Assessment",
+      "name": "Practice quiz",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 53,
+      "group": "Assessment",
+      "name": "UTS simulator",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 54,
+      "group": "Assessment",
+      "name": "UAS simulator",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 55,
+      "group": "Assessment",
+      "name": "Coding challenge",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 56,
+      "group": "Assessment",
+      "name": "Daily challenge",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 57,
+      "group": "Assessment",
+      "name": "Difficulty selector",
+      "status": "PARTIAL",
+      "gap": "Basic/application categories, not calibrated difficulty",
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 58,
+      "group": "Assessment",
+      "name": "Answer review",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 59,
+      "group": "Assessment",
+      "name": "Exam history",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 60,
+      "group": "Assessment",
+      "name": "Competency analysis",
+      "status": "PARTIAL",
+      "gap": "Aggregate by scope, not skill model",
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 61,
+      "group": "Assessment",
+      "name": "Achievement center",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 62,
+      "group": "Assessment",
+      "name": "Completion certificate",
+      "status": "PARTIAL",
+      "gap": "Local study recap, not official certificate",
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 63,
+      "group": "Tools",
+      "name": "Bookmarks",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 64,
+      "group": "Tools",
+      "name": "Personal notes",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 65,
+      "group": "Tools",
+      "name": "Flashcards",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 66,
+      "group": "Tools",
+      "name": "Persistent Pomodoro",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 67,
+      "group": "Tools",
+      "name": "Study session history",
+      "status": "PARTIAL",
+      "gap": "Minutes aggregated by date",
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 68,
+      "group": "Tools",
+      "name": "Quick search",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 69,
+      "group": "Tools",
+      "name": "Command palette",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 70,
+      "group": "Tools",
+      "name": "Print/PDF",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 71,
+      "group": "Tools",
+      "name": "Learning data backup",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 72,
+      "group": "Tools",
+      "name": "Learning data restore",
+      "status": "PARTIAL",
+      "gap": "Import exists; transactional/schema hardening pending",
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 73,
+      "group": "System",
+      "name": "Appearance",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 74,
+      "group": "System",
+      "name": "Reading accessibility",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 75,
+      "group": "System",
+      "name": "Language settings",
+      "status": "OPEN",
+      "gap": "Indonesian-only interface",
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 76,
+      "group": "System",
+      "name": "Animation settings",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 77,
+      "group": "System",
+      "name": "Offline manager",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 78,
+      "group": "System",
+      "name": "Privacy/storage",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 79,
+      "group": "System",
+      "name": "Help center",
+      "status": "PARTIAL",
+      "gap": "Learner guide and shortcuts, not a dedicated help center",
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    },
+    {
+      "id": 80,
+      "group": "System",
+      "name": "About/changelog",
+      "status": "IMPLEMENTED",
+      "gap": null,
+      "acceptance": "PENDING_FEATURE_SPECIFIC_VERIFICATION"
+    }
+  ]
+}
