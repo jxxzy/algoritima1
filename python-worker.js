@@ -7,10 +7,18 @@ self.onmessage = async ({data}) => {
     const base='https://cdn.jsdelivr.net/pyodide/v0.27.7/full/';
     importScripts(base+'pyodide.js');
     const py=await loadPyodide({indexURL:base});
-    const lines=data.stdin.split(/\r?\n/); let i=0;
-    py.setStdin({stdin:()=> i<lines.length ? lines[i++] : null});
-    py.setStdout({batched:output}); py.setStderr({batched:output});
-    for(const file of data.files || []) py.FS.writeFile('/home/pyodide/'+file.name,file.code);
-    send('ready'); await py.runPythonAsync(data.code); send('done');
+    for(const file of data.files || []) { if(!/^[a-zA-Z0-9_]+\.py$/.test(file.name))throw Error('Invalid module name');py.FS.writeFile('/home/pyodide/'+file.name,file.code); }
+    const execute=async(stdin, capture=false)=>{
+      const lines=stdin.split(/\r?\n/);let i=0;let captured='',stderr='';
+      py.setStdin({stdin:()=>i<lines.length?lines[i++]:null});
+      py.setStdout({batched:text=>{if(capture)captured=(captured+text+'\n').slice(0,40001);else output(text);}});
+      py.setStderr({batched:text=>{if(capture)stderr=(stderr+text).slice(0,40001);else output(text);}});
+      const globals=py.toPy({__name__:'__main__'});try{await py.runPythonAsync(data.code,{globals});}finally{globals.destroy();}
+      return {captured,stderr};
+    };
+    send('ready');
+    if(Array.isArray(data.cases)){
+      let passes=0;for(let j=0;j<data.cases.length;j++){const c=data.cases[j];try{const result=await execute(c.stdin,true);const ok=!result.stderr&&result.captured.trim()===c.expected;passes+=Number(ok);send('case','Test '+(j+1)+': '+(ok?'LULUS':'GAGAL')+' | expected '+c.expected+' | actual '+result.captured.trim().slice(0,200));}catch(e){send('case','Test '+(j+1)+': GAGAL — '+String(e.message).slice(0,300));}}send('done',passes+'/'+data.cases.length+' test case lulus');
+    }else{await execute(data.stdin);send('done');}
   } catch(error) { send('error',error.message || error); }
 };

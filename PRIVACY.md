@@ -1,0 +1,3 @@
+# Privasi
+
+Situs publik tidak memerlukan akun. Progres, kuis, kode, catatan, target, riwayat latihan, dan diagram disimpan lokal di browser. Backup JSON dapat mengandung data belajar; simpan secara pribadi. Jangan masukkan kata sandi atau data sensitif. Hosting GitHub dan CDN runtime Pyodide dapat memproses alamat IP dan metadata koneksi sesuai kebijakan masing-masing. Kode Python mempunyai kemampuan WebAssembly dan dapat menggunakan API web melalui bridge JavaScript; worker bukan sandbox untuk kode yang tidak dipercaya. Tidak ada sinkronisasi akun. Untuk menghapus data, hapus data situs dari pengaturan browser.

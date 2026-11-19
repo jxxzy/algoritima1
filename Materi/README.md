@@ -13,3 +13,7 @@ Folder ini menyimpan PDF materi sumber Bab 1–7. Folder tugas dan situs pembela
 | 7 | `Buku_Algoritma_dan_Struktur_Data_I_Edisi_Mahasiswa bab 7.pdf` |
 
 Gunakan PDF yang tersedia untuk membaca materi dan instruksi tugas. Materi situs tersedia pada Bab 1–7; implementasi, jawaban, dan pengujian disusun terpisah pada folder `Bab 1` sampai `Bab 7`.
+
+## Hak distribusi
+
+Status izin publikasi ulang PDF sumber belum diverifikasi. PDF tidak disalin ke hasil build GitHub Pages. Konfirmasi izin pemegang hak sebelum mendistribusikan lebih lanjut; tidak ada klaim bahwa PDF ini berlisensi terbuka.

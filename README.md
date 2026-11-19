@@ -76,3 +76,7 @@ Assessment Center menyediakan 210 variasi latihan numerik (30 per bab), latihan 
 ### Responsive workspace
 
 Mobile (320–767 px) menggunakan navigasi bawah dan drawer; tablet (768–1099 px) menggunakan drawer dan grid adaptif; desktop (1100 px ke atas) menggunakan sidebar vertikal tetap; desktop lebar (1500 px ke atas) memiliki daftar isi samping. Browser smoke memeriksa sembilan ukuran viewport dan empat jenis halaman untuk overflow horizontal. Pengujian ini menilai layout Chromium, bukan seluruh perangkat fisik.
+
+## Development and release
+
+See [developer guide](docs/DEVELOPMENT.md), [learning guide](docs/LEARNING.md), [release checklist](docs/RELEASE-CHECKLIST.md), [changelog](CHANGELOG.md), [privacy](PRIVACY.md) and [security](SECURITY.md). The release checklist distinguishes implementation from verification; Stable is not claimed until every mandatory gate is evidenced.

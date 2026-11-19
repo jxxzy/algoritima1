@@ -38,7 +38,11 @@ jobs:
         run: |
           for n in {1..7}; do python -B -m unittest discover -s "Bab $n" -v || exit 1; done
       - name: Validate JavaScript syntax
-        run: node --check app.js && node --check academy.js && node --check python-worker.js && node --check assessment.js
+        run: node --check app.js && node --check academy.js && node --check python-worker.js && node --check assessment.js && node --check math.js && node --check tools.js
+      - name: JavaScript and Python parity tests
+        run: node scripts/parity-test.mjs
+      - name: Dependency security audit
+        run: npm audit --audit-level=high
       - name: Build minified multipage site
         run: npm run build
       - name: Package exercises and validate build
@@ -48,7 +52,7 @@ jobs:
       - name: Install Chromium smoke-test runner
         run: |
           npm install --no-save --package-lock=false playwright@1.56.1
-          npx playwright install --with-deps chromium
+          if command -v google-chrome >/dev/null; then echo "PLAYWRIGHT_CHROME=$(command -v google-chrome)" >> "$GITHUB_ENV"; else npx playwright install chromium; fi
       - name: Browser smoke tests
         run: node scripts/browser-smoke.mjs
       - name: Configure Pages

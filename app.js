@@ -4,7 +4,8 @@
   const bookmarksKey = 'belajar-algoritma-bookmarks-v1';
   const quizKey = 'belajar-algoritma-quizzes-v1';
   const readingSizeKey = 'belajar-algoritma-reading-size-v1';
-  const progressIds = [
+  let curriculum = null; try { curriculum = JSON.parse(document.getElementById('curriculum-registry')?.textContent || 'null'); } catch {}
+  const progressIds = curriculum ? curriculum.flatMap(c=>c.topics.map(t=>t.id)) : [
     'b1-ipo', 'b1-kartu', 'b1-biaya', 'b1-praktikum',
     'b2-representasi', 'b2-geometri', 'b2-parkir', 'b2-tukar', 'b2-praktikum',
     'b3-tipe', 'b3-suhu', 'b3-durasi', 'b3-kecepatan', 'b3-praktikum',
@@ -429,9 +430,7 @@
         return;
       }
       const menit = BigInt(nilaiA);
-      const jam = menit / 60n;
-      const sisa = menit % 60n;
-      const totalDetik = menit * 60n;
+      const [jam,sisa,totalDetik] = globalThis.AcademyMath.duration(nilaiA);
       showLabResult(
         `${jam} jam ${sisa} menit`,
         `${menit} // 60 = ${jam} jam · ${menit} % 60 = ${sisa} menit\nPemeriksaan balik: ${jam} × 60 + ${sisa} = ${menit} menit · Total: ${totalDetik} detik`,
@@ -444,9 +443,7 @@
         showLabResult('Durasi ditolak', 'Durasi parkir harus berupa jam bulat minimal 1.', true);
         return;
       }
-      const jamTambahan = BigInt(nilaiA - 1);
-      const biayaAwal = 3_000n + jamTambahan * 2_000n;
-      const biayaAkhir = biayaAwal > 15_000n ? 15_000n : biayaAwal;
+      const [jamTambahan,biayaAwal,biayaAkhir] = globalThis.AcademyMath.parking(nilaiA);
       const rupiah = (nilai) => `Rp${new Intl.NumberFormat('id-ID').format(nilai)}`;
       showLabResult(
         rupiah(biayaAkhir),
@@ -459,8 +456,7 @@
       showLabResult('Ukuran ditolak', 'Panjang dan lebar harus berupa angka terbatas yang lebih besar dari nol.', true);
       return;
     }
-    const luas = nilaiA * nilaiB;
-    const keliling = 2 * (nilaiA + nilaiB);
+    const [luas,keliling] = globalThis.AcademyMath.geometryRaw(nilaiA,nilaiB);
     if (!Number.isFinite(luas) || !Number.isFinite(keliling) || luas === 0) {
       showLabResult('Angka terlalu besar', 'Hasil luas atau keliling berada di luar rentang angka yang dapat ditampilkan.', true);
       return;
@@ -814,15 +810,13 @@
         result.classList.add('has-error');
         return;
       }
-      const subtotal = BigInt(harga) * BigInt(jumlah);
+      const [subtotal,diskon,kemasan,total] = globalThis.AcademyMath.shopping(harga,jumlah);
       if (subtotal > BigInt(Number.MAX_SAFE_INTEGER)) {
         result.textContent = 'Subtotal terlalu besar untuk dihitung secara aman di browser.';
         result.classList.add('has-error');
         return;
       }
-      const diskon = subtotal >= 50_000n ? subtotal * 5n / 100n : 0n;
-      const kemasan = 2_000n;
-      const total = subtotal - diskon + kemasan;
+
       const rupiah = (nilai) => new Intl.NumberFormat('id-ID').format(nilai);
       result.textContent = `Subtotal Rp${rupiah(subtotal)} · diskon Rp${rupiah(diskon)} · kemasan Rp${rupiah(kemasan)} · total Rp${rupiah(total)}.`;
       result.classList.remove('has-error');
@@ -881,9 +875,7 @@
         result.classList.add('has-error');
         return;
       }
-      const jamTambahan = BigInt(jam - 1);
-      const biayaAwal = 3_000n + jamTambahan * 2_000n;
-      const biayaAkhir = biayaAwal > 15_000n ? 15_000n : biayaAwal;
+      const [jamTambahan,biayaAwal,biayaAkhir] = globalThis.AcademyMath.parking(jam);
       result.textContent = `${jam} jam: Rp3.000 + (${jamTambahan} × Rp2.000) = ${rupiah(biayaAwal)}; setelah batas harian, bayar ${rupiah(biayaAkhir)}.`;
       result.classList.remove('has-error');
     });
@@ -902,8 +894,7 @@
         result.classList.add('has-error');
         return;
       }
-      const luas = panjang * lebar;
-      const keliling = 2 * (panjang + lebar);
+      const [luas,keliling] = globalThis.AcademyMath.geometryRaw(panjang,lebar);
       if (![luas, keliling].every(Number.isFinite) || luas === 0) {
         result.textContent = 'Hasil berada di luar rentang angka yang aman untuk ditampilkan.';
         result.classList.add('has-error');
@@ -958,16 +949,17 @@
           result.classList.add('has-error');
           return;
         }
-        if (![a * 9 / 5 + 32, a + 273.15].every(Number.isFinite)) { result.textContent = 'Hasil di luar rentang angka.'; result.classList.add('has-error'); return; }
-        result.textContent = `${format(a)} °C × 9 / 5 + 32 = ${format(a * 9 / 5 + 32)} °F; ${format(a)} + 273,15 = ${format(a + 273.15)} K.`;
+        const [f,k] = globalThis.AcademyMath.temperatureRaw(a);
+        if (![f,k].every(Number.isFinite)) { result.textContent = 'Hasil di luar rentang angka.'; result.classList.add('has-error'); return; }
+        result.textContent = `${format(a)} °C × 9 / 5 + 32 = ${format(f)} °F; ${format(a)} + 273,15 = ${format(k)} K.`;
       } else if (kind.value === 'durasi') {
         if (!Number.isSafeInteger(a) || a < 0) {
           result.textContent = 'Durasi harus bilangan bulat menit yang tidak negatif.';
           result.classList.add('has-error');
           return;
         }
-        const menit = BigInt(a);
-        result.textContent = `${menit} // 60 = ${menit / 60n} jam, sisa ${menit % 60n} menit; total ${menit * 60n} detik. Cek balik: ${menit / 60n} × 60 + ${menit % 60n} = ${menit}.`;
+        const menit = BigInt(a); const [jam,sisa,total] = globalThis.AcademyMath.duration(a);
+        result.textContent = `${menit} // 60 = ${jam} jam, sisa ${sisa} menit; total ${total} detik. Cek balik: ${jam} × 60 + ${sisa} = ${menit}.`;
       } else if (kind.value === 'jarak') {
         if (!Number.isSafeInteger(a) || a < 0) {
           result.textContent = 'Jarak harus bilangan bulat meter yang tidak negatif.';
@@ -1066,7 +1058,7 @@
   const bookmarkCount = document.getElementById('bookmark-count');
   const bookmarkList = document.getElementById('saved-lessons');
   const bookmarksEmpty = document.getElementById('bookmarks-empty');
-  const bookmarkTitles = {
+  const bookmarkTitles = curriculum ? Object.fromEntries(curriculum.flatMap(c=>c.topics.map(t=>[t.id,[t.title,c.number]]))) : {
     'b1-ipo': ['Berpikir dengan input, proses, output', 1],
     'b1-kartu': ['Validasi sebelum menampilkan kartu', 1],
     'b1-biaya': ['Menghitung biaya kegiatan', 1],

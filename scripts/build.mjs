@@ -166,7 +166,7 @@ function chapterQuizzes(number) {
     const options = question.options.map(([value, label]) => `
               <label><input type="radio" name="q${number}-${index + 1}" value="${escapeHtml(value)}"><span class="radio-ui"></span><span>${escapeHtml(label)}</span></label>`).join('');
     return `
-            <fieldset class="quiz-question" data-answer="${escapeHtml(question.answer)}" data-explanation="Tinjau kembali contoh dan validasi pada Bab ${number}, lalu bandingkan setiap pilihan dengan aturan program.">
+            <fieldset class="quiz-question" data-answer="${escapeHtml(question.answer)}" data-explanation="${escapeHtml(question.options.find(option=>option[0]===question.answer)[1])}">
               <legend><span>0${index + 1}</span> ${escapeHtml(question.prompt)}</legend>${options}
               <p class="quiz-feedback" aria-live="polite"></p>
             </fieldset>`;
@@ -223,9 +223,13 @@ function createSearchIndex() {
   });
 }
 
-const chapterCards = [1, 2, 3, 4, 5, 6, 7].map((number) => {
+const curriculum = [1,2,3,4,5,6,7].map(number=>({number,...chapterDetails[number],topics:createSearchIndex().filter(t=>t.chapter===number).map(({id,title,href})=>({id,title,href}))}));
+const allIds=curriculum.flatMap(c=>c.topics.map(t=>t.id));
+if(allIds.length!==27 || new Set(allIds).size!==allIds.length) throw new Error('Invalid curriculum topic IDs');
+for(const c of curriculum){const checks=[...fragments.chapters[c.number-1].matchAll(/data-progress="([^"]+)"/g)].map(m=>m[1]);if(checks.length!==c.topics.length || checks.some(id=>!c.topics.some(t=>t.id===id))) throw new Error('Progress schema mismatch in chapter '+c.number);if(c.previous!==(c.number===1?null:c.number-1)||c.next!==(c.number===7?null:c.number+1))throw new Error('Invalid chapter navigation');for(const q of quizzes[c.number])if(!q.options.some(o=>o[0]===q.answer))throw new Error('Invalid quiz answer');}
+const chapterCards = curriculum.map(({number}) => {
   const details = chapterDetails[number];
-  const topicCounts = [4, 5, 5, 4, 3, 3, 3];
+  const topicCounts = curriculum.map(c=>c.topics.length);
   return `<a class="dashboard-chapter path-card" href="bab-${number}/index.html"><span class="path-index index-${['blue', 'violet', 'amber', 'green', 'blue', 'violet', 'green'][number - 1]}">0${number}</span><span class="path-card-copy"><strong>${escapeHtml(details.title.split(' · ')[1])}</strong><small>${escapeHtml(details.description)}</small><span class="dashboard-chapter-progress" id="chapter-progress-${number}">0 dari ${topicCounts[number - 1]} topik · 0%</span><span class="course-badge" id="chapter-badge-${number}" hidden>Lencana Bab ${number} terkunci</span></span><span class="path-arrow">↗</span></a>`;
 }).join('');
 
@@ -311,9 +315,13 @@ function renderPage({ kind, title, description, canonical, navHtml = rewriteLink
     <style>${renderPage.criticalCss}</style>
     <link rel="stylesheet" href="${hashedAssets.css}">
     <meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(description)}"><meta property="og:url" content="${canonical}"><meta property="og:type" content="website">
+    <script type="application/json" id="curriculum-registry">${JSON.stringify(curriculum).replace(/</g, "\\u003c")}</script>
+    <script src="${hashedAssets.math}" defer></script>
     <script src="${hashedAssets.js}" defer></script>
     <script src="${hashedAssets.academy}" defer></script>
     <script src="${hashedAssets.assessment}" defer></script>
+    <script src="${hashedAssets.tools}" defer></script>
+    <link rel="stylesheet" href="${hashedAssets.workspace}">
   </head>
   <body ${pageKind}>
     <a class="skip-link" href="${skipTarget}">Lewati ke materi</a>
@@ -330,7 +338,7 @@ function renderPage({ kind, title, description, canonical, navHtml = rewriteLink
 await rm(outputDirectory, { recursive: true, force: true });
 await mkdir(path.join(outputDirectory, 'assets'), { recursive: true });
 const assets = await build({
-  entryPoints: [path.join(root, 'app.js'), path.join(root, 'styles.css'), path.join(root, 'academy.js'), path.join(root, 'assessment.js')],
+  entryPoints: [path.join(root, 'app.js'), path.join(root, 'styles.css'), path.join(root, 'academy.js'), path.join(root, 'assessment.js'), path.join(root, 'math.js'), path.join(root, 'tools.js'), path.join(root, 'workspace.css')],
   outdir: path.join(outputDirectory, 'assets'),
   entryNames: '[name]-[hash]',
   minify: true,
@@ -343,7 +351,7 @@ for (const file of assets.outputFiles) {
   await writeFile(file.path, file.contents);
   assetNames[relative.startsWith('assets/') ? relative.slice('assets/'.length).split('-')[0] : relative] = relative;
 }
-renderPage.assets = { css: assetNames['styles'], js: assetNames['app'], academy: assetNames['academy'], assessment: assetNames['assessment'] };
+renderPage.assets = { css: assetNames['styles'], js: assetNames['app'], academy: assetNames['academy'], assessment: assetNames['assessment'], math: assetNames['math'], tools: assetNames['tools'], workspace: assetNames['workspace'] };
 renderPage.criticalCss = `
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:92px}body{margin:0;background:#f5f7fb;color:#17213a;font:14px/1.7 "Segoe UI",Arial,sans-serif}
 .site-shell{min-height:100vh}.sidebar{position:fixed;z-index:16;inset:0 auto 0 0;display:flex;width:min(320px,calc(100vw - 42px));height:100vh;flex-direction:column;padding:18px 15px 14px;overflow-y:auto;background:#fff;transform:translateX(-105%)}
@@ -393,6 +401,7 @@ const referencePage = renderPage({
 });
 await writeFile(path.join(referenceDirectory, 'index.html'), referencePage);
 await writeFile(path.join(outputDirectory, 'search-index.json'), JSON.stringify(createSearchIndex()));
+await writeFile(path.join(outputDirectory, 'curriculum.json'), JSON.stringify(curriculum));
 
 const pythonDirectories = ['Bab 1', 'Bab 2', 'Bab 3', 'Bab 4', 'Bab 5', 'Bab 6', 'Bab 7'];
 const pythonFiles = [];
@@ -430,7 +439,7 @@ const pages = ['index.html', 'bab-1/index.html', 'bab-2/index.html', 'bab-3/inde
 await writeFile(path.join(outputDirectory,'python-worker.js'), await readFile(path.join(root,'python-worker.js')));
 await writeFile(path.join(outputDirectory,'robots.txt'), 'User-agent: *\nAllow: /\nSitemap: https://jxxzy.github.io/algoritima1/sitemap.xml\n');
 await writeFile(path.join(outputDirectory,'sitemap.xml'), '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+pages.map(p=>'<url><loc>https://jxxzy.github.io/algoritima1/'+p.replace('index.html','')+'</loc></url>').join('')+'</urlset>');
-const offlineFiles = [...pages, 'manifest.webmanifest', 'search-index.json', 'python-worker.js', ...pythonFiles, ...assetFiles.map((name) => `assets/${name}`)];
+const offlineFiles = [...pages, 'manifest.webmanifest', 'search-index.json', 'curriculum.json', 'python-worker.js', ...pythonFiles, ...assetFiles.map((name) => `assets/${name}`)];
 const cacheFingerprint = createHash('sha256');
 for (const file of [...offlineFiles].sort()) {
   cacheFingerprint.update(file);
@@ -454,7 +463,7 @@ self.addEventListener('fetch', event => {
     event.respondWith(caches.match(request).then(cached => cached || fetch(request).then(response => { if (response.ok) caches.open(CACHE_NAME).then(cache => cache.put(request, response.clone())); return response; })));
     return;
   }
-  if (url.pathname.endsWith('.py') || url.pathname.endsWith('/search-index.json') || url.pathname.endsWith('/python-worker.js')) {
+  if (url.pathname.endsWith('.py') || url.pathname.endsWith('/search-index.json') || url.pathname.endsWith('/curriculum.json') || url.pathname.endsWith('/python-worker.js')) {
     event.respondWith(caches.match(request).then(cached => cached || fetch(request).then(response => { if (response.ok) caches.open(CACHE_NAME).then(cache => cache.put(request, response.clone())); return response; })));
   }
 });`;

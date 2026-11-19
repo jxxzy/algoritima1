@@ -18,7 +18,7 @@ pages={}
 for p in root.rglob('index.html'):
     parser=Page(); parser.feed(p.read_text(encoding='utf8')); pages[p]=parser
 assert len(pages)==10, f'Expected 10 pages, found {len(pages)}'
-for name in ('search-index.json','sw.js','python-worker.js','manifest.webmanifest','sitemap.xml','robots.txt'):
+for name in ('search-index.json','curriculum.json','sw.js','python-worker.js','manifest.webmanifest','sitemap.xml','robots.txt'):
     assert (root/name).is_file(),name
 for n in range(1,8): assert (root/'downloads'/f'bab-{n}.zip').is_file()
 # All new high-priority routes and unique studio controls must exist.
